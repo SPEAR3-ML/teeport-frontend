@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker'
 
 render(
   <App />,
-  document.getElementById('root')
+  document.getElementById('root'),
 )
 
 serviceWorker.unregister()
