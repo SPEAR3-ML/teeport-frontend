@@ -8,11 +8,14 @@
   ],
   "parser": "babel-eslint",
   "plugins": [
-      "react"
+      "react",
+      "react-hooks"
   ],
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
