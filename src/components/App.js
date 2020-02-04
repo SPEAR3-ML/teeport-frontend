@@ -1,11 +1,30 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import './App.css'
+import styled from 'styled-components'
 
 import About from './About'
 import { selectCount } from '../redux/selectors'
 import { increaseCount } from '../redux/actions'
+
+const AppDiv = styled.div`
+  text-align: center;
+`
+
+const AppHeader = styled.header`
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+`
+
+const AppLink = styled.a`
+  color: #09d3ac;
+`
 
 const App = () => {
   const count = useSelector(selectCount)
@@ -18,19 +37,18 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <header className="App-header">
+      <AppDiv>
+        <AppHeader>
           <p>
             Welcome to SPEAR3 ML Platform
           </p>
-          <a
-            className="App-link"
+          <AppLink
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
             Algorithm Monitor
-          </a>
+          </AppLink>
           <Link to='/about'>About</Link>
           <Switch>
             <Route path='/about'>
@@ -43,8 +61,8 @@ const App = () => {
               Click me
             </button>
           </div>
-        </header>
-      </div>
+        </AppHeader>
+      </AppDiv>
     </BrowserRouter>
   )
 }
