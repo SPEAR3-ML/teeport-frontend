@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import './App.css'
 
 import About from './About'
+import { selectCount } from '../redux/selectors'
+import { increaseCount } from '../redux/actions'
 
 const App = () => {
-  const [count, setCount] = useState(0)
+  const count = useSelector(selectCount)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // Update the document title using the browser API
@@ -36,7 +39,7 @@ const App = () => {
           </Switch>
           <div>
             <p>You clicked {count} times</p>
-            <button onClick={() => setCount(count + 1)}>
+            <button onClick={() => dispatch(increaseCount())}>
               Click me
             </button>
           </div>

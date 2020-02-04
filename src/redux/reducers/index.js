@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { INCREASE_COUNT } from '../constants'
+import { INCREASE_COUNT } from '../actionTypes'
 
 const initialState = fromJS({
   count: 0,
