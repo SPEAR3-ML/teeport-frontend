@@ -1,21 +1,11 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
-import styled from 'styled-components'
 
-const CenterDiv = styled.div`
-  text-align: center;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const AboutDiv = styled(CenterDiv)`
-  color: #4D4F53;
-`
+import { CenterDiv } from './Utils'
 
 const Tasks = () => {
   return (
-    <AboutDiv>
+    <CenterDiv>
       <Plot
         data={[
           {
@@ -39,7 +29,7 @@ const Tasks = () => {
           title: 'A Fancy Plot',
         }}
       />
-    </AboutDiv>
+    </CenterDiv>
   )
 }
 
