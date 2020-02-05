@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
+// import { grey } from 'material-colors'
 
 import { selectCount } from '../redux/selectors'
 import { increaseCount } from '../redux/actions'
 
 const Header = styled.header`
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

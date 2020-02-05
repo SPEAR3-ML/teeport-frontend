@@ -1,29 +1,46 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
+// import { grey } from 'material-colors'
 
+import Titlebar from './Titlebar'
 import Home from './Home'
+import Tasks from './Tasks'
 import About from './About'
 
-const AppDiv = styled.div`
-  text-align: center;
+const Frame = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #D2C295;
+`
+
+const Content = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 48px;
+  bottom: 0px;
 `
 
 const App = () => {
   return (
     <BrowserRouter>
-      <AppDiv>
-        <Link to='/about'>About</Link>
-        <Link to='/'>Home</Link>
-        <Switch>
-          <Route path='/about'>
-            <About />
-          </Route>
-          <Route path='/'>
-            <Home />
-          </Route>
-        </Switch>
-      </AppDiv>
+      <Frame>
+        <Titlebar />
+        <Content>
+          <Switch>
+            <Route path='/about'>
+              <About />
+            </Route>
+            <Route path='/tasks'>
+              <Tasks />
+            </Route>
+            <Route path='/'>
+              <Home />
+            </Route>
+          </Switch>
+        </Content>
+      </Frame>
     </BrowserRouter>
   )
 }

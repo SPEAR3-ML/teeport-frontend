@@ -12,12 +12,12 @@ const AboutDiv = styled(CenterDiv)`
   color: #4D4F53;
 `
 
-const About = () => {
+const Tasks = () => {
   return (
     <AboutDiv>
-      SPEAR3 2019-2020
+      Tasks
     </AboutDiv>
   )
 }
 
-export default About
+export default Tasks
