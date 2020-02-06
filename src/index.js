@@ -24,6 +24,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
       monospace;
   }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 `
 
 render(
