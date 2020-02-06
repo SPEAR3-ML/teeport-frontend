@@ -3,7 +3,6 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createGlobalStyle } from 'styled-components'
 
-// import './index.css'
 import App from './components/App'
 import store from './redux/store'
 
