@@ -16,6 +16,31 @@ const AutoResizePlot = styled(Plot)`
 
 const Tasks = () => {
   const [revision, setRevision] = useState(0)
+  const [figure, setFigure] = useState({
+    data: [
+      {
+        x: [1, 2, 3],
+        y: [2, 6, 3],
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {
+          color: 'red',
+        },
+      },
+      {
+        type: 'bar',
+        x: [1, 2, 3],
+        y: [2, 5, 3],
+      },
+    ],
+    layout: {
+      autosize: true,
+      title: 'A Fancy Plot',
+    },
+    frames: [],
+    config: {},
+  })
+
   const layout = [
     { i: '1', x: 0, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
     { i: '2', x: 6, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
@@ -40,26 +65,12 @@ const Tasks = () => {
           <AutoResizePlot
             revision={revision}
             useResizeHandler={true}
-            data={[
-              {
-                x: [1, 2, 3],
-                y: [2, 6, 3],
-                type: 'scatter',
-                mode: 'lines+markers',
-                marker: {
-                  color: 'red',
-                },
-              },
-              {
-                type: 'bar',
-                x: [1, 2, 3],
-                y: [2, 5, 3],
-              },
-            ]}
-            layout={{
-              autosize: true,
-              title: 'A Fancy Plot',
-            }}
+            data={figure.data}
+            layout={figure.layout}
+            frames={figure.frames}
+            config={figure.config}
+            onInitialized={fig => setFigure(fig)}
+            onUpdated={fig => setFigure(fig)}
           />
         </DraggableDiv>
       </div>
