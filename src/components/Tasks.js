@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Plot from 'react-plotly.js'
 import styled from 'styled-components'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
@@ -15,6 +15,7 @@ const AutoResizePlot = styled(Plot)`
 `
 
 const Tasks = () => {
+  const [revision, setRevision] = useState(0)
   const layout = [
     { i: '1', x: 0, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
     { i: '2', x: 6, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
@@ -28,10 +29,16 @@ const Tasks = () => {
       cols={12}
       rowHeight={24}
       draggableHandle='.drag-handler'
+      onResizeStop={(_, { i }) => {
+        if (i === '1') {
+          setRevision(revision + 1)
+        }
+      }}
     >
       <div key='1'>
         <DraggableDiv>
           <AutoResizePlot
+            revision={revision}
             useResizeHandler={true}
             data={[
               {
