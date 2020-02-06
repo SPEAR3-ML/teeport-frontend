@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Plot from 'react-plotly.js'
 import styled from 'styled-components'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
+import { selectLayout } from '../redux/selectors'
+import { updateLayout } from '../redux/actions'
 import { DraggableDiv } from './Utils'
 
 const ReactGridLayout = WidthProvider(GridLayout)
@@ -41,11 +44,8 @@ const Tasks = () => {
     config: {},
   })
 
-  const [layout, setLayout] = useState([
-    { i: '1', x: 0, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
-    { i: '2', x: 6, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
-    { i: '3', x: 0, y: 12, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
-  ])
+  const layout = useSelector(selectLayout)
+  const dispatch = useDispatch()
 
   return (
     <ReactGridLayout
@@ -59,7 +59,7 @@ const Tasks = () => {
           setRevision(revision + 1)
         }
       }}
-      onLayoutChange={l => setLayout(l)}
+      onLayoutChange={l => dispatch(updateLayout(l))}
     >
       <div key='1'>
         <DraggableDiv>

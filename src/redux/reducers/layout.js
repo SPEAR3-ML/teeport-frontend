@@ -13,7 +13,7 @@ const initialState = fromJS({
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_LAYOUT:
-      return state.set('l0', action.layout)
+      return state.set('l0', fromJS(action.layout))
     default:
       return state
   }
