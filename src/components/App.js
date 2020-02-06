@@ -20,6 +20,7 @@ const Content = styled.div`
   width: 100%;
   top: 48px;
   bottom: 0px;
+  overflow-y: auto;
 `
 
 const App = () => {
