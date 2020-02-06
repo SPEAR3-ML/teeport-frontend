@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+// import { grey } from 'material-colors'
 
 export const CenterDiv = styled.div`
   text-align: center;
@@ -24,7 +25,7 @@ const ContentDiv = styled.div`
   top: 16px;
   bottom: 0px;
   width: 100%;
-  background-color: #4D4F53;
+  background-color: white;
 `
 
 export const DraggableDiv = props => {
