@@ -1,18 +1,11 @@
-import { fromJS } from 'immutable'
+import { combineReducers } from 'redux-immutable'
 
-import { INCREASE_COUNT } from '../actionTypes'
+import layout from './layout'
+import tmp from './tmp'
 
-const initialState = fromJS({
-  count: 0,
+const reducer = combineReducers({
+  layout,
+  tmp,
 })
-
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case INCREASE_COUNT:
-      return state.update('count', count => count + 1)
-    default:
-      return state
-  }
-}
 
 export default reducer

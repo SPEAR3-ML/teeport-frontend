@@ -41,11 +41,11 @@ const Tasks = () => {
     config: {},
   })
 
-  const layout = [
+  const [layout, setLayout] = useState([
     { i: '1', x: 0, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
     { i: '2', x: 6, y: 0, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
     { i: '3', x: 0, y: 12, w: 6, h: 12, minW: 3, maxW: 12, minH: 8, maxH: 24 },
-  ]
+  ])
 
   return (
     <ReactGridLayout
@@ -59,6 +59,7 @@ const Tasks = () => {
           setRevision(revision + 1)
         }
       }}
+      onLayoutChange={l => setLayout(l)}
     >
       <div key='1'>
         <DraggableDiv>
