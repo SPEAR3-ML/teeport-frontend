@@ -4,7 +4,8 @@ export const increaseCount = () => ({
   type: INCREASE_COUNT,
 })
 
-export const updateLayout = layout => ({
+export const updateLayout = (taskId, layout) => ({
   type: UPDATE_LAYOUT,
+  taskId,
   layout,
 })

@@ -2,14 +2,12 @@ import { fromJS } from 'immutable'
 
 import { UPDATE_LAYOUT } from '../actionTypes'
 
-const initialState = fromJS({
-  l0: [],
-})
+const initialState = fromJS({})
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_LAYOUT:
-      return state.set('l0', fromJS(action.layout))
+      return state.set(action.taskId, fromJS(action.layout))
     default:
       return state
   }

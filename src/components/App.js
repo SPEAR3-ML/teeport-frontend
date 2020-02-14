@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import Titlebar from './Titlebar'
 import Home from './Home'
 import Tasks from './Tasks'
+import Task from './Task'
 import About from './About'
 
 const Frame = styled.div`
@@ -32,6 +33,9 @@ const App = () => {
           <Switch>
             <Route path='/about'>
               <About />
+            </Route>
+            <Route path='/tasks/:taskId'>
+              <Task />
             </Route>
             <Route path='/tasks'>
               <Tasks />

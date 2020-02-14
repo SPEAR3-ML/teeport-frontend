@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Plot from 'react-plotly.js'
 import styled from 'styled-components'
@@ -10,7 +11,7 @@ import 'react-resizable/css/styles.css'
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
 import { DraggableDiv } from './Utils'
-import useTasks from '../hooks/useTasks'
+import useTask from '../hooks/useTask'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
@@ -19,7 +20,7 @@ const AutoResizePlot = styled(Plot)`
   height: 100%;
 `
 
-const generateLayout = (size, columnNum = 4) => {
+const generateLayout = (size, columnNum = 2) => {
   const layout = []
   const width = 12 / columnNum
   const height = 12
@@ -42,44 +43,64 @@ const generateLayout = (size, columnNum = 4) => {
   return layout
 }
 
-const Tasks = () => {
-  const [tasksSize, setTasksSize] = useState(0)
-  const tasks = useTasks()
-  const layout = useSelector(selectLayout)
+const getXY = history => {
+  let x = []
+  let y = []
+
+  if (!history) {
+    return [x, y]
+  }
+
+  history.forEach(([, Y]) => {
+    y = _.concat(y, Y)
+  })
+  x = _.range(_.size(y))
+
+  return [x, y]
+}
+
+const Task = () => {
+  const { taskId } = useParams()
+  const task = useTask(taskId)
+  const layout = useSelector(selectLayout(taskId))
   const dispatch = useDispatch()
   useEffect(() => {
-    if (_.size(tasks) !== tasksSize) {
-      setTasksSize(_.size(tasks))
-      const newLayout = generateLayout(_.size(tasks))
-      dispatch(updateLayout(newLayout))
+    if (!_.size(layout)) {
+      const newLayout = generateLayout(1)
+      dispatch(updateLayout(taskId, newLayout))
     }
-  }, [tasks, tasksSize, dispatch])
+  }, [taskId, layout, dispatch])
 
+  const { history } = task
+  const [x, y] = getXY(history)
   const [revision, setRevision] = useState(0)
   const [figure, setFigure] = useState({
     data: [
       {
-        x: [1, 2, 3],
-        y: [2, 6, 3],
+        x: [],
+        y: [],
         type: 'scatter',
         mode: 'lines+markers',
         marker: {
           color: 'red',
         },
       },
-      {
-        type: 'bar',
-        x: [1, 2, 3],
-        y: [2, 5, 3],
-      },
     ],
     layout: {
       autosize: true,
-      title: 'A Fancy Plot',
+      title: 'Evaluation History',
     },
     frames: [],
     config: {},
   })
+  useEffect(() => {
+    if (_.size(x) !== _.size(figure.data[0].x)) {
+      figure.data[0].x = x
+      figure.data[0].y = y
+      setFigure(figure)
+      setRevision(revision + 1)
+    }
+  }, [figure, x, y, revision])
 
   return (
     <ReactGridLayout
@@ -98,12 +119,12 @@ const Tasks = () => {
           setRevision(revision + 1)
         }
       }}
-      onLayoutChange={l => dispatch(updateLayout(l))}
+      onLayoutChange={l => dispatch(updateLayout(taskId, l))}
     >
       {layout.map(l => {
         return (
           <div key={l.i}>
-            {l.i === '1' ? <DraggableDiv>
+            {l.i === '1' ? <DraggableDiv title={task.name}>
               <AutoResizePlot
                 revision={revision}
                 useResizeHandler={true}
@@ -122,4 +143,4 @@ const Tasks = () => {
   )
 }
 
-export default Tasks
+export default Task

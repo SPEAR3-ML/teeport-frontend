@@ -3,6 +3,10 @@ import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
+const isSubRoute = (origin, sub) => {
+  return origin === sub || (sub.startsWith(origin) && origin !== '/')
+}
+
 const Title = styled.div`
   position: relative;
   top: 0;
@@ -31,8 +35,8 @@ const Item = styled(Link)`
   padding-left: 12px;
   padding-right: 12px;
   line-height: 48px;
-  color: ${prop => prop.current === prop.to ? 'white' : '#BD8282'};
-  background-color: ${prop => prop.current === prop.to ? '#751212' : 'none'};
+  color: ${prop => isSubRoute(prop.to, prop.current) ? 'white' : '#BD8282'};
+  background-color: ${prop => isSubRoute(prop.to, prop.current) ? '#751212' : 'none'};
   &:hover {
     color: white;
   };
@@ -44,7 +48,7 @@ const Titlebar = () => {
 
   return (
     <Title>
-      <Logo src='slac.png'/>
+      <Logo src='/slac.png'/>
       <Item to='/' current={pathname}>
         Home
       </Item>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import _ from 'lodash'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
@@ -35,6 +36,8 @@ const generateLayout = (tasks, columnNum = 4) => {
 const Tasks = () => {
   const tasks = useTasks()
   const layout = generateLayout(tasks)
+  const { pathname } = useLocation()
+  const history = useHistory()
 
   return (
     <ReactGridLayout
@@ -49,7 +52,7 @@ const Tasks = () => {
         return (
           <div key={task.id}>
             <DraggableDiv title={task.name}>
-              <button onClick={() => { alert(task.name) }}>
+              <button onClick={() => { history.push(`${pathname}/${task.id}`) }}>
                 Enter
               </button>
               {new Date(task.createdAt).toString()}

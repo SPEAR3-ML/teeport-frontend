@@ -7,9 +7,15 @@ export const selectCount = createSelector(
   count => count,
 )
 
-export const selectLayout = createSelector(
+export const selectLayout = taskId => createSelector(
   [
-    state => state.getIn(['layout', 'l0']),
+    state => state.getIn(['layout', taskId]),
   ],
-  layout => layout.toJS(),
+  layout => {
+    if (!layout) {
+      return []
+    } else {
+      return layout.toJS()
+    }
+  },
 )
