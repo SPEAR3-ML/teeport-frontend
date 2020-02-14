@@ -1,51 +1,40 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import Plot from 'react-plotly.js'
-import styled from 'styled-components'
+import React from 'react'
+import _ from 'lodash'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import { selectLayout } from '../redux/selectors'
-import { updateLayout } from '../redux/actions'
 import { DraggableDiv } from './Utils'
+import useTasks from '../hooks/useTasks'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
-const AutoResizePlot = styled(Plot)`
-  width: 100%;
-  height: 100%;
-`
+const generateLayout = (tasks, columnNum = 4) => {
+  const layout = []
+  const width = 12 / columnNum
+  const height = 8
+  for (let i = 0; i < _.size(tasks); i++) {
+    const c = i % columnNum
+    const r = Math.floor(i / columnNum)
+    const item = {
+      i: tasks[i].id,
+      x: c * width,
+      y: r * height,
+      w: width,
+      h: height,
+      minW: 3,
+      maxW: 12,
+      minH: height,
+      maxH: 4 * height,
+    }
+    layout.push(item)
+  }
+  return layout
+}
 
 const Tasks = () => {
-  const [revision, setRevision] = useState(0)
-  const [figure, setFigure] = useState({
-    data: [
-      {
-        x: [1, 2, 3],
-        y: [2, 6, 3],
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {
-          color: 'red',
-        },
-      },
-      {
-        type: 'bar',
-        x: [1, 2, 3],
-        y: [2, 5, 3],
-      },
-    ],
-    layout: {
-      autosize: true,
-      title: 'A Fancy Plot',
-    },
-    frames: [],
-    config: {},
-  })
-
-  const layout = useSelector(selectLayout)
-  const dispatch = useDispatch()
+  const tasks = useTasks()
+  const layout = generateLayout(tasks)
 
   return (
     <ReactGridLayout
@@ -53,34 +42,18 @@ const Tasks = () => {
       layout={layout}
       cols={12}
       rowHeight={24}
-      draggableHandle='.drag-handler'
-      onResizeStop={(_, { i }) => {
-        if (i === '1') {
-          setRevision(revision + 1)
-        }
-      }}
-      onLayoutChange={l => dispatch(updateLayout(l))}
+      isDraggable={false}
+      isResizable={false}
     >
-      <div key='1'>
-        <DraggableDiv>
-          <AutoResizePlot
-            revision={revision}
-            useResizeHandler={true}
-            data={figure.data}
-            layout={figure.layout}
-            frames={figure.frames}
-            config={figure.config}
-            onInitialized={fig => setFigure(fig)}
-            onUpdated={fig => setFigure(fig)}
-          />
-        </DraggableDiv>
-      </div>
-      <div key='2'>
-        <DraggableDiv>2</DraggableDiv>
-      </div>
-      <div key='3'>
-        <DraggableDiv>3</DraggableDiv>
-      </div>
+      {tasks.map(task => {
+        return (
+          <div key={task.id}>
+            <DraggableDiv>
+              {task.name}
+            </DraggableDiv>
+          </div>
+        )
+      })}
     </ReactGridLayout>
   )
 }
