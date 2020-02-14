@@ -15,23 +15,33 @@ const FillDiv = styled.div`
 `
 
 const HandlerDiv = styled.div`
-  height: 16px;
+  height: 24px;
   border-radius: 4px 4px 0px 0px;
-  background-color: #A79E70;
+  background-color: #4D4F53;
+  text-align: center;
+  color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #4D4F53;
 `
 
 const ContentDiv = styled.div`
   position: absolute;
-  top: 16px;
+  top: 24px;
   bottom: 0px;
-  width: 100%;
+  left: 0px;
+  right: 0px;
   background-color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #4D4F53;
 `
 
 export const DraggableDiv = props => {
   return (
     <FillDiv>
       <HandlerDiv className='drag-handler'>
+        {props.title}
       </HandlerDiv>
       <ContentDiv>
         {props.children}

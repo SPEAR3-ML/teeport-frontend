@@ -48,8 +48,11 @@ const Tasks = () => {
       {tasks.map(task => {
         return (
           <div key={task.id}>
-            <DraggableDiv>
-              {task.name}
+            <DraggableDiv title={task.name}>
+              <button onClick={() => { alert(task.name) }}>
+                Enter
+              </button>
+              {new Date(task.createdAt).toString()}
             </DraggableDiv>
           </div>
         )
