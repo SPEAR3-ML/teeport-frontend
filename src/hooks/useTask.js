@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
+import _ from 'lodash'
 
 const useTask = taskId => {
+  const [pendingX, setPendingX] = useState([])
+  const [history, setHistory] = useState([])
   const [task, setTask] = useState({})
-  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://localhost:8080/?type=monitor')
+  const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://localhost:8080/?type=monitor&taskId=${taskId}`)
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -22,13 +25,24 @@ const useTask = taskId => {
             setTask(lastMsg.task)
             break
           }
+          case 'evaluate': {
+            setPendingX(lastMsg.data)
+            break
+          }
+          case 'evaluated': {
+            history.push([pendingX, lastMsg.data])
+            setHistory(history)
+            break
+          }
           default: {
             console.warn(lastMsg)
           }
         }
       }
     }
-  }, [taskId, lastMessage, readyState, sendMessage])
+  }, [taskId, history, pendingX, lastMessage, readyState, sendMessage])
+
+  task.history = _.concat(task.history || [], history)
 
   return task
 }
