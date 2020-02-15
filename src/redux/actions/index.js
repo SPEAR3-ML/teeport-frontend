@@ -1,8 +1,4 @@
-import { INCREASE_COUNT, UPDATE_LAYOUT } from '../actionTypes'
-
-export const increaseCount = () => ({
-  type: INCREASE_COUNT,
-})
+import { UPDATE_LAYOUT } from '../actionTypes'
 
 export const updateLayout = (taskId, layout) => ({
   type: UPDATE_LAYOUT,
