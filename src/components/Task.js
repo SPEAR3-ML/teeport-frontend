@@ -69,11 +69,8 @@ const Task = () => {
       const newLayout = generateLayout(1)
       dispatch(updateLayout(taskId, newLayout))
     }
-  }, [taskId, layout, dispatch])
+  }, [taskId, layout])
 
-  const { history } = task
-  const [x, y] = getXY(history)
-  const [revision, setRevision] = useState(0)
   const [figure, setFigure] = useState({
     data: [
       {
@@ -93,14 +90,20 @@ const Task = () => {
     frames: [],
     config: {},
   })
+  const [revision, setRevision] = useState(0)
+  const [gen, setGen] = useState(0)
   useEffect(() => {
-    if (_.size(x) !== _.size(figure.data[0].x)) {
+    const { history } = task
+    const generation = history ? _.size(history) : 0
+    if (generation !== gen) {
+      setGen(generation)
+      const [x, y] = getXY(history)
       figure.data[0].x = x
       figure.data[0].y = y
       setFigure(figure)
       setRevision(revision + 1)
     }
-  }, [figure, x, y, revision])
+  })
 
   return (
     <ReactGridLayout

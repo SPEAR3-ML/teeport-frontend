@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
-import _ from 'lodash'
 
 const useTask = taskId => {
-  const [pendingX, setPendingX] = useState([])
-  const [history, setHistory] = useState([])
   const [task, setTask] = useState({})
+  const [pendingX, setPendingX] = useState([])
   const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://localhost:8080/?type=monitor&taskId=${taskId}`)
 
   useEffect(() => {
@@ -30,8 +28,8 @@ const useTask = taskId => {
             break
           }
           case 'evaluated': {
-            history.push([pendingX, lastMsg.data])
-            setHistory(history)
+            task.history.push([pendingX, lastMsg.data])
+            setTask(task)
             break
           }
           default: {
@@ -40,9 +38,7 @@ const useTask = taskId => {
         }
       }
     }
-  }, [taskId, history, pendingX, lastMessage, readyState, sendMessage])
-
-  task.history = _.concat(task.history || [], history)
+  }, [taskId, lastMessage, readyState]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return task
 }
