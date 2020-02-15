@@ -8,12 +8,13 @@ import Home from './Home'
 import Tasks from './Tasks'
 import Task from './Task'
 import About from './About'
+import { yellow } from '../plugins/slacPalette'
 
 const Frame = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: #D2C295;
+  background-color: ${yellow.normal};
 `
 
 const Content = styled.div`

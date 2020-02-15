@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { CenterDiv } from './Utils'
+import { grey } from '../plugins/slacPalette'
 
 const AboutDiv = styled(CenterDiv)`
-  color: #4D4F53;
+  color: ${grey.normal};
 `
 
 const About = () => {

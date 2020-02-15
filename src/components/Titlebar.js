@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
+import { red } from '../plugins/slacPalette'
+
 const isSubRoute = (origin, sub) => {
   return origin === sub || (sub.startsWith(origin) && origin !== '/')
 }
@@ -15,7 +17,7 @@ const Title = styled.div`
   height: 48px;
   font-size: 12pt;
   font-weight: 600;
-  background-color: #8C1515;
+  background-color: ${red.normal};
   color: white;
 `
 
@@ -35,8 +37,8 @@ const Item = styled(Link)`
   padding-left: 12px;
   padding-right: 12px;
   line-height: 48px;
-  color: ${prop => isSubRoute(prop.to, prop.current) ? 'white' : '#BD8282'};
-  background-color: ${prop => isSubRoute(prop.to, prop.current) ? '#751212' : 'none'};
+  color: ${prop => isSubRoute(prop.to, prop.current) ? 'white' : red.light};
+  background-color: ${prop => isSubRoute(prop.to, prop.current) ? red.dark : 'none'};
   &:hover {
     color: white;
   };
