@@ -6,7 +6,7 @@ export const selectLayout = taskId => createSelector(
   ],
   layout => {
     if (!layout) {
-      return []
+      return layout
     } else {
       return layout.toJS()
     }
