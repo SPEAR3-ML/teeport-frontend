@@ -1,10 +1,33 @@
 import { useState, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
+import _ from 'lodash'
 
 const useTask = taskId => {
   const [task, setTask] = useState({})
-  const [pendingX, setPendingX] = useState([])
+  const [pending, setPending] = useState([])
   const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://localhost:8080/?type=monitor&taskId=${taskId}`)
+
+  useEffect(() => {
+    if (lastMessage !== null) {
+      if (readyState === ReadyState.OPEN) {
+        const lastMsg = JSON.parse(lastMessage.data)
+        switch (lastMsg.type) {
+          case 'evaluate': {
+            setPending([lastMsg.data])
+            break
+          }
+          case 'hello':
+          case 'task':
+          case 'evaluated': {
+            break
+          }
+          default: {
+            console.warn(lastMsg)
+          }
+        }
+      }
+    }
+  }, [lastMessage, readyState])
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -23,13 +46,15 @@ const useTask = taskId => {
             setTask(lastMsg.task)
             break
           }
-          case 'evaluate': {
-            setPendingX(lastMsg.data)
+          case 'evaluated': {
+            setTask(t => {
+              const newTask = _.cloneDeep(t)
+              newTask.history.push([pending[0], lastMsg.data])
+              return newTask
+            })
             break
           }
-          case 'evaluated': {
-            task.history.push([pendingX, lastMsg.data])
-            setTask(task)
+          case 'evaluate': {
             break
           }
           default: {
@@ -38,7 +63,7 @@ const useTask = taskId => {
         }
       }
     }
-  }, [taskId, lastMessage, readyState]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [taskId, pending, lastMessage, readyState, sendMessage])
 
   return task
 }

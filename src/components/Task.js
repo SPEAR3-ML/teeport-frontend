@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import Plot from 'react-plotly.js'
-import styled from 'styled-components'
-import _ from 'lodash'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
+import _ from 'lodash'
 
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
 import { DraggableDiv } from './Utils'
+import Monitor from './Monitor'
 import useTask from '../hooks/useTask'
+import useEvalHistoryFigure from '../hooks/useEvalHistoryFigure'
 
 const ReactGridLayout = WidthProvider(GridLayout)
-
-const AutoResizePlot = styled(Plot)`
-  width: 100%;
-  height: 100%;
-`
 
 const generateLayout = (size, columnNum = 2) => {
   const layout = []
@@ -43,67 +38,19 @@ const generateLayout = (size, columnNum = 2) => {
   return layout
 }
 
-const getXY = history => {
-  let x = []
-  let y = []
-
-  if (!history) {
-    return [x, y]
-  }
-
-  history.forEach(([, Y]) => {
-    y = _.concat(y, Y)
-  })
-  x = _.range(_.size(y))
-
-  return [x, y]
-}
-
 const Task = () => {
   const { taskId } = useParams()
   const task = useTask(taskId)
-  const layout = useSelector(selectLayout(taskId))
+  const layout = useSelector(selectLayout(taskId)) || []
   const dispatch = useDispatch()
   useEffect(() => {
     if (!_.size(layout)) {
       const newLayout = generateLayout(1)
       dispatch(updateLayout(taskId, newLayout))
     }
-  }, [taskId, layout])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [figure, setFigure] = useState({
-    data: [
-      {
-        x: [],
-        y: [],
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {
-          color: 'red',
-        },
-      },
-    ],
-    layout: {
-      autosize: true,
-      title: 'Evaluation History',
-    },
-    frames: [],
-    config: {},
-  })
-  const [revision, setRevision] = useState(0)
-  const [gen, setGen] = useState(0)
-  useEffect(() => {
-    const { history } = task
-    const generation = history ? _.size(history) : 0
-    if (generation !== gen) {
-      setGen(generation)
-      const [x, y] = getXY(history)
-      figure.data[0].x = x
-      figure.data[0].y = y
-      setFigure(figure)
-      setRevision(revision + 1)
-    }
-  })
+  const [figure, setFigure, refreshFigure, revision] = useEvalHistoryFigure(task)
 
   return (
     <ReactGridLayout
@@ -114,12 +61,12 @@ const Task = () => {
       draggableHandle='.drag-handler'
       onResize={(_, { i }) => {
         if (i === '1') {
-          setRevision(revision + 1)
+          refreshFigure()
         }
       }}
       onResizeStop={(_, { i }) => {
         if (i === '1') {
-          setRevision(revision + 1)
+          refreshFigure()
         }
       }}
       onLayoutChange={l => dispatch(updateLayout(taskId, l))}
@@ -128,16 +75,7 @@ const Task = () => {
         return (
           <div key={l.i}>
             {l.i === '1' ? <DraggableDiv title={task.name}>
-              <AutoResizePlot
-                revision={revision}
-                useResizeHandler={true}
-                data={figure.data}
-                layout={figure.layout}
-                frames={figure.frames}
-                config={figure.config}
-                onInitialized={fig => setFigure(fig)}
-                onUpdated={fig => setFigure(fig)}
-              />
+              <Monitor figure={figure} setFigure={setFigure} revision={revision}/>
             </DraggableDiv> : <DraggableDiv></DraggableDiv>}
           </div>
         )
