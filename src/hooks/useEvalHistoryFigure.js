@@ -38,23 +38,19 @@ const useEvalHistoryFigure = task => {
     config: {},
   })
   const [revision, setRevision] = useState(0)
-  const [XY, setXY] = useState([])
   const refreshFigure = useCallback(() => {
     setRevision(r => r + 1)
   }, [setRevision])
 
   useEffect(() => {
-    setXY(getXY(task.history))
-  }, [task])
-
-  useEffect(() => {
+    const XY = getXY(task.history)
     setFigure(f => {
       f.data[0].x = XY[0]
       f.data[0].y = XY[1]
       return f
     })
     setRevision(r => r + 1)
-  }, [XY])
+  }, [task])
 
   return [figure, setFigure, refreshFigure, revision]
 }
