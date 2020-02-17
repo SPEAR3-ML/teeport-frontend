@@ -34,7 +34,7 @@ const useTasks = () => {
         }
       }
     }
-  }, [lastMessage, readyState]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lastMessage, readyState, sendMessage])
 
   return tasks
 }
