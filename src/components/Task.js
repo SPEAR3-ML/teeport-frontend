@@ -52,7 +52,7 @@ const generateLayout = (size, columnNum = 2) => {
 
 const Task = () => {
   const { taskId } = useParams()
-  const task = useTask(taskId)
+  const [task, sendMessage] = useTask(taskId)
   const layout = useSelector(selectLayout(taskId)) || []
   const dispatch = useDispatch()
   useEffect(() => {
@@ -66,7 +66,7 @@ const Task = () => {
 
   return (
     <Frame>
-      <TaskControlBar task={task}/>
+      <TaskControlBar task={task} sendMessage={sendMessage}/>
       <ScrollContent>
         <ReactGridLayout
           className='layout'

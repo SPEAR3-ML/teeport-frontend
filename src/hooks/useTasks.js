@@ -40,7 +40,7 @@ const useTasks = () => {
     }
   }, [lastMessage, readyState, sendMessage])
 
-  return tasks
+  return [tasks, sendMessage]
 }
 
 export default useTasks

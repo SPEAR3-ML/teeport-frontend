@@ -26,18 +26,33 @@ const Action = styled.button`
   height: 24px;
 `
 
-const TaskControlBar = ({ task }) => {
+const TaskControlBar = ({ task, sendMessage }) => {
   const history = useHistory()
+  const isRunning = task.status === 'running'
+  const isInit = task.status === 'init'
+  const isDone = task.status === 'completed' || task.status === 'cancelled'
 
   return (
     <ControlBar>
       <Action onClick={() => { history.push('/tasks') }}>
         Back
       </Action>
-      <Action onClick={() => { console.log('pause') }}>
-        { task.status === 'running' ? 'Pause' : 'Start' }
+      <Action onClick={() => {
+        const msg = {
+          type: isRunning ? 'pauseTask' : 'startTask',
+          id: task.id,
+        }
+        sendMessage(JSON.stringify(msg))
+      }} disabled={isDone}>
+        { isRunning ? 'Pause' : (isInit ? 'Start' : 'Resume') }
       </Action>
-      <Action onClick={() => { console.log('stop') }}>
+      <Action onClick={() => {
+        const msg = {
+          type: 'stopTask',
+          id: task.id,
+        }
+        sendMessage(JSON.stringify(msg))
+      }} disabled={isDone}>
         Stop
       </Action>
     </ControlBar>

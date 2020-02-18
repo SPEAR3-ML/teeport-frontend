@@ -69,7 +69,7 @@ const useTask = taskId => {
     }
   }, [taskId, pending, lastMessage, readyState, sendMessage])
 
-  return task
+  return [task, sendMessage]
 }
 
 export default useTask

@@ -47,14 +47,14 @@ const generateLayout = (tasks, columnNum = 4) => {
 }
 
 const Tasks = () => {
-  const tasks = useTasks()
+  const [tasks, sendMessage] = useTasks()
   const layout = generateLayout(tasks)
   const { pathname } = useLocation()
   const history = useHistory()
 
   return (
     <Frame>
-      <TasksControlBar />
+      <TasksControlBar sendMessage={sendMessage}/>
       <ScrollContent>
         <ReactGridLayout
           className='layout'
