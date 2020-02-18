@@ -21,6 +21,10 @@ const useTasks = () => {
             setTasks(lastMsg.tasks)
             break
           }
+          case 'startTask':
+          case 'stopTask':
+          case 'pauseTask':
+          case 'completeTask':
           case 'taskCreated': {
             const msg = {
               type: 'getTasks',
