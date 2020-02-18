@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
-import { grey } from '../plugins/slacPalette'
+import { red, grey } from '../plugins/slacPalette'
 
 export const CenterDiv = styled.div`
   text-align: center;
@@ -19,12 +19,12 @@ const FillDiv = styled.div`
 const HandlerDiv = styled.div`
   height: 24px;
   border-radius: 4px 4px 0px 0px;
-  background-color: ${grey.normal};
+  background-color:  ${({ active }) => active ? red.normal : grey.normal};
   text-align: center;
   color: white;
   border-style: solid;
   border-width: 1px;
-  border-color: ${grey.normal};
+  border-color:  ${({ active }) => active ? red.normal : grey.normal};
 `
 
 const ContentDiv = styled.div`
@@ -36,16 +36,16 @@ const ContentDiv = styled.div`
   background-color: white;
   border-style: solid;
   border-width: 1px;
-  border-color: ${grey.normal};
+  border-color: ${({ active }) => active ? red.normal : grey.normal};
 `
 
 export const DraggableDiv = props => {
   return (
     <FillDiv>
-      <HandlerDiv className='drag-handler'>
+      <HandlerDiv className='drag-handler' active={props.active}>
         {props.title}
       </HandlerDiv>
-      <ContentDiv>
+      <ContentDiv active={props.active}>
         {props.children}
       </ContentDiv>
     </FillDiv>

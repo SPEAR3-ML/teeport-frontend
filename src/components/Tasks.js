@@ -51,7 +51,7 @@ const Tasks = () => {
       {tasks.map(task => {
         return (
           <div key={task.id}>
-            <DraggableDiv title={task.name}>
+            <DraggableDiv title={task.name} active={task.status === 'running'}>
               <button onClick={() => { history.push(`${pathname}/${task.id}`) }}>
                 Enter
               </button>
