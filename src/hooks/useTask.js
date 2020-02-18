@@ -5,7 +5,7 @@ import _ from 'lodash'
 const useTask = taskId => {
   const [task, setTask] = useState({})
   const [pending, setPending] = useState([])
-  const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://localhost:8080/?type=monitor&taskId=${taskId}`)
+  const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://zeta:8080/?type=monitor&taskId=${taskId}`)
 
   useEffect(() => {
     if (lastMessage !== null) {
