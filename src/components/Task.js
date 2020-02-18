@@ -9,9 +9,8 @@ import _ from 'lodash'
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
 import { DraggableDiv } from './Utils'
-import Monitor from './Monitor'
 import useTask from '../hooks/useTask'
-import useEvalHistoryFigure from '../hooks/useEvalHistoryFigure'
+import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
@@ -50,7 +49,7 @@ const Task = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [figure, setFigure, refreshFigure, revision] = useEvalHistoryFigure(task)
+  const [EvalHistoryPlot, refreshPlot] = useEvalHistoryPlot(task)
 
   return (
     <ReactGridLayout
@@ -61,12 +60,12 @@ const Task = () => {
       draggableHandle='.drag-handler'
       onResize={(_, { i }) => {
         if (i === '1') {
-          refreshFigure()
+          refreshPlot()
         }
       }}
       onResizeStop={(_, { i }) => {
         if (i === '1') {
-          refreshFigure()
+          refreshPlot()
         }
       }}
       onLayoutChange={l => dispatch(updateLayout(taskId, l))}
@@ -75,7 +74,7 @@ const Task = () => {
         return (
           <div key={l.i}>
             {l.i === '1' ? <DraggableDiv title={task.name}>
-              <Monitor figure={figure} setFigure={setFigure} revision={revision}/>
+              {EvalHistoryPlot}
             </DraggableDiv> : <DraggableDiv></DraggableDiv>}
           </div>
         )
