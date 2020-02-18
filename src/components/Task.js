@@ -4,15 +4,28 @@ import { useSelector, useDispatch } from 'react-redux'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
+import styled from 'styled-components'
 import _ from 'lodash'
 
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
 import { DraggableDiv } from './Utils'
+import TaskControlBar from './TaskControlBar'
 import useTask from '../hooks/useTask'
 import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
 
 const ReactGridLayout = WidthProvider(GridLayout)
+
+const Frame = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+`
+
+const ScrollContent = styled.div`
+  flex: 1 1 auto;
+  overflow-y: auto;
+`
 
 const generateLayout = (size, columnNum = 2) => {
   const layout = []
@@ -52,34 +65,39 @@ const Task = () => {
   const [EvalHistoryPlot, refreshPlot] = useEvalHistoryPlot(task)
 
   return (
-    <ReactGridLayout
-      className='layout'
-      layout={layout}
-      cols={12}
-      rowHeight={24}
-      draggableHandle='.drag-handler'
-      onResize={(_, { i }) => {
-        if (i === '1') {
-          refreshPlot()
-        }
-      }}
-      onResizeStop={(_, { i }) => {
-        if (i === '1') {
-          refreshPlot()
-        }
-      }}
-      onLayoutChange={l => dispatch(updateLayout(taskId, l))}
-    >
-      {layout.map(l => {
-        return (
-          <div key={l.i}>
-            {l.i === '1' ? <DraggableDiv title={task.name}>
-              {EvalHistoryPlot}
-            </DraggableDiv> : <DraggableDiv></DraggableDiv>}
-          </div>
-        )
-      })}
-    </ReactGridLayout>
+    <Frame>
+      <TaskControlBar task={task}/>
+      <ScrollContent>
+        <ReactGridLayout
+          className='layout'
+          layout={layout}
+          cols={12}
+          rowHeight={24}
+          draggableHandle='.drag-handler'
+          onResize={(_, { i }) => {
+            if (i === '1') {
+              refreshPlot()
+            }
+          }}
+          onResizeStop={(_, { i }) => {
+            if (i === '1') {
+              refreshPlot()
+            }
+          }}
+          onLayoutChange={l => dispatch(updateLayout(taskId, l))}
+        >
+          {layout.map(l => {
+            return (
+              <div key={l.i}>
+                {l.i === '1' ? <DraggableDiv title={task.name}>
+                  {EvalHistoryPlot}
+                </DraggableDiv> : <DraggableDiv></DraggableDiv>}
+              </div>
+            )
+          })}
+        </ReactGridLayout>
+      </ScrollContent>
+    </Frame>
   )
 }
 
