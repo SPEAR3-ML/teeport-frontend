@@ -34,6 +34,10 @@ const useTask = taskId => {
       if (readyState === ReadyState.OPEN) {
         const lastMsg = JSON.parse(lastMessage.data)
         switch (lastMsg.type) {
+          case 'pauseTask':
+          case 'startTask':
+          case 'stopTask':
+          case 'completeTask':
           case 'hello': {
             const msg = {
               type: 'getTask',
