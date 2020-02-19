@@ -89,7 +89,7 @@ const Task = () => {
           {layout.map(l => {
             return (
               <div key={l.i}>
-                {l.i === '1' ? <DraggableDiv title={task.name}>
+                {l.i === '1' ? <DraggableDiv title='Evaluation History'>
                   {EvalHistoryPlot}
                 </DraggableDiv> : <DraggableDiv></DraggableDiv>}
               </div>
