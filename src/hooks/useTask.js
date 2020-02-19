@@ -1,33 +1,43 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useReducer } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import _ from 'lodash'
 
-const useTask = taskId => {
-  const [task, setTask] = useState({})
-  const [pending, setPending] = useState([])
-  const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://zeta:8080/?type=monitor&taskId=${taskId}`)
+const initialState = {
+  task: {},
+  taskTS: 0,
+}
 
-  useEffect(() => {
-    if (lastMessage !== null) {
-      if (readyState === ReadyState.OPEN) {
-        const lastMsg = JSON.parse(lastMessage.data)
-        switch (lastMsg.type) {
-          case 'evaluate': {
-            setPending([lastMsg.data])
-            break
-          }
-          case 'hello':
-          case 'task':
-          case 'evaluated': {
-            break
-          }
-          default: {
-            console.warn(lastMsg)
-          }
-        }
-      }
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'task': {
+      const newState = _.cloneDeep(state)
+      newState.task = action.task
+      newState.taskTS = action.timestamp
+      return newState
     }
-  }, [lastMessage, readyState])
+    case 'evaluate': {
+      const newState = _.cloneDeep(state)
+      if (newState.taskTS && (action.timestamp > newState.taskTS)) {
+        newState.task.pending.push([action.data, null])
+      }
+      return newState
+    }
+    case 'evaluated': {
+      const newState = _.cloneDeep(state)
+      if (newState.taskTS && (action.timestamp > newState.taskTS)) {
+        newState.task.history.push([newState.task.pending[0][0], action.data])
+        newState.task.pending.shift()
+      }
+      return newState
+    }
+    default:
+      return state
+  }
+}
+
+const useTask = taskId => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const [sendMessage, lastMessage, readyState] = useWebSocket(`ws://zeta:8080/?type=monitor&taskId=${taskId}`)
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -46,19 +56,10 @@ const useTask = taskId => {
             sendMessage(JSON.stringify(msg))
             break
           }
+          case 'evaluate':
+          case 'evaluated':
           case 'task': {
-            setTask(lastMsg.task)
-            break
-          }
-          case 'evaluated': {
-            setTask(t => {
-              const newTask = _.cloneDeep(t)
-              newTask.history.push([pending[0], lastMsg.data])
-              return newTask
-            })
-            break
-          }
-          case 'evaluate': {
+            dispatch(lastMsg)
             break
           }
           default: {
@@ -67,9 +68,9 @@ const useTask = taskId => {
         }
       }
     }
-  }, [taskId, pending, lastMessage, readyState, sendMessage])
+  }, [taskId, lastMessage, readyState, sendMessage])
 
-  return [task, sendMessage]
+  return [state.task, sendMessage]
 }
 
 export default useTask
