@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Plot from 'react-plotly.js'
 // import { grey } from 'material-colors'
 
 import { red, grey } from '../plugins/slacPalette'
@@ -51,3 +52,8 @@ export const DraggableDiv = props => {
     </FillDiv>
   )
 }
+
+export const AutoResizePlot = styled(Plot)`
+  width: 100%;
+  height: 100%;
+`

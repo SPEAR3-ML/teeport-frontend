@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import Plot from 'react-plotly.js'
-import styled from 'styled-components'
 import _ from 'lodash'
 
-const AutoResizePlot = styled(Plot)`
-  width: 100%;
-  height: 100%;
-`
+import { AutoResizePlot } from '../components/Utils'
 
 const getXY = history => {
   let x = []
