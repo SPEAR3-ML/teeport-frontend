@@ -21,17 +21,7 @@ const getXY = history => {
 
 const useEvalHistoryPlot = task => {
   const [figure, setFigure] = useState({
-    data: [
-      {
-        x: [],
-        y: [],
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {
-          // color: 'red',
-        },
-      },
-    ],
+    data: [],
     layout: {
       autosize: true,
       margin: {
@@ -48,7 +38,7 @@ const useEvalHistoryPlot = task => {
       },
       yaxis: {
         title: {
-          text: 'evaluated result',
+          text: 'evaluation result',
         },
       },
       // title: 'Evaluation History',
@@ -72,6 +62,10 @@ const useEvalHistoryPlot = task => {
               y: XY[1],
               type: 'scatter',
               mode: 'lines+markers',
+              name: 'obj',
+              marker: {
+                opacity: 0.4,
+              },
             })
           } else {
             f.data[0].x = XY[0]
@@ -87,6 +81,9 @@ const useEvalHistoryPlot = task => {
                 type: 'scatter',
                 mode: 'lines+markers',
                 name: `obj${i + 1}`,
+                marker: {
+                  opacity: 0.4,
+                },
               })
             }
           } else {
