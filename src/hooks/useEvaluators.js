@@ -3,7 +3,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 
 const useTasks = () => {
   const [tasks, setTasks] = useState([])
-  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://zeta:8080/?type=taskManager')
+  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://zeta:8080/?type=manager')
 
   useEffect(() => {
     if (lastMessage !== null) {

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 
-const useTasks = () => {
-  const [tasks, setTasks] = useState([])
-  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://zeta:8080/?type=taskManager')
+const useClients = () => {
+  const [clients, setClients] = useState([])
+  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://zeta:8080/?type=clientManager')
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -12,22 +12,19 @@ const useTasks = () => {
         switch (lastMsg.type) {
           case 'hello': {
             const msg = {
-              type: 'getTasks',
+              type: 'getClients',
             }
             sendMessage(JSON.stringify(msg))
             break
           }
-          case 'tasks': {
-            setTasks(lastMsg.tasks)
+          case 'clients': {
+            setClients(lastMsg.clients)
             break
           }
-          case 'startTask':
-          case 'stopTask':
-          case 'pauseTask':
-          case 'completeTask':
-          case 'taskCreated': {
+          case 'connected':
+          case 'disconnected': {
             const msg = {
-              type: 'getTasks',
+              type: 'getClients',
             }
             sendMessage(JSON.stringify(msg))
             break
@@ -40,7 +37,7 @@ const useTasks = () => {
     }
   }, [lastMessage, readyState, sendMessage])
 
-  return [tasks, sendMessage]
+  return [clients, sendMessage]
 }
 
-export default useTasks
+export default useClients

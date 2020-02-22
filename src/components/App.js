@@ -7,6 +7,9 @@ import Titlebar from './Titlebar'
 import Home from './Home'
 import Tasks from './Tasks'
 import Task from './Task'
+import Algorithms from './Algorithms'
+import Evaluators from './Evaluators'
+import Processors from './Processors'
 import About from './About'
 import { yellow } from '../plugins/slacPalette'
 
@@ -39,6 +42,15 @@ const App = () => {
             </Route>
             <Route path='/tasks'>
               <Tasks />
+            </Route>
+            <Route path='/algorithms'>
+              <Algorithms />
+            </Route>
+            <Route path='/evaluators'>
+              <Evaluators />
+            </Route>
+            <Route path='/processors'>
+              <Processors />
             </Route>
             <Route path='/'>
               <Home />

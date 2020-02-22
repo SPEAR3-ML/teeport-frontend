@@ -57,6 +57,15 @@ const Titlebar = () => {
       <Item to='/tasks' current={pathname}>
         Tasks
       </Item>
+      <Item to='/algorithms' current={pathname}>
+        Algorithms
+      </Item>
+      <Item to='/evaluators' current={pathname}>
+        Evaluators
+      </Item>
+      <Item to='/processors' current={pathname}>
+        Processors
+      </Item>
       <Item to='/about' current={pathname}>
         About
       </Item>
