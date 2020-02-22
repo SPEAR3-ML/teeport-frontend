@@ -55,6 +55,11 @@ const TaskControlBar = ({ task, sendMessage }) => {
       }} disabled={isDone}>
         Stop
       </Action>
+      <Action onClick={() => {
+        console.log('replay')
+      }} disabled={!isDone}>
+        Replay
+      </Action>
     </ControlBar>
   )
 }
