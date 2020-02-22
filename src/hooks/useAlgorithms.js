@@ -2,7 +2,8 @@ import useClients from './useClients'
 
 const useAlgorithms = () => {
   const [clients, sendMessage] = useClients()
-  return [clients, sendMessage]
+  const algorithms = clients.filter(client => client.type === 'algorithm')
+  return [algorithms, sendMessage]
 }
 
 export default useAlgorithms

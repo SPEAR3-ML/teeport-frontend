@@ -4,51 +4,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
-import styled from 'styled-components'
 import _ from 'lodash'
 
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
-import { DraggableDiv } from './Utils'
+import { DraggableDiv, FlexFrame, FlexScrollContent } from './Utils'
 import TaskControlBar from './TaskControlBar'
 import useTask from '../hooks/useTask'
 import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
+import { generatePlotLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
-
-const Frame = styled.div`
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-`
-
-const ScrollContent = styled.div`
-  flex: 1 1 auto;
-  overflow-y: auto;
-`
-
-const generateLayout = (size, columnNum = 2) => {
-  const layout = []
-  const width = 12 / columnNum
-  const height = 12
-  for (let i = 0; i < size; i++) {
-    const c = i % columnNum
-    const r = Math.floor(i / columnNum)
-    const item = {
-      i: `${i + 1}`,
-      x: c * width,
-      y: r * height,
-      w: width,
-      h: height,
-      minW: 3,
-      maxW: 12,
-      minH: height,
-      maxH: 4 * height,
-    }
-    layout.push(item)
-  }
-  return layout
-}
 
 const Task = () => {
   const { taskId } = useParams()
@@ -57,7 +23,7 @@ const Task = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     if (!_.size(layout)) {
-      const newLayout = generateLayout(1)
+      const newLayout = generatePlotLayout(1)
       dispatch(updateLayout(taskId, newLayout))
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -65,9 +31,9 @@ const Task = () => {
   const [EvalHistoryPlot, refreshPlot] = useEvalHistoryPlot(task)
 
   return (
-    <Frame>
+    <FlexFrame>
       <TaskControlBar task={task} sendMessage={sendMessage}/>
-      <ScrollContent>
+      <FlexScrollContent>
         <ReactGridLayout
           className='layout'
           layout={layout}
@@ -96,8 +62,8 @@ const Task = () => {
             )
           })}
         </ReactGridLayout>
-      </ScrollContent>
-    </Frame>
+      </FlexScrollContent>
+    </FlexFrame>
   )
 }
 

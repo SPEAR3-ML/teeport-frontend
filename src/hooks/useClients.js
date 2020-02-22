@@ -3,7 +3,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 
 const useClients = () => {
   const [clients, setClients] = useState([])
-  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://zeta:8080/?type=clientManager')
+  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://localhost:8080/?type=clientManager')
 
   useEffect(() => {
     if (lastMessage !== null) {

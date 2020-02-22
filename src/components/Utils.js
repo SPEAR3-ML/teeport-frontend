@@ -57,3 +57,14 @@ export const AutoResizePlot = styled(Plot)`
   width: 100%;
   height: 100%;
 `
+
+export const FlexFrame = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+`
+
+export const FlexScrollContent = styled.div`
+  flex: 1 1 auto;
+  overflow-y: auto;
+`
