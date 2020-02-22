@@ -3,7 +3,8 @@ import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import { DraggableDiv, FlexFrame, FlexScrollContent } from './Utils'
+import { FlexFrame, FlexScrollContent } from './Utils'
+import Evaluator from './Evaluator'
 import useEvaluators from '../hooks/useEvaluators'
 import { generateLayout } from '../utils/helpers'
 
@@ -24,15 +25,11 @@ const Evaluators = () => {
           isDraggable={false}
           isResizable={false}
         >
-          {evaluators.map(evaluator => {
-            return (
-              <div key={evaluator.id}>
-                <DraggableDiv title={evaluator.name} active={true}>
-                  {new Date(evaluator.connectedAt).toString()}
-                </DraggableDiv>
-              </div>
-            )
-          })}
+          {evaluators.map(evaluator => (
+            <div key={evaluator.id}>
+              <Evaluator evaluator={evaluator} sendMessage={sendMessage}/>
+            </div>
+          ))}
         </ReactGridLayout>
       </FlexScrollContent>
     </FlexFrame>
