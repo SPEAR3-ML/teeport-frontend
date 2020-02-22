@@ -11,7 +11,9 @@ const Evaluator = ({ evaluator, sendMessage }) => {
       <h2>
         {evaluator.id}
       </h2>
-      <button onClick={() => { console.log('copy') }}>
+      <button onClick={() => {
+        navigator.clipboard.writeText(evaluator.id)
+      }}>
         Copy ID
       </button>
       <input type='text' value={name} onChange={e => setName(e.target.value)}/>
