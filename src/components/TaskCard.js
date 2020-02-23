@@ -10,10 +10,13 @@ const TaskCard = ({ task, sendMessage }) => {
 
   return (
     <DraggableDiv title={task.name} active={task.status === 'running'}>
+      {new Date(task.createdAt).toString()}
+      <h2>
+        {task.id}
+      </h2>
       <button onClick={() => { history.push(`${pathname}/${task.id}`) }}>
         Enter
       </button>
-      {new Date(task.createdAt).toString()}
       <input type='text' value={name} onChange={e => setName(e.target.value)}/>
       <button onClick={() => {
         const msg = JSON.stringify({
