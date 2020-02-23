@@ -27,7 +27,13 @@ const Evaluator = ({ evaluator, sendMessage }) => {
       }}>
         Rename
       </button>
-      <button onClick={() => { console.log('close') }}>
+      <button onClick={() => {
+        const msg = JSON.stringify({
+          type: 'closeClient',
+          id: evaluator.id,
+        })
+        sendMessage(msg)
+      }}>
         Close
       </button>
     </DraggableDiv>

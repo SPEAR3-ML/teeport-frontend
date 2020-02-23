@@ -27,7 +27,13 @@ const Processor = ({ processor, sendMessage }) => {
       }}>
         Rename
       </button>
-      <button onClick={() => { console.log('close') }}>
+      <button onClick={() => {
+        const msg = JSON.stringify({
+          type: 'closeClient',
+          id: processor.id,
+        })
+        sendMessage(msg)
+      }}>
         Close
       </button>
     </DraggableDiv>
