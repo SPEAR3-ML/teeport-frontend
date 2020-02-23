@@ -25,6 +25,7 @@ const useTasks = () => {
           case 'stopTask':
           case 'pauseTask':
           case 'completeTask':
+          case 'updateTask':
           case 'taskCreated': {
             const msg = {
               type: 'getTasks',
