@@ -12,7 +12,11 @@ const Processor = ({ processor, sendMessage }) => {
         {processor.id}
       </h2>
       <button onClick={() => {
-        navigator.clipboard.writeText(processor.id)
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(processor.id)
+        } else {
+          alert('Copy failed, please copy the id manually')
+        }
       }}>
         Copy ID
       </button>

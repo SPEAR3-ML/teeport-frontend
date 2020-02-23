@@ -12,7 +12,11 @@ const Evaluator = ({ evaluator, sendMessage }) => {
         {evaluator.id}
       </h2>
       <button onClick={() => {
-        navigator.clipboard.writeText(evaluator.id)
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(evaluator.id)
+        } else {
+          alert('Copy failed, please copy the id manually')
+        }
       }}>
         Copy ID
       </button>
