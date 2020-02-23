@@ -22,6 +22,7 @@ const useClients = () => {
             break
           }
           case 'connected':
+          case 'updated':
           case 'disconnected': {
             const msg = {
               type: 'getClients',
