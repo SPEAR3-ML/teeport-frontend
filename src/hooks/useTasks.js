@@ -14,12 +14,12 @@ const useTasks = () => {
         switch (lastMsg.type) {
           case 'hello': {
             const msg = {
-              type: 'getTasks',
+              type: 'getTasksOverview',
             }
             sendMessage(JSON.stringify(msg))
             break
           }
-          case 'tasks': {
+          case 'tasksOverview': {
             setTasks(lastMsg.tasks)
             break
           }
@@ -30,7 +30,7 @@ const useTasks = () => {
           case 'updateTask':
           case 'taskCreated': {
             const msg = {
-              type: 'getTasks',
+              type: 'getTasksOverview',
             }
             sendMessage(JSON.stringify(msg))
             break
