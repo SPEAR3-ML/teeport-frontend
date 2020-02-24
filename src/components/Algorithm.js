@@ -22,6 +22,15 @@ const Algorithm = ({ algorithm, sendMessage }) => {
       }}>
         Rename
       </button>
+      <button onClick={() => {
+        const msg = JSON.stringify({
+          type: 'closeClient',
+          id: algorithm.id,
+        })
+        sendMessage(msg)
+      }}>
+        Close
+      </button>
     </DraggableDiv>
   )
 }
