@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 
+import { URI_TASK_SERVER } from '../constants'
+
 const useTasks = () => {
   const [tasks, setTasks] = useState([])
-  const [sendMessage, lastMessage, readyState] = useWebSocket('ws://localhost:8080/?type=taskManager')
+  const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?type=taskManager`)
 
   useEffect(() => {
     if (lastMessage !== null) {
