@@ -12,6 +12,7 @@ import { DraggableDiv, FlexFrame, FlexScrollContent } from './Utils'
 import TaskControlBar from './TaskControlBar'
 import useTask from '../hooks/useTask'
 import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
+import useEvolutionPlot from '../hooks/useEvolutionPlot'
 import { generatePlotLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
@@ -23,12 +24,22 @@ const Task = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     if (!_.size(layout)) {
-      const newLayout = generatePlotLayout(1)
+      const newLayout = generatePlotLayout(2)
       dispatch(updateLayout(taskId, newLayout))
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [EvalHistoryPlot, refreshPlot] = useEvalHistoryPlot(task)
+  const [EvalHistoryPlot, refreshHistPlot] = useEvalHistoryPlot(task)
+  const [EvolutionPlot, refreshEvoPlot] = useEvolutionPlot(task)
+  const Plots = [{
+    title: 'Evaluation History',
+    plot: EvalHistoryPlot,
+    refresh: refreshHistPlot,
+  }, {
+    title: 'Evolution Trace',
+    plot: EvolutionPlot,
+    refresh: refreshEvoPlot,
+  }]
 
   return (
     <FlexFrame>
@@ -41,23 +52,19 @@ const Task = () => {
           rowHeight={24}
           draggableHandle='.drag-handler'
           onResize={(_, { i }) => {
-            if (i === '1') {
-              refreshPlot()
-            }
+            Plots[parseInt(i) - 1].refresh()
           }}
           onResizeStop={(_, { i }) => {
-            if (i === '1') {
-              refreshPlot()
-            }
+            Plots[parseInt(i) - 1].refresh()
           }}
           onLayoutChange={l => dispatch(updateLayout(taskId, l))}
         >
           {layout.map(l => {
             return (
               <div key={l.i}>
-                {l.i === '1' ? <DraggableDiv title='Evaluation History'>
-                  {EvalHistoryPlot}
-                </DraggableDiv> : <DraggableDiv></DraggableDiv>}
+                <DraggableDiv title={Plots[parseInt(l.i) - 1].title}>
+                  {Plots[parseInt(l.i) - 1].plot}
+                </DraggableDiv>
               </div>
             )
           })}
