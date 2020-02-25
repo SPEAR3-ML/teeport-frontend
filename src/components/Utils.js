@@ -15,6 +15,7 @@ export const CenterDiv = styled.div`
 const FillDiv = styled.div`
   position: relative;
   height: 100%;
+  opacity: ${({ dimmed }) => dimmed ? 0.6 : 1};
 `
 
 const HandlerDiv = styled.div`
@@ -42,7 +43,7 @@ const ContentDiv = styled.div`
 
 export const DraggableDiv = props => {
   return (
-    <FillDiv>
+    <FillDiv dimmed={props.dimmed}>
       <HandlerDiv className='drag-handler' active={props.active}>
         {props.title}
       </HandlerDiv>
