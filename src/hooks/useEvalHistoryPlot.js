@@ -12,7 +12,7 @@ const getXObjsBests = history => {
   const objs = []
   const bests = []
 
-  if (history) {
+  if (history && history.length) {
     history.forEach(([, Y]) => {
       y = _.concat(y, Y)
     })
