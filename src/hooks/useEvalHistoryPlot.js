@@ -52,55 +52,27 @@ const useEvalHistoryPlot = task => {
   }, [setRevision])
 
   useEffect(() => {
-    const XY = getXY(task.history)
-    setFigure(f => {
-      if (_.size(XY[1])) {
-        if (typeof XY[1][0] === 'number') {
-          if (!_.size(f.data)) {
-            f.data.push({
-              x: XY[0],
-              y: XY[1],
-              type: 'scatter',
-              mode: 'lines+markers',
-              name: 'obj',
-              marker: {
-                opacity: 0.4,
-              },
-            })
-          } else {
-            f.data[0].x = XY[0]
-            f.data[0].y = XY[1]
-          }
-        } else {
-          const dim = _.size(XY[1][0])
-          if (!_.size(f.data)) {
-            for (let i = 0; i < dim; i++) {
-              f.data.push({
-                x: XY[0],
-                y: XY[1].map(p => p[i]),
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: `obj${i + 1}`,
-                marker: {
-                  opacity: 0.4,
-                },
-              })
-            }
-          } else {
-            for (let i = 0; i < dim; i++) {
-              f.data[i].x = XY[0]
-              f.data[i].y = XY[1].map(p => p[i])
-            }
-          }
-        }
-      } else {
-        if (_.size(f.data)) {
-          f.data = []
-        }
+    const [x, Y] = getXY(task.history)
+    if (x.length) {
+      const data = []
+      for (let i = 0; i < Y[0].length; i++) {
+        data.push({
+          x,
+          y: Y.map(p => p[i]),
+          type: 'scatter',
+          mode: 'lines+markers',
+          name: `obj${i + 1}`,
+          marker: {
+            opacity: 0.4,
+          },
+        })
       }
-      return f
-    })
-    setRevision(r => r + 1)
+      setFigure(f => {
+        f.data = data
+        return f
+      })
+      setRevision(r => r + 1)
+    }
   }, [task])
 
   // useEffect(() => {

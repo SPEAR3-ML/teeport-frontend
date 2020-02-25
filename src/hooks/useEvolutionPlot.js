@@ -61,21 +61,22 @@ const useEvolutionPlot = (task, recent = 5) => {
 
   useEffect(() => {
     const generations = getObj1Obj2GenIdx(task.history, recent)
-    setFigure(f => {
-      f.data = []
-      generations.forEach(([obj1, obj2, genIdx], i) => {
-        f.data.push({
-          x: obj1,
-          y: obj2,
-          type: 'scatter',
-          mode: 'markers',
-          name: `gen ${genIdx}`,
-          marker: {
-            opacity: Math.pow(0.4, i),
-            color: 'red',
-          },
-        })
+    const data = []
+    generations.forEach(([obj1, obj2, genIdx], i) => {
+      data.push({
+        x: obj1,
+        y: obj2,
+        type: 'scatter',
+        mode: 'markers',
+        name: `gen ${genIdx}`,
+        marker: {
+          opacity: Math.pow(0.4, i),
+          color: 'red',
+        },
       })
+    })
+    setFigure(f => {
+      f.data = data
       return f
     })
     setRevision(r => r + 1)
