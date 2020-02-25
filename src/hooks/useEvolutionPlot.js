@@ -1,37 +1,36 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import _ from 'lodash'
 
 import { AutoResizePlot } from '../components/Utils'
 
-const getXY = history => {
-  let x = []
-  let y = []
+const getObj1Obj2GenIdx = (history, recent = 1) => {
+  const generations = []
+  for (let i = 0; i < recent; i++) {
+    if (!history) {
+      break
+    }
+    const genIdx = history.length - i
+    if (genIdx < 1) {
+      break
+    }
 
-  if (!history) {
-    return [x, y]
+    const Y = history[genIdx - 1][1]
+    const obj1 = Y.map(p => p[0])
+    const obj2 = Y.map(p => {
+      if (p.length < 2) {
+        return 0
+      } else {
+        return p[1]
+      }
+    })
+
+    generations.push([obj1, obj2, genIdx])
   }
-
-  history.forEach(([, Y]) => {
-    y = _.concat(y, Y)
-  })
-  x = _.range(1, _.size(y) + 1)
-
-  return [x, y]
+  return generations
 }
 
-const useEvolutionPlot = task => {
+const useEvolutionPlot = (task, recent = 5) => {
   const [figure, setFigure] = useState({
-    data: [
-      {
-        x: [],
-        y: [],
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {
-          // color: 'red',
-        },
-      },
-    ],
+    data: [],
     layout: {
       autosize: true,
       margin: {
@@ -43,15 +42,14 @@ const useEvolutionPlot = task => {
       },
       xaxis: {
         title: {
-          text: 'evaluation index',
+          text: 'obj1',
         },
       },
       yaxis: {
         title: {
-          text: 'evaluated result',
+          text: 'obj2',
         },
       },
-      // title: 'Evaluation History',
     },
     frames: [],
     config: {},
@@ -62,53 +60,26 @@ const useEvolutionPlot = task => {
   }, [setRevision])
 
   useEffect(() => {
-    const XY = getXY(task.history)
+    const generations = getObj1Obj2GenIdx(task.history, recent)
     setFigure(f => {
-      if (_.size(XY[1])) {
-        if (typeof XY[1][0] === 'number') {
-          if (!_.size(f.data)) {
-            f.data.push({
-              x: XY[0],
-              y: XY[1],
-              type: 'scatter',
-              mode: 'lines+markers',
-            })
-          } else {
-            f.data[0].x = XY[0]
-            f.data[0].y = XY[1]
-          }
-        } else {
-          const dim = _.size(XY[1][0])
-          if (!_.size(f.data)) {
-            for (let i = 0; i < dim; i++) {
-              f.data.push({
-                x: XY[0],
-                y: XY[1].map(p => p[i]),
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: `obj${i + 1}`,
-              })
-            }
-          } else {
-            for (let i = 0; i < dim; i++) {
-              f.data[i].x = XY[0]
-              f.data[i].y = XY[1].map(p => p[i])
-            }
-          }
-        }
-      } else {
-        if (_.size(f.data)) {
-          f.data = []
-        }
-      }
+      f.data = []
+      generations.forEach(([obj1, obj2, genIdx], i) => {
+        f.data.push({
+          x: obj1,
+          y: obj2,
+          type: 'scatter',
+          mode: 'markers',
+          name: `gen ${genIdx}`,
+          marker: {
+            opacity: Math.pow(0.4, i),
+            color: 'red',
+          },
+        })
+      })
       return f
     })
     setRevision(r => r + 1)
-  }, [task])
-
-  // useEffect(() => {
-  //   console.log(revision)
-  // }, [revision])
+  }, [task, recent])
 
   return [
     <AutoResizePlot
