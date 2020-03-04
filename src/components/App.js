@@ -7,7 +7,7 @@ import Titlebar from './Titlebar'
 import Home from './Home'
 import Tasks from './Tasks'
 import Task from './Task'
-import Algorithms from './Algorithms'
+import Optimizers from './Optimizers'
 import Evaluators from './Evaluators'
 import Processors from './Processors'
 import About from './About'
@@ -43,8 +43,8 @@ const App = () => {
             <Route path='/tasks'>
               <Tasks />
             </Route>
-            <Route path='/algorithms'>
-              <Algorithms />
+            <Route path='/optimizers'>
+              <Optimizers />
             </Route>
             <Route path='/evaluators'>
               <Evaluators />

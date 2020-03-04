@@ -4,15 +4,15 @@ import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
 import { FlexFrame, FlexScrollContent } from './Utils'
-import Algorithm from './Algorithm'
-import useAlgorithms from '../hooks/useAlgorithms'
+import Optimizer from './Optimizer'
+import useOptimizers from '../hooks/useOptimizers'
 import { generateLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
-const Algorithms = () => {
-  const [algorithms, sendMessage] = useAlgorithms()
-  const layout = generateLayout(algorithms)
+const Optimizers = () => {
+  const [optimizers, sendMessage] = useOptimizers()
+  const layout = generateLayout(optimizers)
 
   return (
     <FlexFrame>
@@ -25,9 +25,9 @@ const Algorithms = () => {
           isDraggable={false}
           isResizable={false}
         >
-          {algorithms.map(algorithm => (
-            <div key={algorithm.id}>
-              <Algorithm algorithm={algorithm} sendMessage={sendMessage}/>
+          {optimizers.map(optimizer => (
+            <div key={optimizer.id}>
+              <Optimizer optimizer={optimizer} sendMessage={sendMessage}/>
             </div>
           ))}
         </ReactGridLayout>
@@ -36,4 +36,4 @@ const Algorithms = () => {
   )
 }
 
-export default Algorithms
+export default Optimizers

@@ -2,20 +2,20 @@ import React, { useState } from 'react'
 
 import { DraggableDiv } from './Utils'
 
-const Algorithm = ({ algorithm, sendMessage }) => {
+const Optimizer = ({ optimizer, sendMessage }) => {
   const [name, setName] = useState('')
 
   return (
-    <DraggableDiv title={algorithm.name} active={true}>
-      {new Date(algorithm.connectedAt).toString()}
+    <DraggableDiv title={optimizer.name} active={true}>
+      {new Date(optimizer.connectedAt).toString()}
       <h2>
-        {algorithm.id}
+        {optimizer.id}
       </h2>
       <input type='text' value={name} onChange={e => setName(e.target.value)}/>
       <button onClick={() => {
         const msg = JSON.stringify({
           type: 'renameClient',
-          clientId: algorithm.id,
+          clientId: optimizer.id,
           name,
         })
         sendMessage(msg)
@@ -25,7 +25,7 @@ const Algorithm = ({ algorithm, sendMessage }) => {
       <button onClick={() => {
         const msg = JSON.stringify({
           type: 'closeClient',
-          id: algorithm.id,
+          id: optimizer.id,
         })
         sendMessage(msg)
       }}>
@@ -35,4 +35,4 @@ const Algorithm = ({ algorithm, sendMessage }) => {
   )
 }
 
-export default Algorithm
+export default Optimizer
