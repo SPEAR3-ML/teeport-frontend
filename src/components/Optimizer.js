@@ -9,7 +9,7 @@ const Optimizer = ({ optimizer, sendMessage }) => {
     <DraggableDiv title={optimizer.name} active={true}>
       {new Date(optimizer.connectedAt).toString()}
       <h2>
-        {optimizer.id}
+        {optimizer.private ? '' : optimizer.id}
       </h2>
       <input type='text' value={name} onChange={e => setName(e.target.value)}/>
       <button onClick={() => {

@@ -9,7 +9,7 @@ const Processor = ({ processor, sendMessage }) => {
     <DraggableDiv title={processor.name} active={true}>
       {new Date(processor.connectedAt).toString()}
       <h2>
-        {processor.id}
+        {processor.private ? '' : processor.id}
       </h2>
       <button onClick={() => {
         if (navigator.clipboard) {

@@ -9,7 +9,7 @@ const Evaluator = ({ evaluator, sendMessage }) => {
     <DraggableDiv title={evaluator.name} active={true}>
       {new Date(evaluator.connectedAt).toString()}
       <h2>
-        {evaluator.id}
+        {evaluator.private ? '' : evaluator.id}
       </h2>
       <button onClick={() => {
         if (navigator.clipboard) {
