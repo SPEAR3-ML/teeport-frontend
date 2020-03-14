@@ -25,10 +25,10 @@ const Action = styled.button`
   height: 24px;
 `
 
-const TasksControlBar = () => {
+const TasksControlBar = ({ onNewTask }) => {
   return (
     <ControlBar>
-      <Action onClick={() => { console.log('new') }}>
+      <Action onClick={onNewTask}>
         New
       </Action>
     </ControlBar>

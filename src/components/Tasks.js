@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
@@ -6,6 +6,7 @@ import 'react-resizable/css/styles.css'
 import { FlexFrame, FlexScrollContent } from './Utils'
 import TasksControlBar from './TasksControlBar'
 import TaskCard from './TaskCard'
+import NewTask from './NewTask'
 import useTasks from '../hooks/useTasks'
 import { generateLayout } from '../utils/helpers'
 
@@ -14,10 +15,11 @@ const ReactGridLayout = WidthProvider(GridLayout)
 const Tasks = () => {
   const [tasks, sendMessage] = useTasks()
   const layout = generateLayout(tasks)
+  const [showNewTask, setShowNewTask] = useState(false)
 
   return (
     <FlexFrame>
-      <TasksControlBar sendMessage={sendMessage}/>
+      <TasksControlBar sendMessage={sendMessage} onNewTask={() => setShowNewTask(true)}/>
       <FlexScrollContent>
         <ReactGridLayout
           className='layout'
@@ -34,6 +36,7 @@ const Tasks = () => {
           ))}
         </ReactGridLayout>
       </FlexScrollContent>
+      <NewTask show={showNewTask} setShow={setShowNewTask}/>
     </FlexFrame>
   )
 }
