@@ -4,7 +4,8 @@
   "description": "A simple server to serve the teeport frontend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve:local": "env-cmd -f .env.local nodemon ."
   },
   "keywords": [
     "teeport"
@@ -12,6 +13,10 @@
   "author": "Zhe Zhang",
   "license": "ISC",
   "dependencies": {
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
