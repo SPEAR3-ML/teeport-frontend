@@ -29,7 +29,7 @@ const Content = styled.div`
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/teeport'>
       <Frame>
         <Titlebar />
         <Content>

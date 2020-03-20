@@ -50,7 +50,7 @@ const Titlebar = () => {
 
   return (
     <Title>
-      <Logo src='/slac.png'/>
+      <Logo src={`${process.env.PUBLIC_URL}/slac.png`}/>
       <Item to='/' current={pathname}>
         Home
       </Item>
