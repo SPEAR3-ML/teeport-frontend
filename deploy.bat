@@ -6,7 +6,7 @@ CLS
 SET target=lambda-sp3
 SET image_name=teeport/frontend
 SET name=teeport-frontend
-SET version=0.1.3
+SET version=0.1.4
 SET port=3001
 
 :: build the production webpages
