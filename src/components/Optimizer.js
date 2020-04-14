@@ -6,7 +6,7 @@ const Optimizer = ({ optimizer, sendMessage }) => {
   const [name, setName] = useState('')
 
   return (
-    <DraggableDiv title={optimizer.name} active={true}>
+    <DraggableDiv title={optimizer.name} active={optimizer.taskId !== null}>
       {new Date(optimizer.connectedAt).toString()}
       <h2>
         {optimizer.private ? '' : optimizer.id}

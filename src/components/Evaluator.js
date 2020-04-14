@@ -6,7 +6,7 @@ const Evaluator = ({ evaluator, sendMessage }) => {
   const [name, setName] = useState('')
 
   return (
-    <DraggableDiv title={evaluator.name} active={true}>
+    <DraggableDiv title={evaluator.name} active={evaluator.taskId.length}>
       {new Date(evaluator.connectedAt).toString()}
       <h2>
         {evaluator.private ? '' : evaluator.id}
