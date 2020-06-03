@@ -50,6 +50,7 @@ const useEvolutionPlot = (task, recent = 5) => {
           text: 'obj2',
         },
       },
+      hovermode: 'closest',
     },
     frames: [],
     config: {},

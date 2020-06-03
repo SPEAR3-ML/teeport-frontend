@@ -13,7 +13,7 @@ import TaskControlBar from './TaskControlBar'
 import useTask from '../hooks/useTask'
 import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
 import useEvolutionPlot from '../hooks/useEvolutionPlot'
-import useEvalXHistoryPlot from '../hooks/useEvalXHistoryPlot'
+// import useEvalXHistoryPlot from '../hooks/useEvalXHistoryPlot'
 import { generatePlotLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
@@ -25,14 +25,27 @@ const Task = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     if (!_.size(layout)) {
-      const newLayout = generatePlotLayout(3)
+      const newLayout = generatePlotLayout(2)
       dispatch(updateLayout(taskId, newLayout))
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [EvalHistoryPlot, refreshHistPlot] = useEvalHistoryPlot(task)
   const [EvolutionPlot, refreshEvoPlot] = useEvolutionPlot(task)
-  const [EvalXHistoryPlot, refreshXHistPlot] = useEvalXHistoryPlot(task)
+  // const [EvalXHistoryPlot, refreshXHistPlot] = useEvalXHistoryPlot(task)
+  // const Plots = [{
+  //   title: 'Evaluation History',
+  //   plot: EvalHistoryPlot,
+  //   refresh: refreshHistPlot,
+  // }, {
+  //   title: 'Evolution Trace',
+  //   plot: EvolutionPlot,
+  //   refresh: refreshEvoPlot,
+  // }, {
+  //   title: 'Evaluation X History',
+  //   plot: EvalXHistoryPlot,
+  //   refresh: refreshXHistPlot,
+  // }]
   const Plots = [{
     title: 'Evaluation History',
     plot: EvalHistoryPlot,
@@ -41,10 +54,6 @@ const Task = () => {
     title: 'Evolution Trace',
     plot: EvolutionPlot,
     refresh: refreshEvoPlot,
-  }, {
-    title: 'Evaluation X History',
-    plot: EvalXHistoryPlot,
-    refresh: refreshXHistPlot,
   }]
 
   return (
