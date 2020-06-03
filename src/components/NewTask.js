@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
+import AceEditor from 'react-ace'
+import 'ace-builds/webpack-resolver'
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-github'
 // import styled from 'styled-components'
 
 // import { grey } from '../plugins/slacPalette'
@@ -26,6 +30,8 @@ const NewTask = ({ show, setShow }) => {
     label: client.name,
   }))
   const [selectedEvaluator, setSelectedEvaluator] = useState(null)
+  const [params, setParams] = useState('')
+  const [valid, setValid] = useState(false)
 
   return (
     <Modal
@@ -57,13 +63,29 @@ const NewTask = ({ show, setShow }) => {
         />
       </div>
       <div>
+        <label>Task parameters:</label>
+        <AceEditor
+          mode='json'
+          theme='github'
+          value={params}
+          onChange={setParams}
+          onValidate={a => setValid(a.every(({ type }) => type !== 'error'))}
+          name='TASK_PARAMS'
+          height='128px'
+          width='100%'
+          editorProps={{ $blockScrolling: true }}
+        />
+      </div>
+      <div>
         <button
-          disabled={!selectedOptimizer || !selectedEvaluator}
+          disabled={!selectedOptimizer || !selectedEvaluator || !valid}
           onClick={() => {
+            // console.log(JSON.parse(params))
             const msg = {
               type: 'newTask',
               optimizerId: selectedOptimizer.value,
               evaluatorId: selectedEvaluator.value,
+              params: JSON.parse(params),
             }
             sendMessage(JSON.stringify(msg))
           }}
