@@ -22,9 +22,18 @@ const Action = styled.button`
   flex: 0 0 auto;
   margin-left: 6px;
   margin-right: 6px;
-  width: 64px;
+  width: 80px;
   height: 24px;
 `
+
+const downloadHistoryData = task => {
+  const element = document.createElement('a')
+  const file = new Blob([JSON.stringify(task.history, null, 2)], { type: 'application/json' })
+  element.href = URL.createObjectURL(file)
+  element.download = `history_${task.id}.json`
+  // document.body.appendChild(element)
+  element.click()
+}
 
 const TaskControlBar = ({ task, sendMessage }) => {
   const history = useHistory()
@@ -59,6 +68,11 @@ const TaskControlBar = ({ task, sendMessage }) => {
         console.log('replay')
       }} disabled={!isDone}>
         Replay
+      </Action>
+      <Action onClick={() => {
+        downloadHistoryData(task)
+      }} disabled={!isDone}>
+        Download
       </Action>
     </ControlBar>
   )
