@@ -4,9 +4,10 @@ import { DraggableDiv } from './Utils'
 
 const Evaluator = ({ evaluator, sendMessage }) => {
   const [name, setName] = useState('')
+  const active = evaluator.taskId !== null && evaluator.taskId.length
 
   return (
-    <DraggableDiv title={evaluator.name} active={evaluator.taskId.length}>
+    <DraggableDiv title={evaluator.name} active={active}>
       {new Date(evaluator.connectedAt).toString()}
       <h2>
         {evaluator.private ? '' : evaluator.id}
