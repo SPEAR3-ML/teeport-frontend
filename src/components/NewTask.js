@@ -30,7 +30,7 @@ const NewTask = ({ show, setShow }) => {
     label: client.name,
   }))
   const [selectedEvaluator, setSelectedEvaluator] = useState(null)
-  const [params, setParams] = useState('')
+  const [params, setParams] = useState('{}')
   const [valid, setValid] = useState(false)
 
   return (
