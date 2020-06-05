@@ -30,7 +30,7 @@ const NewTask = ({ show, setShow }) => {
     label: client.name,
   }))
   const [selectedEvaluator, setSelectedEvaluator] = useState(null)
-  const [params, setParams] = useState('{}')
+  const [configs, setConfigs] = useState('{}')
   const [valid, setValid] = useState(false)
 
   return (
@@ -63,14 +63,14 @@ const NewTask = ({ show, setShow }) => {
         />
       </div>
       <div>
-        <label>Task parameters:</label>
+        <label>Task configs:</label>
         <AceEditor
           mode='json'
           theme='github'
-          value={params}
-          onChange={setParams}
+          value={configs}
+          onChange={setConfigs}
           onValidate={a => setValid(a.every(({ type }) => type !== 'error'))}
-          name='TASK_PARAMS'
+          name='TASK_CONFIGS'
           height='128px'
           width='100%'
           editorProps={{ $blockScrolling: true }}
@@ -80,12 +80,11 @@ const NewTask = ({ show, setShow }) => {
         <button
           disabled={!selectedOptimizer || !selectedEvaluator || !valid}
           onClick={() => {
-            // console.log(JSON.parse(params))
             const msg = {
               type: 'newTask',
               optimizerId: selectedOptimizer.value,
               evaluatorId: selectedEvaluator.value,
-              params: JSON.parse(params),
+              configs: JSON.parse(configs),
             }
             sendMessage(JSON.stringify(msg))
           }}
