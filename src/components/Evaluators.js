@@ -21,7 +21,7 @@ const Evaluators = () => {
           className='layout'
           layout={layout}
           cols={12}
-          rowHeight={24}
+          rowHeight={60}
           isDraggable={false}
           isResizable={false}
         >

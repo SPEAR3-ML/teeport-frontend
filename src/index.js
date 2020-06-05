@@ -27,6 +27,10 @@ const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 0px;
   }
+
+  textarea {
+    box-sizing: border-box;
+  }
 `
 
 render(
