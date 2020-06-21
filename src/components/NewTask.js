@@ -30,7 +30,11 @@ const NewTask = ({ show, setShow }) => {
     label: client.name,
   }))
   const [selectedEvaluator, setSelectedEvaluator] = useState(null)
-  const [configs, setConfigs] = useState('{}')
+  const [configs, setConfigs] = useState(JSON.stringify({
+    task: {
+      name: null,
+    },
+  }, null, '\t'))
   const [valid, setValid] = useState(false)
 
   return (
@@ -48,7 +52,19 @@ const NewTask = ({ show, setShow }) => {
         <label>Choose an optimizer:</label>
         <Select
           value={selectedOptimizer}
-          onChange={setSelectedOptimizer}
+          onChange={selected => {
+            setSelectedOptimizer(selected)
+            const _configs = JSON.parse(configs)
+            if (selected !== null) {
+              const optimizer = clients.filter(client => {
+                return client.id === selected.value
+              })[0]
+              _configs.optimizer = optimizer.configs
+            } else {
+              delete _configs.optimizer
+            }
+            setConfigs(JSON.stringify(_configs, null, '\t'))
+          }}
           options={optimizers}
           isClearable={true}
         />
@@ -57,7 +73,19 @@ const NewTask = ({ show, setShow }) => {
         <label>Choose an evaluator:</label>
         <Select
           value={selectedEvaluator}
-          onChange={setSelectedEvaluator}
+          onChange={selected => {
+            setSelectedEvaluator(selected)
+            const _configs = JSON.parse(configs)
+            if (selected !== null) {
+              const evaluator = clients.filter(client => {
+                return client.id === selected.value
+              })[0]
+              _configs.evaluator = evaluator.configs
+            } else {
+              delete _configs.evaluator
+            }
+            setConfigs(JSON.stringify(_configs, null, '\t'))
+          }}
           options={evaluators}
           isClearable={true}
         />
