@@ -32,6 +32,9 @@ const useClients = () => {
             sendMessage(JSON.stringify(msg))
             break
           }
+          case 'taskCreated': {
+            break
+          }
           default: {
             console.warn(lastMsg)
           }
