@@ -43,12 +43,12 @@ const Evaluator = ({ evaluator, sendMessage }) => {
           onChange={e => setDescr(e.target.value)}
           rows='4'
         />
-        <button disabled={descr === evaluator.descr} onClick={() => {
+        <button disabled={descr === (evaluator.descr || '')} onClick={() => {
           setDescr(evaluator.descr)
         }}>
           Cancel
         </button>
-        <button disabled={descr === evaluator.descr} onClick={() => {
+        <button disabled={descr === (evaluator.descr || '')} onClick={() => {
           const msg = JSON.stringify({
             type: 'updateClientDescr',
             clientId: evaluator.id,
