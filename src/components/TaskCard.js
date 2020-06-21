@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
+import JSONPretty from 'react-json-pretty'
+import df from 'dateformat'
 
 import { DraggableDiv } from './Utils'
 
@@ -7,6 +9,7 @@ const TaskCard = ({ task, sendMessage }) => {
   const { pathname } = useLocation()
   const history = useHistory()
   const [name, setName] = useState('')
+  const [descr, setDescr] = useState(task.descr || '')
   const isDone = task.status === 'completed' || task.status === 'cancelled'
   const archived = !!task.archivedAt
 
@@ -16,10 +19,46 @@ const TaskCard = ({ task, sendMessage }) => {
       active={task.status === 'running'}
       dimmed={archived}
     >
-      {new Date(task.createdAt).toString()}
+      {df(new Date(task.createdAt), 'yyyy-mm-dd HH:MM:ss')}
       <h2>
         {task.id}
       </h2>
+      <h4>
+        Algorithm ID: {task.algorithmId}
+      </h4>
+      <h4>
+        Problem ID: {task.problemId}
+      </h4>
+      <h4>
+        Init Configs:
+      </h4>
+      <JSONPretty data={task.configs}/>
+      <h4>
+        Description:
+      </h4>
+      <div style={{ display: 'block', paddingLeft: 8, paddingRight: 8 }}>
+        <textarea
+          style={{ resize: 'none', width: '100%' }}
+          value={descr}
+          onChange={e => setDescr(e.target.value)}
+          rows='4'
+        />
+        <button disabled={descr === (task.descr || '')} onClick={() => {
+          setDescr(task.descr)
+        }}>
+          Cancel
+        </button>
+        <button disabled={descr === (task.descr || '')} onClick={() => {
+          const msg = JSON.stringify({
+            type: 'updateTaskDescr',
+            taskId: task.id,
+            descr,
+          })
+          sendMessage(msg)
+        }}>
+          Update
+        </button>
+      </div>
       <button onClick={() => { history.push(`${pathname}/${task.id}`) }} disabled={archived}>
         Enter
       </button>

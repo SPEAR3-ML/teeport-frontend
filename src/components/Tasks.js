@@ -25,7 +25,7 @@ const Tasks = () => {
           className='layout'
           layout={layout}
           cols={12}
-          rowHeight={24}
+          rowHeight={80}
           isDraggable={false}
           isResizable={false}
         >
