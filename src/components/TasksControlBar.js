@@ -25,7 +25,14 @@ const Action = styled.button`
   height: 24px;
 `
 
-const TasksControlBar = ({ onNewTask }) => {
+const downloadAllTaskData = sendMessage => {
+  const msg = {
+    type: 'getTasks',
+  }
+  sendMessage(JSON.stringify(msg))
+}
+
+const TasksControlBar = ({ sendMessage, onNewTask }) => {
   return (
     <ControlBar>
       <Action onClick={onNewTask}>
@@ -37,7 +44,9 @@ const TasksControlBar = ({ onNewTask }) => {
       <Action onClick={() => console.log('Import Data')}>
         Import Data
       </Action>
-      <Action onClick={() => console.log('Export Data')}>
+      <Action onClick={() => {
+        downloadAllTaskData(sendMessage)
+      }}>
         Export Data
       </Action>
     </ControlBar>

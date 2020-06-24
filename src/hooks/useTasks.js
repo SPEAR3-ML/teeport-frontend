@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
+import df from 'dateformat'
 
 import { URI_TASK_SERVER } from '../constants'
 
@@ -21,6 +22,17 @@ const useTasks = () => {
           }
           case 'tasksOverview': {
             setTasks(lastMsg.tasks)
+            break
+          }
+          case 'tasks': {
+            const allTasks = lastMsg.tasks
+            const element = document.createElement('a')
+            const file = new Blob([JSON.stringify(allTasks, null, 2)], { type: 'application/json' })
+            element.href = URL.createObjectURL(file)
+            const dtString = df(new Date(), 'yymmdd_HHMMss')
+            element.download = `all_tasks_${dtString}.json`
+            // document.body.appendChild(element)
+            element.click()
             break
           }
           case 'startTask':
