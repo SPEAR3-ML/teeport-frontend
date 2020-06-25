@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
-import { FlexFrame, FlexScrollContent } from './Utils'
+import { FlexFrame } from './Utils'
 import TasksControlBar from './TasksControlBar'
 import TaskCard from './TaskCard'
 import NewTask from './NewTask'
@@ -24,7 +26,7 @@ const Tasks = () => {
         onNewTask={() => setShowNewTask(true)}
         tasksNum={tasks ? tasks.length : 0}
       />
-      <FlexScrollContent>
+      <PerfectScrollbar>
         <ReactGridLayout
           className='layout'
           layout={layout}
@@ -39,7 +41,7 @@ const Tasks = () => {
             </div>
           ))}
         </ReactGridLayout>
-      </FlexScrollContent>
+      </PerfectScrollbar>
       <NewTask show={showNewTask} setShow={setShowNewTask}/>
     </FlexFrame>
   )
