@@ -1,9 +1,11 @@
 import React from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
-import { FlexFrame, FlexScrollContent } from './Utils'
+import { FlexFrame } from './Utils'
 import Optimizer from './Optimizer'
 import useOptimizers from '../hooks/useOptimizers'
 import { generateLayout } from '../utils/helpers'
@@ -16,7 +18,7 @@ const Optimizers = () => {
 
   return (
     <FlexFrame>
-      <FlexScrollContent>
+      <PerfectScrollbar>
         <ReactGridLayout
           className='layout'
           layout={layout}
@@ -31,7 +33,7 @@ const Optimizers = () => {
             </div>
           ))}
         </ReactGridLayout>
-      </FlexScrollContent>
+      </PerfectScrollbar>
     </FlexFrame>
   )
 }
