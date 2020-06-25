@@ -19,7 +19,11 @@ const Tasks = () => {
 
   return (
     <FlexFrame>
-      <TasksControlBar sendMessage={sendMessage} onNewTask={() => setShowNewTask(true)}/>
+      <TasksControlBar
+        sendMessage={sendMessage}
+        onNewTask={() => setShowNewTask(true)}
+        tasksNum={tasks ? tasks.length : 0}
+      />
       <FlexScrollContent>
         <ReactGridLayout
           className='layout'

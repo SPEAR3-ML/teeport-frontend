@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useCallback } from 'react'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
@@ -25,14 +25,41 @@ const Action = styled.button`
   height: 24px;
 `
 
-const downloadAllTaskData = sendMessage => {
-  const msg = {
-    type: 'getTasks',
-  }
-  sendMessage(JSON.stringify(msg))
-}
+const HiddenInput = styled.input`
+  display: none;
+`
 
-const TasksControlBar = ({ sendMessage, onNewTask }) => {
+const TasksControlBar = ({ sendMessage, onNewTask, tasksNum }) => {
+  const dataImporter = useRef(null)
+
+  const importTasks = useCallback(e => {
+    try {
+      const dataFile = e.target.files[0]
+      e.target.value = null // reset the file input
+
+      var reader = new FileReader()
+      reader.onload = e => {
+        const tasks = JSON.parse(e.target.result)
+        const msg = {
+          type: 'importTasks',
+          tasks,
+        }
+        sendMessage(JSON.stringify(msg))
+      }
+
+      reader.readAsText(dataFile)
+    } catch (err) {
+      // do nothing
+    }
+  }, [sendMessage])
+
+  const downloadTasks = useCallback(() => {
+    const msg = {
+      type: 'getTasks',
+    }
+    sendMessage(JSON.stringify(msg))
+  }, [sendMessage])
+
   return (
     <ControlBar>
       <Action onClick={onNewTask}>
@@ -41,12 +68,18 @@ const TasksControlBar = ({ sendMessage, onNewTask }) => {
       <Action onClick={() => console.log('New Benchmark')}>
         New Benchmark
       </Action>
-      <Action onClick={() => console.log('Import Data')}>
+      <Action onClick={() => {
+        dataImporter.current.click()
+      }}>
         Import Data
       </Action>
-      <Action onClick={() => {
-        downloadAllTaskData(sendMessage)
-      }}>
+      <HiddenInput
+        type='file'
+        accept='.json'
+        onChange={importTasks}
+        ref={dataImporter}
+      />
+      <Action onClick={downloadTasks} disabled={!tasksNum}>
         Export Data
       </Action>
     </ControlBar>
