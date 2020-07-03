@@ -8,12 +8,10 @@ import 'ace-builds/src-noconflict/theme-github'
 // import styled from 'styled-components'
 
 // import { grey } from '../plugins/slacPalette'
-import useClients from '../hooks/useClients'
 
 Modal.setAppElement('#root')
 
-const NewTask = ({ show, setShow }) => {
-  const [clients, sendMessage] = useClients()
+const NewTask = ({ show, setShow, clients, sendMessage }) => {
   const optimizerClients = clients.filter(client => {
     return client.type === 'optimizer' && !client.private
   })

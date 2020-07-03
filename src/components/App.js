@@ -11,6 +11,8 @@ import Optimizers from './Optimizers'
 import Evaluators from './Evaluators'
 import Processors from './Processors'
 import About from './About'
+import useTasks from '../hooks/useTasks'
+import useClients from '../hooks/useClients'
 import { yellow } from '../plugins/slacPalette'
 
 const Frame = styled.div`
@@ -28,6 +30,9 @@ const Content = styled.div`
 `
 
 const App = () => {
+  const [tasks, sendMessageAsTaskManager] = useTasks()
+  const [clients, sendMessageAsClientManager] = useClients()
+
   return (
     <BrowserRouter basename='/teeport'>
       <Frame>
@@ -41,16 +46,19 @@ const App = () => {
               <Task />
             </Route>
             <Route path='/tasks'>
-              <Tasks />
+              <Tasks
+                tasks={tasks} sendMessageAsTaskManager={sendMessageAsTaskManager}
+                clients={clients} sendMessageAsClientManager={sendMessageAsClientManager}
+              />
             </Route>
             <Route path='/optimizers'>
-              <Optimizers />
+              <Optimizers clients={clients} sendMessage={sendMessageAsClientManager}/>
             </Route>
             <Route path='/evaluators'>
-              <Evaluators />
+              <Evaluators clients={clients} sendMessage={sendMessageAsClientManager}/>
             </Route>
             <Route path='/processors'>
-              <Processors />
+              <Processors clients={clients} sendMessage={sendMessageAsClientManager}/>
             </Route>
             <Route path='/'>
               <Home />

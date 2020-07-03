@@ -7,13 +7,12 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import { FlexFrame } from './Utils'
 import Processor from './Processor'
-import useProcessors from '../hooks/useProcessors'
 import { generateLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
-const Processors = () => {
-  const [processors, sendMessage] = useProcessors()
+const Processors = ({ clients, sendMessage }) => {
+  const processors = clients.filter(client => client.type === 'processor')
   const layout = generateLayout(processors)
 
   return (

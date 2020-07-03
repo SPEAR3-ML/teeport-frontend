@@ -7,13 +7,12 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import { FlexFrame } from './Utils'
 import Evaluator from './Evaluator'
-import useEvaluators from '../hooks/useEvaluators'
 import { generateLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
-const Evaluators = () => {
-  const [evaluators, sendMessage] = useEvaluators()
+const Evaluators = ({ clients, sendMessage }) => {
+  const evaluators = clients.filter(client => client.type === 'evaluator')
   const layout = generateLayout(evaluators)
 
   return (

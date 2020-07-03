@@ -7,13 +7,12 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import { FlexFrame } from './Utils'
 import Optimizer from './Optimizer'
-import useOptimizers from '../hooks/useOptimizers'
 import { generateLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
-const Optimizers = () => {
-  const [optimizers, sendMessage] = useOptimizers()
+const Optimizers = ({ clients, sendMessage }) => {
+  const optimizers = clients.filter(client => client.type === 'optimizer')
   const layout = generateLayout(optimizers)
 
   return (
