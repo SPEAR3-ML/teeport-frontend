@@ -31,6 +31,13 @@ const GlobalStyle = createGlobalStyle`
   textarea {
     box-sizing: border-box;
   }
+
+  .react-grid-item.cssTransforms {
+    transition-property: transform;
+  }
+  .plain .react-grid-item.cssTransforms {
+    transition-property: none;
+  }
 `
 
 render(

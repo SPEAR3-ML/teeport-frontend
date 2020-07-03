@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
@@ -9,40 +9,68 @@ import { FlexFrame } from './Utils'
 import TasksControlBar from './TasksControlBar'
 import TaskCard from './TaskCard'
 import NewTask from './NewTask'
-import useTasks from '../hooks/useTasks'
 import { generateLayout } from '../utils/helpers'
 
 const ReactGridLayout = WidthProvider(GridLayout)
 
-const Tasks = () => {
-  const [tasks, sendMessage] = useTasks()
+const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientManager }) => {
   const layout = generateLayout(tasks)
   const [showNewTask, setShowNewTask] = useState(false)
+  const [scrollContainer, setScrollContainer] = useState(null)
+  const [className, setClassName] = useState('layout plain')
+
+  useEffect(() => {
+    if (scrollContainer) {
+      scrollContainer.scrollTop = localStorage.getItem('tasksScrollTop') || 0
+    }
+
+    return () => {
+      if (scrollContainer) {
+        localStorage.setItem('tasksScrollTop', scrollContainer.scrollTop)
+      }
+    }
+  }, [scrollContainer])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setClassName('layout')
+    }, 1)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
 
   return (
     <FlexFrame>
       <TasksControlBar
-        sendMessage={sendMessage}
+        sendMessage={sendMessageAsTaskManager}
         onNewTask={() => setShowNewTask(true)}
         tasksNum={tasks ? tasks.length : 0}
       />
-      <PerfectScrollbar>
+      <PerfectScrollbar
+        containerRef={setScrollContainer}
+      >
         <ReactGridLayout
-          className='layout'
+          className={className}
           layout={layout}
           cols={12}
           rowHeight={80}
           isDraggable={false}
           isResizable={false}
+          measureBeforeMount={true}
         >
           {tasks.map(task => (
             <div key={task.id}>
-              <TaskCard task={task} sendMessage={sendMessage}/>
+              <TaskCard task={task} sendMessage={sendMessageAsTaskManager}/>
             </div>
           ))}
         </ReactGridLayout>
       </PerfectScrollbar>
-      <NewTask show={showNewTask} setShow={setShowNewTask}/>
+      <NewTask
+        show={showNewTask} setShow={setShowNewTask}
+        clients={clients} sendMessage={sendMessageAsClientManager}
+      />
     </FlexFrame>
   )
 }
