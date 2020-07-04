@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
@@ -37,4 +37,4 @@ const Evaluators = ({ clients, sendMessage }) => {
   )
 }
 
-export default Evaluators
+export default memo(Evaluators)

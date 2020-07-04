@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
@@ -12,6 +12,7 @@ import { generateLayout } from '../utils/helpers'
 const ReactGridLayout = WidthProvider(GridLayout)
 
 const Optimizers = ({ clients, sendMessage }) => {
+  // console.log('optimizers render!')
   const optimizers = clients.filter(client => client.type === 'optimizer')
   const layout = generateLayout(optimizers)
 
@@ -37,4 +38,4 @@ const Optimizers = ({ clients, sendMessage }) => {
   )
 }
 
-export default Optimizers
+export default memo(Optimizers)
