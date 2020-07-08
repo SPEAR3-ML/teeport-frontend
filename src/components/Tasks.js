@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo, memo } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
-import PerfectScrollbar from 'react-perfect-scrollbar'
+// import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
-import 'react-perfect-scrollbar/dist/css/styles.css'
+// import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import { FlexFrame } from './Utils'
+import MemoScrollbar from './MemoScrollbar'
 import TasksControlBar from './TasksControlBar'
 import TaskCard from './TaskCard'
 import NewTask from './NewTask'
@@ -17,20 +18,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
   // console.log('tasks render!')
   const layout = useMemo(() => generateLayout(tasks), [tasks])
   const [showNewTask, setShowNewTask] = useState(false)
-  const [scrollContainer, setScrollContainer] = useState(null)
   const [className, setClassName] = useState('layout plain')
-
-  useEffect(() => {
-    if (scrollContainer) {
-      scrollContainer.scrollTop = localStorage.getItem('tasksScrollTop') || 0
-    }
-
-    return () => {
-      if (scrollContainer) {
-        localStorage.setItem('tasksScrollTop', scrollContainer.scrollTop)
-      }
-    }
-  }, [scrollContainer])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -49,9 +37,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
         onNewTask={() => setShowNewTask(true)}
         tasksNum={tasks ? tasks.length : 0}
       />
-      <PerfectScrollbar
-        containerRef={setScrollContainer}
-      >
+      <MemoScrollbar tag='tasks'>
         <ReactGridLayout
           className={className}
           layout={layout}
@@ -67,7 +53,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
             </div>
           ))}
         </ReactGridLayout>
-      </PerfectScrollbar>
+      </MemoScrollbar>
       <NewTask
         show={showNewTask} setShow={setShowNewTask}
         clients={clients} sendMessage={sendMessageAsClientManager}

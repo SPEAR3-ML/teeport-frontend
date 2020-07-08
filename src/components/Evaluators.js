@@ -1,11 +1,10 @@
 import React, { memo } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
-import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
-import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import { FlexFrame } from './Utils'
+import MemoScrollbar from './MemoScrollbar'
 import Evaluator from './Evaluator'
 import { generateLayout } from '../utils/helpers'
 
@@ -17,7 +16,7 @@ const Evaluators = ({ clients, sendMessage }) => {
 
   return (
     <FlexFrame>
-      <PerfectScrollbar>
+      <MemoScrollbar tag='evaluators'>
         <ReactGridLayout
           className='layout'
           layout={layout}
@@ -32,7 +31,7 @@ const Evaluators = ({ clients, sendMessage }) => {
             </div>
           ))}
         </ReactGridLayout>
-      </PerfectScrollbar>
+      </MemoScrollbar>
     </FlexFrame>
   )
 }

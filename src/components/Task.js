@@ -8,7 +8,8 @@ import _ from 'lodash'
 
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
-import { DraggableDiv, FlexFrame, FlexScrollContent } from './Utils'
+import { DraggableDiv, FlexFrame } from './Utils'
+import MemoScrollbar from './MemoScrollbar'
 import TaskControlBar from './TaskControlBar'
 import useTask from '../hooks/useTask'
 import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
@@ -59,7 +60,7 @@ const Task = () => {
   return (
     <FlexFrame>
       <TaskControlBar task={task} sendMessage={sendMessage}/>
-      <FlexScrollContent>
+      <MemoScrollbar tag={taskId}>
         <ReactGridLayout
           className='layout'
           layout={layout}
@@ -84,7 +85,7 @@ const Task = () => {
             )
           })}
         </ReactGridLayout>
-      </FlexScrollContent>
+      </MemoScrollbar>
     </FlexFrame>
   )
 }
