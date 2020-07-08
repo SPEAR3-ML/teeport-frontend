@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react'
+import React, { useState, useEffect, useMemo, memo } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-grid-layout/css/styles.css'
@@ -15,10 +15,10 @@ const ReactGridLayout = WidthProvider(GridLayout)
 
 const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientManager }) => {
   // console.log('tasks render!')
-  const layout = generateLayout(tasks)
+  const layout = useMemo(() => generateLayout(tasks), [tasks])
   const [showNewTask, setShowNewTask] = useState(false)
   const [scrollContainer, setScrollContainer] = useState(null)
-  const [className, setClassName] = useState(tasks.length ? 'layout plain' : 'layout')
+  const [className, setClassName] = useState('layout plain')
 
   useEffect(() => {
     if (scrollContainer) {
@@ -59,7 +59,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
           rowHeight={80}
           isDraggable={false}
           isResizable={false}
-          measureBeforeMount={!!tasks.length}
+          measureBeforeMount={true}
         >
           {tasks.map(task => (
             <div key={task.id}>
