@@ -1,93 +1,100 @@
-import React, { useEffect } from 'react'
+import React, { useState, memo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import GridLayout, { WidthProvider } from 'react-grid-layout'
+import { Responsive, WidthProvider } from 'react-grid-layout'
+import _ from 'lodash'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
-import _ from 'lodash'
 
 import { selectLayout } from '../redux/selectors'
 import { updateLayout } from '../redux/actions'
 import { DraggableDiv, FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import TaskControlBar from './TaskControlBar'
+import EvalHistoryPlot from './EvalHistoryPlot'
+import EvolutionPlot from './EvolutionPlot'
 import useTask from '../hooks/useTask'
-import useEvalHistoryPlot from '../hooks/useEvalHistoryPlot'
-import useEvolutionPlot from '../hooks/useEvolutionPlot'
-// import useEvalXHistoryPlot from '../hooks/useEvalXHistoryPlot'
-import { generatePlotLayout } from '../utils/helpers'
+import { generatePlotsLayouts } from '../utils/helpers'
 
-const ReactGridLayout = WidthProvider(GridLayout)
+const GridLayout = WidthProvider(Responsive)
 
-const Task = () => {
-  const { taskId } = useParams()
-  const [task, sendMessage] = useTask(taskId)
-  const layout = useSelector(selectLayout(taskId)) || []
-  const dispatch = useDispatch()
-  useEffect(() => {
-    if (!_.size(layout)) {
-      const newLayout = generatePlotLayout(2)
-      dispatch(updateLayout(taskId, newLayout))
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+const getPlotView = (plot, task) => {
+  switch (plot.title) {
+    case 'Evaluation History':
+      return <EvalHistoryPlot task={task} revision={plot.revision}/>
+    case 'Evolution Trace':
+      return <EvolutionPlot task={task} recent={plot.recent} revision={plot.revision}/>
+    default:
+      return null
+  }
+}
 
-  const [EvalHistoryPlot, refreshHistPlot] = useEvalHistoryPlot(task)
-  const [EvolutionPlot, refreshEvoPlot] = useEvolutionPlot(task)
-  // const [EvalXHistoryPlot, refreshXHistPlot] = useEvalXHistoryPlot(task)
-  // const Plots = [{
-  //   title: 'Evaluation History',
-  //   plot: EvalHistoryPlot,
-  //   refresh: refreshHistPlot,
-  // }, {
-  //   title: 'Evolution Trace',
-  //   plot: EvolutionPlot,
-  //   refresh: refreshEvoPlot,
-  // }, {
-  //   title: 'Evaluation X History',
-  //   plot: EvalXHistoryPlot,
-  //   refresh: refreshXHistPlot,
-  // }]
-  const Plots = [{
+const TaskView = memo(({ taskId, task, sendMessage }) => {
+  // console.log('task render!')
+  const [plots, setPlots] = useState([{
     title: 'Evaluation History',
-    plot: EvalHistoryPlot,
-    refresh: refreshHistPlot,
+    revision: 0,
   }, {
     title: 'Evolution Trace',
-    plot: EvolutionPlot,
-    refresh: refreshEvoPlot,
-  }]
+    recent: 5,
+    revision: 0,
+  }])
+  const layout = useSelector(selectLayout(taskId)) || generatePlotsLayouts(plots.length)
+  const dispatch = useDispatch()
 
   return (
     <FlexFrame>
       <TaskControlBar task={task} sendMessage={sendMessage}/>
       <MemoScrollbar tag={taskId}>
-        <ReactGridLayout
+        <GridLayout
           className='layout'
-          layout={layout}
-          cols={12}
+          layouts={layout}
+          breakpoints={{ lg: 1920, md: 1280, sm: 720, xs: 480, xxs: 0 }}
+          cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
           rowHeight={24}
           draggableHandle='.drag-handler'
-          onResize={(_, { i }) => {
-            Plots[parseInt(i) - 1].refresh()
+          onResize={(__, { i }) => {
+            setPlots(plots => {
+              plots[parseInt(i) - 1].revision += 1
+              return _.clone(plots)
+            })
           }}
-          onResizeStop={(_, { i }) => {
-            Plots[parseInt(i) - 1].refresh()
+          onResizeStop={(__, { i }) => {
+            setPlots(plots => {
+              plots[parseInt(i) - 1].revision += 1
+              return _.clone(plots)
+            })
           }}
-          onLayoutChange={l => dispatch(updateLayout(taskId, l))}
+          onLayoutChange={(current, all) => dispatch(updateLayout(taskId, all))}
         >
-          {layout.map(l => {
+          {layout.lg.map(l => {
             return (
               <div key={l.i}>
-                <DraggableDiv title={Plots[parseInt(l.i) - 1].title}>
-                  {Plots[parseInt(l.i) - 1].plot}
+                <DraggableDiv title={plots[parseInt(l.i) - 1].title}>
+                  {getPlotView(plots[parseInt(l.i) - 1], task)}
                 </DraggableDiv>
               </div>
             )
           })}
-        </ReactGridLayout>
+        </GridLayout>
       </MemoScrollbar>
     </FlexFrame>
   )
+})
+
+const Task = () => {
+  const { taskId } = useParams()
+  const [task, sendMessage] = useTask(taskId)
+
+  return (
+    <TaskView
+      taskId={taskId}
+      task={task}
+      sendMessage={sendMessage}
+    />
+  )
 }
+
+// Task.whyDidYouRender = true
 
 export default Task
