@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
+// import { d3 } from 'plotly.js'
+// const palette = d3.scale.category10().range()
+import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
 import { getXObjsBests, getObjsVars } from '../../utils/helpers'
-// const palette = Plotly.d3.scale.category10().range()
+
+import palette from '../../plugins/plotlyPalette'
 
 const EvalHistoryPlot = ({ task, revision }) => {
   const [figure, setFigure] = useState({
@@ -27,6 +31,9 @@ const EvalHistoryPlot = ({ task, revision }) => {
           text: 'evaluation result',
         },
       },
+      legend: {
+        // orientation: 'h',
+      },
       // title: 'Evaluation History',
     },
     frames: [],
@@ -38,16 +45,36 @@ const EvalHistoryPlot = ({ task, revision }) => {
     if (x.length) {
       const data = []
       for (let i = 0; i < objs.length; i++) {
+        const color = Color(palette[i])
         data.push({
           x,
           y: objs[i],
           type: 'scatter',
           mode: 'lines+markers',
           name: `obj${i + 1}`,
-          marker: {
-            opacity: 0.4,
+          line: {
+            color: color.fade(0.9).string(),
+            // width: 1,
           },
+          marker: {
+            color: color.fade(0.1).string(),
+            size: 5,
+          },
+          // legendgroup: `g${i + 1}`,
         })
+        // data.push({
+        //   x,
+        //   y: objs[i],
+        //   type: 'scatter',
+        //   mode: 'lines',
+        //   // name: `obj${i + 1}`,
+        //   line: {
+        //     color: 'rgba(255, 0, 0, 0.2)',
+        //     width: 0.5,
+        //   },
+        //   legendgroup: `g${i + 1}`,
+        //   showlegend: false,
+        // })
         data.push({
           x,
           y: bests[i],
@@ -55,9 +82,11 @@ const EvalHistoryPlot = ({ task, revision }) => {
           mode: 'lines',
           name: `obj${i + 1} min`,
           line: {
+            color: color.string(),
             dash: 'dashdot',
             // width: 3,
           },
+          // legendgroup: `g${i + 1}-min`,
         })
       }
       setFigure(f => {
@@ -68,6 +97,7 @@ const EvalHistoryPlot = ({ task, revision }) => {
             trace.x = data[i].x
             trace.y = data[i].y
           })
+          f.data = _.clone(f.data)
         }
         return _.clone(f)
       })
