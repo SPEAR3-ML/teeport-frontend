@@ -38,6 +38,7 @@ const reducer = (state, action) => {
 }
 
 const useTask = taskId => {
+  // console.log('useTask')
   const [state, dispatch] = useReducer(reducer, initialState)
   const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?type=monitor&taskId=${taskId}`)
 
