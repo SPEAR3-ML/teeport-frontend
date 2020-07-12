@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 
-import { AutoResizePlot } from '../components/Utils'
-import { getXVars } from '../utils/helpers'
+import { AutoResizePlot } from '../Utils'
+import { getXVars } from '../../utils/helpers'
 
 const EvalXHistoryPlot = ({ task, revision }) => {
   const [figure, setFigure] = useState({

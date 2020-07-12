@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 
-import { AutoResizePlot } from './Utils'
-import { getObj1Obj2GenIdx } from '../utils/helpers'
+import { AutoResizePlot } from '../Utils'
+import { getObj1Obj2GenIdx } from '../../utils/helpers'
 
 const EvolutionPlot = ({ task, recent, revision }) => {
   const [figure, setFigure] = useState({

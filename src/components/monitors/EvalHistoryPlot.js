@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 
-import { AutoResizePlot } from '../components/Utils'
-import { getXObjsBests, getObjsVars } from '../utils/helpers'
+import { AutoResizePlot } from '../Utils'
+import { getXObjsBests, getObjsVars } from '../../utils/helpers'
 // const palette = Plotly.d3.scale.category10().range()
 
 const EvalHistoryPlot = ({ task, revision }) => {
