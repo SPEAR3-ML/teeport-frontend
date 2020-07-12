@@ -33,6 +33,20 @@ const getXObjsBests = history => {
   return [x, objs, bests]
 }
 
+const getObjsVars = history => {
+  let objs = []
+  let vars = []
+
+  if (history && history.length) {
+    history.forEach(([X, Y]) => {
+      objs = _.concat(objs, Y)
+      vars = _.concat(vars, X)
+    })
+  }
+
+  return [objs, vars]
+}
+
 const useEvalHistoryPlot = task => {
   const [figure, setFigure] = useState({
     data: [],
@@ -107,6 +121,20 @@ const useEvalHistoryPlot = task => {
     }
   }, [task])
 
+  const showPointsInfo = data => {
+    if (data === undefined) {
+      return
+    }
+
+    const [Y, X] = getObjsVars(task.history)
+    const pointsInfo = data.points.map(d => [Y[d.x - 1], X[d.x - 1]])
+    console.log(pointsInfo)
+  }
+
+  const hidePointsInfo = () => {
+    console.log('haha')
+  }
+
   // useEffect(() => {
   //   console.log(revision)
   // }, [revision])
@@ -121,6 +149,8 @@ const useEvalHistoryPlot = task => {
       config={figure.config}
       onInitialized={setFigure}
       onUpdated={setFigure}
+      onSelected={showPointsInfo}
+      onDeselect={hidePointsInfo}
     />,
     refreshPlot,
   ]
