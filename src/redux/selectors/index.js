@@ -12,3 +12,16 @@ export const selectLayout = taskId => createSelector(
     }
   },
 )
+
+export const selectPlots = taskId => createSelector(
+  [
+    state => state.getIn(['plots', taskId]),
+  ],
+  plots => {
+    if (!plots) {
+      return plots
+    } else {
+      return plots.toJS()
+    }
+  },
+)
