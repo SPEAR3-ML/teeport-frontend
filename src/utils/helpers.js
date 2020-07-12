@@ -64,6 +64,65 @@ export const generatePlotsLayouts = size => {
   return layouts
 }
 
+const doOverlap = (x, y, w, h, x0, y0, w0, h0) => {
+  if (x >= x0 + w0 || x0 >= x + w) return false
+  if (y >= y0 + h0 || y0 >= y + h) return false
+  return true
+}
+
+export const getBestLocation = (items, w, h) => {
+  const xSet = new Set(items.map(item => item.x).concat(items.map(item => item.x + item.w)))
+  xSet.add(0)
+  const ySet = new Set(items.map(item => item.y).concat(items.map(item => item.y + item.h)))
+  ySet.add(0)
+
+  const validArray = []
+  xSet.forEach(x => {
+    ySet.forEach(y => {
+      if (x + w <= 12) {
+        const valid = !items.some(item => {
+          return doOverlap(x, y, w, h, item.x, item.y, item.w, item.h)
+        })
+        if (valid) {
+          validArray.push([x, y])
+        }
+      }
+    })
+  })
+  validArray.sort((a, b) => a[1] - b[1] || a[0] - b[0])
+
+  return validArray[0]
+}
+
+export const getNewLayout = (items, w, h) => {
+  const xy = getBestLocation(items, w, h)
+  const newItem = {
+    i: `${items.length + 1}`,
+    x: xy[0],
+    y: xy[1],
+    w: w,
+    h: h,
+    minW: 3,
+    maxW: 12,
+    minH: h,
+    maxH: 4 * h,
+  }
+
+  return newItem
+}
+
+export const generateDefaultPlots = () => {
+  const plots = [{
+    title: 'Evaluation History',
+    revision: 0,
+  }, {
+    title: 'Evolution Trace',
+    recent: 5,
+    revision: 0,
+  }]
+  return plots
+}
+
 export const getObj1Obj2GenIdx = (history, recent = 1) => {
   const generations = []
   for (let i = 0; i < recent; i++) {
@@ -129,4 +188,23 @@ export const getObjsVars = history => {
   }
 
   return [objs, vars]
+}
+
+export const getXVars = history => {
+  let x = []
+  let y = [] // decision variables
+  const vars = []
+
+  if (history && history.length) {
+    history.forEach(([X]) => {
+      y = _.concat(y, X)
+    })
+    x = _.range(1, _.size(y) + 1)
+    for (let i = 0; i < y[0].length; i++) {
+      const v = y.map(d => d[i])
+      vars.push(v)
+    }
+  }
+
+  return [x, vars]
 }
