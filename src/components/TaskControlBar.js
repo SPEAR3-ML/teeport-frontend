@@ -1,8 +1,10 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
+import { addPlot, addLayout } from '../redux/actions'
 import { yellow } from '../plugins/slacPalette'
 
 const ControlBar = styled.div`
@@ -40,6 +42,7 @@ const TaskControlBar = ({ task, sendMessage }) => {
   const isRunning = task.status === 'running'
   const isInit = task.status === 'init'
   const isDone = task.status === 'completed' || task.status === 'cancelled'
+  const dispatch = useDispatch()
 
   return (
     <ControlBar>
@@ -73,6 +76,16 @@ const TaskControlBar = ({ task, sendMessage }) => {
         downloadHistoryData(task)
       }} disabled={!isDone}>
         Download
+      </Action>
+      <Action onClick={() => {
+        const plot = {
+          title: 'Evaluation X History',
+          revision: 0,
+        }
+        dispatch(addPlot(task.id, plot))
+        dispatch(addLayout(task.id))
+      }}>
+        Add Plot
       </Action>
     </ControlBar>
   )

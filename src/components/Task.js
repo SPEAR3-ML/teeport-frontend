@@ -1,20 +1,21 @@
-import React, { useState, memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Responsive, WidthProvider } from 'react-grid-layout'
-import _ from 'lodash'
+// import _ from 'lodash'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import { selectLayout } from '../redux/selectors'
-import { updateLayout } from '../redux/actions'
+import { selectLayout, selectPlots } from '../redux/selectors'
+import { updateLayout, updatePlots, refreshPlot } from '../redux/actions'
 import { DraggableDiv, FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import TaskControlBar from './TaskControlBar'
 import EvalHistoryPlot from './EvalHistoryPlot'
 import EvolutionPlot from './EvolutionPlot'
+import EvalXHistoryPlot from './EvalXHistoryPlot'
 import useTask from '../hooks/useTask'
-import { generatePlotsLayouts } from '../utils/helpers'
+import { generateDefaultPlots, generatePlotsLayouts } from '../utils/helpers'
 
 const GridLayout = WidthProvider(Responsive)
 
@@ -24,6 +25,8 @@ const getPlotView = (plot, task) => {
       return <EvalHistoryPlot task={task} revision={plot.revision}/>
     case 'Evolution Trace':
       return <EvolutionPlot task={task} recent={plot.recent} revision={plot.revision}/>
+    case 'Evaluation X History':
+      return <EvalXHistoryPlot task={task} revision={plot.revision}/>
     default:
       return null
   }
@@ -31,16 +34,19 @@ const getPlotView = (plot, task) => {
 
 const TaskView = memo(({ taskId, task, sendMessage }) => {
   // console.log('task render!')
-  const [plots, setPlots] = useState([{
-    title: 'Evaluation History',
-    revision: 0,
-  }, {
-    title: 'Evolution Trace',
-    recent: 5,
-    revision: 0,
-  }])
+  const _plots = useSelector(selectPlots(taskId)) || []
+  const plots = _plots.length ? _plots : generateDefaultPlots()
   const layout = useSelector(selectLayout(taskId)) || generatePlotsLayouts(plots.length)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Initialize the plots and layout if necessary
+    if (!_plots.length) {
+      // console.log('default plots!')
+      dispatch(updatePlots(taskId, generateDefaultPlots()))
+      dispatch(updateLayout(taskId, generatePlotsLayouts(plots.length)))
+    }
+  }, []) // eslint-disable-line
 
   return (
     <FlexFrame>
@@ -54,24 +60,18 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
           rowHeight={24}
           draggableHandle='.drag-handler'
           onResize={(__, { i }) => {
-            setPlots(plots => {
-              plots[parseInt(i) - 1].revision += 1
-              return _.clone(plots)
-            })
+            dispatch(refreshPlot(taskId, parseInt(i) - 1))
           }}
           onResizeStop={(__, { i }) => {
-            setPlots(plots => {
-              plots[parseInt(i) - 1].revision += 1
-              return _.clone(plots)
-            })
+            dispatch(refreshPlot(taskId, parseInt(i) - 1))
           }}
           onLayoutChange={(current, all) => dispatch(updateLayout(taskId, all))}
         >
-          {layout.lg.map(l => {
+          {layout.lg.map((l, idx) => {
             return (
               <div key={l.i}>
-                <DraggableDiv title={plots[parseInt(l.i) - 1].title}>
-                  {getPlotView(plots[parseInt(l.i) - 1], task)}
+                <DraggableDiv title={plots[idx].title}>
+                  {getPlotView(plots[idx], task)}
                 </DraggableDiv>
               </div>
             )
