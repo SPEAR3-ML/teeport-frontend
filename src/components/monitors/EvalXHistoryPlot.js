@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
 import { getXVars } from '../../utils/helpers'
+
+import palette from '../../plugins/plotlyPalette'
 
 const EvalXHistoryPlot = ({ task, revision }) => {
   const [figure, setFigure] = useState({
@@ -37,14 +40,20 @@ const EvalXHistoryPlot = ({ task, revision }) => {
     if (x.length) {
       const data = []
       for (let i = 0; i < vars.length; i++) {
+        const color = Color(palette[i % 10])
         data.push({
           x,
           y: vars[i],
-          type: 'scatter',
+          type: 'scattergl',
           mode: 'lines+markers',
           name: `var${i + 1}`,
+          line: {
+            color: color.fade(0.9).string(),
+            // width: 1,
+          },
           marker: {
-            opacity: 0.4,
+            color: color.fade(0.1).string(),
+            size: 5,
           },
         })
       }
@@ -56,6 +65,7 @@ const EvalXHistoryPlot = ({ task, revision }) => {
             trace.x = data[i].x
             trace.y = data[i].y
           })
+          f.data = _.clone(f.data)
         }
         return _.clone(f)
       })
