@@ -1,37 +1,27 @@
 import React, { memo } from 'react'
-import GridLayout, { WidthProvider } from 'react-grid-layout'
-import 'react-grid-layout/css/styles.css'
-import 'react-resizable/css/styles.css'
 
 import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
+import ResponsiveGrid from './ResponsiveGrid'
 import Optimizer from './Optimizer'
-import { generateLayout } from '../utils/helpers'
-
-const ReactGridLayout = WidthProvider(GridLayout)
 
 const Optimizers = ({ clients, sendMessage }) => {
   // console.log('optimizers render!')
   const optimizers = clients.filter(client => client.type === 'optimizer')
-  const layout = generateLayout(optimizers)
 
   return (
     <FlexFrame>
       <MemoScrollbar tag='optimizers'>
-        <ReactGridLayout
-          className='layout'
-          layout={layout}
-          cols={12}
-          rowHeight={60}
-          isDraggable={false}
-          isResizable={false}
+        <ResponsiveGrid
+          rowHeight={640}
+          breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
           {optimizers.map(optimizer => (
-            <div key={optimizer.id}>
+            <div key={optimizer.id} id={optimizer.id}>
               <Optimizer optimizer={optimizer} sendMessage={sendMessage}/>
             </div>
           ))}
-        </ReactGridLayout>
+        </ResponsiveGrid>
       </MemoScrollbar>
     </FlexFrame>
   )

@@ -1,36 +1,26 @@
 import React, { memo } from 'react'
-import GridLayout, { WidthProvider } from 'react-grid-layout'
-import 'react-grid-layout/css/styles.css'
-import 'react-resizable/css/styles.css'
 
 import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
+import ResponsiveGrid from './ResponsiveGrid'
 import Evaluator from './Evaluator'
-import { generateLayout } from '../utils/helpers'
-
-const ReactGridLayout = WidthProvider(GridLayout)
 
 const Evaluators = ({ clients, sendMessage }) => {
   const evaluators = clients.filter(client => client.type === 'evaluator')
-  const layout = generateLayout(evaluators)
 
   return (
     <FlexFrame>
       <MemoScrollbar tag='evaluators'>
-        <ReactGridLayout
-          className='layout'
-          layout={layout}
-          cols={12}
-          rowHeight={60}
-          isDraggable={false}
-          isResizable={false}
+        <ResponsiveGrid
+          rowHeight={640}
+          breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
           {evaluators.map(evaluator => (
-            <div key={evaluator.id}>
+            <div key={evaluator.id} id={evaluator.id}>
               <Evaluator evaluator={evaluator} sendMessage={sendMessage}/>
             </div>
           ))}
-        </ReactGridLayout>
+        </ResponsiveGrid>
       </MemoScrollbar>
     </FlexFrame>
   )
