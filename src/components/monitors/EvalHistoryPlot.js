@@ -45,7 +45,7 @@ const EvalHistoryPlot = ({ task, revision }) => {
     if (x.length) {
       const data = []
       for (let i = 0; i < objs.length; i++) {
-        const color = Color(palette[i])
+        const color = Color(palette[i % 10])
         data.push({
           x,
           y: objs[i],
