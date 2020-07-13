@@ -1,14 +1,13 @@
 import _ from 'lodash'
 
-export const generateLayout = (items, columnNum = 4) => {
+export const generateLayout = (ids, columnNum = 4, height = 1) => {
   const layout = []
   const width = 12 / columnNum
-  const height = 8
-  for (let i = 0; i < _.size(items); i++) {
+  for (let i = 0; i < ids.length; i++) {
     const c = i % columnNum
     const r = Math.floor(i / columnNum)
     const item = {
-      i: items[i].id,
+      i: ids[i],
       x: c * width,
       y: r * height,
       w: width,
@@ -23,12 +22,12 @@ export const generateLayout = (items, columnNum = 4) => {
   return layout
 }
 
-export const generateTasksLayouts = items => {
+export const generateLayouts = (ids, height = 1) => {
   const layouts = {}
-  layouts.lg = generateLayout(items, 4)
-  layouts.md = generateLayout(items, 3)
-  layouts.sm = generateLayout(items, 2)
-  layouts.xs = generateLayout(items, 1)
+  layouts.lg = generateLayout(ids, 4, height)
+  layouts.md = generateLayout(ids, 3, height)
+  layouts.sm = generateLayout(ids, 2, height)
+  layouts.xs = generateLayout(ids, 1, height)
   return layouts
 }
 
