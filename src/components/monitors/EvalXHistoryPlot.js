@@ -7,7 +7,7 @@ import { getXVars } from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
-const EvalXHistoryPlot = ({ task, revision }) => {
+const EvalXHistoryPlot = ({ taskId, task, revision }) => {
   const [figure, setFigure] = useState({
     data: [],
     layout: {
@@ -32,7 +32,16 @@ const EvalXHistoryPlot = ({ task, revision }) => {
       // title: 'Evaluation History',
     },
     frames: [],
-    config: {},
+    config: {
+      displaylogo: false,
+      toImageButtonOptions: {
+        format: 'png', // one of png, svg, jpeg, webp
+        filename: `evaluation-x-history_${taskId}`,
+        height: 600,
+        width: 1200,
+        scale: 2,
+      },
+    },
   })
 
   useEffect(() => {

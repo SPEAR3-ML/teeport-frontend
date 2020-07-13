@@ -9,7 +9,7 @@ import { getXObjsBests, getObjsVars } from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
-const EvalHistoryPlot = ({ task, revision }) => {
+const EvalHistoryPlot = ({ taskId, task, revision }) => {
   const [figure, setFigure] = useState({
     data: [],
     layout: {
@@ -37,7 +37,16 @@ const EvalHistoryPlot = ({ task, revision }) => {
       // title: 'Evaluation History',
     },
     frames: [],
-    config: {},
+    config: {
+      displaylogo: false,
+      toImageButtonOptions: {
+        format: 'png', // one of png, svg, jpeg, webp
+        filename: `evaluation-history_${taskId}`,
+        height: 600,
+        width: 1200,
+        scale: 2,
+      },
+    },
   })
 
   useEffect(() => {

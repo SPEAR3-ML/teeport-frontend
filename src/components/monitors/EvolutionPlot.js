@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { AutoResizePlot } from '../Utils'
 import { getObj1Obj2GenIdx } from '../../utils/helpers'
 
-const EvolutionPlot = ({ task, recent, revision }) => {
+const EvolutionPlot = ({ taskId, task, recent, revision }) => {
   const [figure, setFigure] = useState({
     data: [],
     layout: {
@@ -29,7 +29,16 @@ const EvolutionPlot = ({ task, recent, revision }) => {
       hovermode: 'closest',
     },
     frames: [],
-    config: {},
+    config: {
+      displaylogo: false,
+      toImageButtonOptions: {
+        format: 'png', // one of png, svg, jpeg, webp
+        filename: `evolution_${taskId}`,
+        height: 600,
+        width: 600,
+        scale: 2,
+      },
+    },
   })
 
   useEffect(() => {

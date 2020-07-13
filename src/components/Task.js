@@ -19,14 +19,14 @@ import { generateDefaultPlots, generatePlotsLayouts } from '../utils/helpers'
 
 const GridLayout = WidthProvider(Responsive)
 
-const getPlotView = (plot, task) => {
+const getPlotView = (plot, task, taskId) => {
   switch (plot.title) {
     case 'Evaluation History':
-      return <EvalHistoryPlot task={task} revision={plot.revision}/>
+      return <EvalHistoryPlot task={task} taskId={taskId} revision={plot.revision}/>
     case 'Evolution Trace':
-      return <EvolutionPlot task={task} recent={plot.recent} revision={plot.revision}/>
+      return <EvolutionPlot task={task} taskId={taskId} recent={plot.recent} revision={plot.revision}/>
     case 'Evaluation X History':
-      return <EvalXHistoryPlot task={task} revision={plot.revision}/>
+      return <EvalXHistoryPlot task={task} taskId={taskId} revision={plot.revision}/>
     default:
       return null
   }
@@ -71,7 +71,7 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
             return (
               <div key={l.i}>
                 <DraggableDiv title={plots[idx].title}>
-                  {getPlotView(plots[idx], task)}
+                  {getPlotView(plots[idx], task, taskId)}
                 </DraggableDiv>
               </div>
             )
