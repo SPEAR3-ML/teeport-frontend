@@ -45,16 +45,17 @@ const EvalXHistoryPlot = ({ task, revision }) => {
           x,
           y: vars[i],
           type: 'scattergl',
-          mode: 'lines+markers',
+          // mode: 'lines+markers',
+          mode: 'lines',
           name: `var${i + 1}`,
           line: {
-            color: color.fade(0.9).string(),
+            color: color.fade(0.1).string(),
             // width: 1,
           },
-          marker: {
-            color: color.fade(0.1).string(),
-            size: 5,
-          },
+          // marker: {
+          //   color: color.fade(0.8).string(),
+          //   size: 5,
+          // },
         })
       }
       setFigure(f => {
