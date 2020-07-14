@@ -1,4 +1,5 @@
 import React, { useState, memo } from 'react'
+import _ from 'lodash'
 
 import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
@@ -10,6 +11,7 @@ import NewTask from './NewTask'
 const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientManager }) => {
   // console.log('tasks render!')
   const [showNewTask, setShowNewTask] = useState(false)
+  const [selected, setSelected] = useState({})
 
   return (
     <FlexFrame>
@@ -17,6 +19,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
         sendMessage={sendMessageAsTaskManager}
         onNewTask={() => setShowNewTask(true)}
         tasksNum={tasks ? tasks.length : 0}
+        selected={selected}
       />
       <MemoScrollbar tag='tasks'>
         <ResponsiveGrid
@@ -25,7 +28,19 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
         >
           {tasks.map(task => (
             <div key={task.id} id={task.id}>
-              <TaskCard task={task} sendMessage={sendMessageAsTaskManager}/>
+              <TaskCard
+                task={task}
+                selected={!!selected[task.id]}
+                sendMessage={sendMessageAsTaskManager}
+                toggleSelected={() => {
+                  if (selected[task.id]) {
+                    delete selected[task.id]
+                  } else {
+                    selected[task.id] = true
+                  }
+                  setSelected(_.clone(selected))
+                }}
+              />
             </div>
           ))}
         </ResponsiveGrid>

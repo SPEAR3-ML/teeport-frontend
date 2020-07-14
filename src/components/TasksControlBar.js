@@ -1,6 +1,7 @@
 import React, { useRef, useCallback } from 'react'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
+import _ from 'lodash'
 
 import { yellow } from '../plugins/slacPalette'
 
@@ -29,7 +30,7 @@ const HiddenInput = styled.input`
   display: none;
 `
 
-const TasksControlBar = ({ sendMessage, onNewTask, tasksNum }) => {
+const TasksControlBar = ({ sendMessage, onNewTask, tasksNum, selected }) => {
   const dataImporter = useRef(null)
 
   const importTasks = useCallback(e => {
@@ -81,6 +82,9 @@ const TasksControlBar = ({ sendMessage, onNewTask, tasksNum }) => {
       />
       <Action onClick={downloadTasks} disabled={!tasksNum}>
         Export Data
+      </Action>
+      <Action onClick={() => { console.log(selected) }} disabled={_.isEmpty(selected)}>
+        Enter
       </Action>
     </ControlBar>
   )

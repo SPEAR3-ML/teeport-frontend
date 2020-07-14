@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Plot from 'react-plotly.js'
 // import { grey } from 'material-colors'
 
-import { red, grey } from '../plugins/slacPalette'
+import { red, grey, blue } from '../plugins/slacPalette'
 
 export const CenterDiv = styled.div`
   text-align: center;
@@ -14,8 +14,10 @@ export const CenterDiv = styled.div`
 
 const FillDiv = styled.div`
   position: relative;
+  border-radius: 4px 4px 0px 0px;
   height: 100%;
   opacity: ${({ dimmed }) => dimmed ? 0.6 : 1};
+  box-shadow: ${({ selected }) => selected ? '0px 0px 2px 1px ' + blue.normal : '0px'};
 `
 
 const HandlerDiv = styled.div`
@@ -27,6 +29,7 @@ const HandlerDiv = styled.div`
   border-style: solid;
   border-width: 1px;
   border-color:  ${({ active }) => active ? red.normal : grey.normal};
+  user-select: none;
 `
 
 const ContentDiv = styled.div`
@@ -43,7 +46,7 @@ const ContentDiv = styled.div`
 
 export const DraggableDiv = props => {
   return (
-    <FillDiv dimmed={props.dimmed}>
+    <FillDiv dimmed={props.dimmed} selected={props.selected}>
       <HandlerDiv className='drag-handler' active={props.active}>
         {props.title}
       </HandlerDiv>

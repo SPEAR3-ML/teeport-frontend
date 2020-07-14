@@ -5,7 +5,7 @@ import df from 'dateformat'
 
 import { DraggableDiv } from './Utils'
 
-const TaskCard = ({ task, sendMessage }) => {
+const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
   const { pathname } = useLocation()
   const history = useHistory()
   const [name, setName] = useState('')
@@ -18,6 +18,7 @@ const TaskCard = ({ task, sendMessage }) => {
       title={task.name}
       active={task.status === 'running'}
       dimmed={archived}
+      selected={selected}
     >
       {df(new Date(task.createdAt), 'yyyy-mm-dd HH:MM:ss')}
       <h2>
@@ -90,6 +91,9 @@ const TaskCard = ({ task, sendMessage }) => {
         sendMessage(msg)
       }} disabled={!isDone || archived}>
         Delete
+      </button>
+      <button onClick={toggleSelected}>
+        {selected ? 'Unselect' : 'Select'}
       </button>
     </DraggableDiv>
   )
