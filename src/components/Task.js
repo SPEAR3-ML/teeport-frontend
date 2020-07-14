@@ -68,15 +68,13 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
           }}
           onLayoutChange={(current, all) => dispatch(updateLayouts(taskId, all))}
         >
-          {plots.map(plot => {
-            return (
-              <div key={plot.title}>
-                <DraggableDiv title={plot.title}>
-                  {getPlotView(plot, task, taskId)}
-                </DraggableDiv>
-              </div>
-            )
-          })}
+          {plots.map(plot => (
+            <div key={plot.title}>
+              <DraggableDiv title={plot.title}>
+                {getPlotView(plot, task, taskId)}
+              </DraggableDiv>
+            </div>
+          ))}
         </GridLayout>
       </MemoScrollbar>
     </FlexFrame>
