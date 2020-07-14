@@ -31,38 +31,6 @@ export const generateLayouts = (ids, height = 1) => {
   return layouts
 }
 
-export const generatePlotLayout = (size, columnNum = 2) => {
-  const layout = []
-  const width = 12 / columnNum
-  const height = 12
-  for (let i = 0; i < size; i++) {
-    const c = i % columnNum
-    const r = Math.floor(i / columnNum)
-    const item = {
-      i: `${i + 1}`,
-      x: c * width,
-      y: r * height,
-      w: width,
-      h: height,
-      minW: 3,
-      maxW: 12,
-      minH: height,
-      maxH: 4 * height,
-    }
-    layout.push(item)
-  }
-  return layout
-}
-
-export const generatePlotsLayouts = size => {
-  const layouts = {}
-  layouts.lg = generatePlotLayout(size, 4)
-  layouts.md = generatePlotLayout(size, 3)
-  layouts.sm = generatePlotLayout(size, 2)
-  layouts.xs = generatePlotLayout(size, 1)
-  return layouts
-}
-
 const doOverlap = (x, y, w, h, x0, y0, w0, h0) => {
   if (x >= x0 + w0 || x0 >= x + w) return false
   if (y >= y0 + h0 || y0 >= y + h) return false
@@ -93,10 +61,10 @@ export const getBestLocation = (items, w, h) => {
   return validArray[0]
 }
 
-export const getNewLayout = (items, w, h) => {
+export const getNewLayout = (items, id, w, h) => {
   const xy = getBestLocation(items, w, h)
   const newItem = {
-    i: `${items.length + 1}`,
+    i: id,
     x: xy[0],
     y: xy[1],
     w: w,

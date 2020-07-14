@@ -7,7 +7,7 @@ import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
 import { selectLayout, selectPlots } from '../redux/selectors'
-import { updateLayout, updatePlots, refreshPlot } from '../redux/actions'
+import { updateLayouts, updatePlots, refreshPlot } from '../redux/actions'
 import { DraggableDiv, FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import TaskControlBar from './TaskControlBar'
@@ -15,7 +15,7 @@ import EvalHistoryPlot from './monitors/EvalHistoryPlot'
 import EvolutionPlot from './monitors/EvolutionPlot'
 import EvalXHistoryPlot from './monitors/EvalXHistoryPlot'
 import useTask from '../hooks/useTask'
-import { generateDefaultPlots, generatePlotsLayouts } from '../utils/helpers'
+import { generateDefaultPlots, generateLayouts } from '../utils/helpers'
 
 const GridLayout = WidthProvider(Responsive)
 
@@ -36,7 +36,8 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
   // console.log('task render!')
   const _plots = useSelector(selectPlots(taskId)) || []
   const plots = _plots.length ? _plots : generateDefaultPlots()
-  const layout = useSelector(selectLayout(taskId)) || generatePlotsLayouts(plots.length)
+  const ids = plots.map(plot => plot.title)
+  const layout = useSelector(selectLayout(taskId)) || generateLayouts(ids, 8)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
     if (!_plots.length) {
       // console.log('default plots!')
       dispatch(updatePlots(taskId, generateDefaultPlots()))
-      dispatch(updateLayout(taskId, generatePlotsLayouts(plots.length)))
+      dispatch(updateLayouts(taskId, generateLayouts(ids, 8)))
     }
   }, []) // eslint-disable-line
 
@@ -57,21 +58,21 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
           layouts={layout}
           breakpoints={{ lg: 1920, md: 1280, sm: 720, xs: 480, xxs: 0 }}
           cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
-          rowHeight={24}
+          rowHeight={40}
           draggableHandle='.drag-handler'
           onResize={(__, { i }) => {
-            dispatch(refreshPlot(taskId, parseInt(i) - 1))
+            dispatch(refreshPlot(taskId, i))
           }}
           onResizeStop={(__, { i }) => {
-            dispatch(refreshPlot(taskId, parseInt(i) - 1))
+            dispatch(refreshPlot(taskId, i))
           }}
-          onLayoutChange={(current, all) => dispatch(updateLayout(taskId, all))}
+          onLayoutChange={(current, all) => dispatch(updateLayouts(taskId, all))}
         >
-          {layout.lg.map((l, idx) => {
+          {plots.map(plot => {
             return (
-              <div key={l.i}>
-                <DraggableDiv title={plots[idx].title}>
-                  {getPlotView(plots[idx], task, taskId)}
+              <div key={plot.title}>
+                <DraggableDiv title={plot.title}>
+                  {getPlotView(plot, task, taskId)}
                 </DraggableDiv>
               </div>
             )

@@ -83,7 +83,7 @@ const TaskControlBar = ({ task, sendMessage }) => {
           revision: 0,
         }
         dispatch(addPlot(task.id, plot))
-        dispatch(addLayout(task.id))
+        dispatch(addLayout(task.id, plot.title))
       }}>
         Add Plot
       </Action>

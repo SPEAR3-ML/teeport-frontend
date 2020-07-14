@@ -1,24 +1,25 @@
 import {
-  UPDATE_LAYOUT, ADD_LAYOUT, REMOVE_LAYOUT,
+  UPDATE_LAYOUTS, ADD_LAYOUT, REMOVE_LAYOUT,
   UPDATE_PLOTS, REFRESH_PLOT,
   ADD_PLOT, REMOVE_PLOT,
 } from '../actionTypes'
 
-export const updateLayout = (taskId, layout) => ({
-  type: UPDATE_LAYOUT,
+export const updateLayouts = (taskId, layout) => ({
+  type: UPDATE_LAYOUTS,
   taskId,
   layout,
 })
 
-export const addLayout = taskId => ({
+export const addLayout = (taskId, layoutId) => ({
   type: ADD_LAYOUT,
   taskId,
+  layoutId,
 })
 
-export const removeLayout = (taskId, i) => ({
+export const removeLayout = (taskId, layoutId) => ({
   type: REMOVE_LAYOUT,
   taskId,
-  i,
+  layoutId,
 })
 
 // Actually these actions update plot configs
@@ -28,10 +29,10 @@ export const updatePlots = (taskId, plots) => ({
   plots,
 })
 
-export const refreshPlot = (taskId, i) => ({
+export const refreshPlot = (taskId, plotId) => ({
   type: REFRESH_PLOT,
   taskId,
-  i,
+  plotId,
 })
 
 export const addPlot = (taskId, plot) => ({
@@ -40,8 +41,8 @@ export const addPlot = (taskId, plot) => ({
   plot,
 })
 
-export const removePlot = (taskId, i) => ({
+export const removePlot = (taskId, plotId) => ({
   type: REMOVE_PLOT,
   taskId,
-  i,
+  plotId,
 })

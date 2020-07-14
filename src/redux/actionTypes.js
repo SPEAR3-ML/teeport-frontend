@@ -1,4 +1,4 @@
-export const UPDATE_LAYOUT = 'UPDATE_LAYOUT'
+export const UPDATE_LAYOUTS = 'UPDATE_LAYOUTS'
 export const ADD_LAYOUT = 'ADD_LAYOUT'
 export const REMOVE_LAYOUT = 'REMOVE_LAYOUT'
 export const UPDATE_PLOTS = 'UPDATE_PLOTS'
