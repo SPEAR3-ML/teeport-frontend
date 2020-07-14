@@ -1,14 +1,14 @@
 import { createSelector } from 'reselect'
 
-export const selectLayout = taskId => createSelector(
+export const selectLayouts = taskId => createSelector(
   [
-    state => state.getIn(['layout', taskId]),
+    state => state.getIn(['layouts', taskId]),
   ],
-  layout => {
-    if (!layout) {
-      return layout
+  layouts => {
+    if (!layouts) {
+      return layouts
     } else {
-      return layout.toJS()
+      return layouts.toJS()
     }
   },
 )

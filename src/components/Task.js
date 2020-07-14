@@ -6,7 +6,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import { selectLayout, selectPlots } from '../redux/selectors'
+import { selectLayouts, selectPlots } from '../redux/selectors'
 import { updateLayouts, updatePlots, refreshPlot } from '../redux/actions'
 import { DraggableDiv, FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
@@ -37,7 +37,7 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
   const _plots = useSelector(selectPlots(taskId)) || []
   const plots = _plots.length ? _plots : generateDefaultPlots()
   const ids = plots.map(plot => plot.title)
-  const layout = useSelector(selectLayout(taskId)) || generateLayouts(ids, 8)
+  const layouts = useSelector(selectLayouts(taskId)) || generateLayouts(ids, 8)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
       <MemoScrollbar tag={taskId}>
         <GridLayout
           className='layout'
-          layouts={layout}
+          layouts={layouts}
           breakpoints={{ lg: 1920, md: 1280, sm: 720, xs: 480, xxs: 0 }}
           cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
           rowHeight={40}

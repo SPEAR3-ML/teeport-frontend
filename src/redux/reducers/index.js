@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux-immutable'
 
-import layout from './layout'
+import layouts from './layouts'
 import plots from './plots'
 
 const reducer = combineReducers({
-  layout,
+  layouts,
   plots,
 })
 
