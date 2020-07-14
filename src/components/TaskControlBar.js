@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
-import { addPlot, addLayout } from '../redux/actions'
+import { addPlot, removePlot, addLayout, removeLayout } from '../redux/actions'
 import { yellow } from '../plugins/slacPalette'
 
 const ControlBar = styled.div`
@@ -24,7 +24,7 @@ const Action = styled.button`
   flex: 0 0 auto;
   margin-left: 6px;
   margin-right: 6px;
-  width: 80px;
+  width: 104px;
   height: 24px;
 `
 
@@ -86,6 +86,13 @@ const TaskControlBar = ({ task, sendMessage }) => {
         dispatch(addLayout(task.id, plot.title))
       }}>
         Add Plot
+      </Action>
+      <Action onClick={() => {
+        const plotId = 'Evaluation X History'
+        dispatch(removePlot(task.id, plotId))
+        dispatch(removeLayout(task.id, plotId))
+      }}>
+        Remove Plot
       </Action>
     </ControlBar>
   )
