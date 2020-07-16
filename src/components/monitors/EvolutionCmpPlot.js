@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
 import { getObj1Obj2GenIdx } from '../../utils/helpers'
+
+import palette from '../../plugins/plotlyPalette'
 
 const EvolutionCmpPlot = ({ taskIds, tasks, recent, revision }) => {
   const [figure, setFigure] = useState({
@@ -42,22 +45,25 @@ const EvolutionCmpPlot = ({ taskIds, tasks, recent, revision }) => {
   })
 
   useEffect(() => {
-    const task = tasks.length ? tasks[0] : {}
-    const generations = getObj1Obj2GenIdx(task.history, recent)
     const data = []
-    generations.forEach(([obj1, obj2, genIdx], i) => {
-      data.push({
-        x: obj1,
-        y: obj2,
-        type: 'scatter',
-        mode: 'markers',
-        name: `gen ${genIdx}`,
-        marker: {
-          opacity: Math.pow(0.4, i),
-          color: 'red',
-        },
+    tasks.forEach((task, idx) => {
+      const color = Color(palette[idx % 10])
+      const generations = getObj1Obj2GenIdx(task.history, recent)
+      generations.forEach(([obj1, obj2, genIdx], i) => {
+        data.push({
+          x: obj1,
+          y: obj2,
+          type: 'scatter',
+          mode: 'markers',
+          name: `${task.name} gen ${genIdx}`,
+          marker: {
+            opacity: Math.pow(0.4, i),
+            color: color.string(),
+          },
+        })
       })
     })
+
     setFigure(f => {
       f.data = data
       return _.clone(f)

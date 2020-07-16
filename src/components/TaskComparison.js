@@ -12,7 +12,7 @@ import TaskComparisonControlBar from './TaskComparisonControlBar'
 import EvalHistoryCmpPlot from './monitors/EvalHistoryCmpPlot'
 import EvolutionCmpPlot from './monitors/EvolutionCmpPlot'
 import useMultiTask from '../hooks/useMultiTask'
-import { generateDefaultPlots, generateLayouts } from '../utils/helpers'
+import { generateDefaultCmpPlots, generateLayouts } from '../utils/helpers'
 
 const GridLayout = WidthProvider(Responsive)
 
@@ -29,7 +29,7 @@ const getPlotView = (plot, tasks, taskIds) => {
 
 const TaskComparisonView = memo(({ taskIds, tasks, sendMessage }) => {
   // console.log('task comp render!')
-  const [plots, setPlots] = useState(generateDefaultPlots())
+  const [plots, setPlots] = useState(generateDefaultCmpPlots())
   const [layouts, setLayouts] = useState(generateLayouts(plots.map(plot => plot.title), 8))
 
   return (
