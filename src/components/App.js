@@ -7,6 +7,8 @@ import Titlebar from './Titlebar'
 import Home from './Home'
 import Tasks from './Tasks'
 import Task from './Task'
+import TaskComparison from './TaskComparison'
+import TaskBenchmark from './TaskBenchmark'
 import Optimizers from './Optimizers'
 import Evaluators from './Evaluators'
 import Processors from './Processors'
@@ -41,6 +43,12 @@ const App = () => {
           <Switch>
             <Route path='/about'>
               <About />
+            </Route>
+            <Route path='/tasks/comparison'>
+              <TaskComparison />
+            </Route>
+            <Route path='/tasks/benchmark/:taskGroupId'>
+              <TaskBenchmark />
             </Route>
             <Route path='/tasks/:taskId'>
               <Task />
