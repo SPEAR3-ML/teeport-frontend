@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
+import qs from 'qs'
 import _ from 'lodash'
 
 import { URI_TASK_SERVER } from '../constants'
@@ -40,7 +41,10 @@ const reducer = (state, action) => {
 const useTask = taskId => {
   // console.log('useTask')
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?type=monitor&taskId=${taskId}`)
+  const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?${qs.stringify({
+    type: 'monitor',
+    taskId: JSON.stringify([taskId]),
+  })}`)
 
   useEffect(() => {
     if (lastMessage !== null) {
