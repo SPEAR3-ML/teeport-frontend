@@ -7,12 +7,12 @@ const MemoScrollbar = ({ children, tag }) => {
   const [scrollContainer, setScrollContainer] = useState(null)
 
   useEffect(() => {
-    if (scrollContainer) {
+    if (tag && scrollContainer) {
       scrollContainer.scrollTop = sessionStorage.getItem(`${tag}_scrollTop`) || 0
     }
 
     return () => {
-      if (scrollContainer) {
+      if (tag && scrollContainer) {
         sessionStorage.setItem(`${tag}_scrollTop`, scrollContainer.scrollTop)
       }
     }
