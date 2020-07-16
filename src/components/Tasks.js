@@ -20,6 +20,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
         onNewTask={() => setShowNewTask(true)}
         tasksNum={tasks ? tasks.length : 0}
         selected={selected}
+        unselectAll={() => setSelected({})}
       />
       <MemoScrollbar tag='tasks'>
         <ResponsiveGrid

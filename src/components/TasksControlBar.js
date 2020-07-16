@@ -1,4 +1,6 @@
 import React, { useRef, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
+import qs from 'qs'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 import _ from 'lodash'
@@ -30,7 +32,8 @@ const HiddenInput = styled.input`
   display: none;
 `
 
-const TasksControlBar = ({ sendMessage, onNewTask, tasksNum, selected }) => {
+const TasksControlBar = ({ sendMessage, onNewTask, tasksNum, selected, unselectAll }) => {
+  const history = useHistory()
   const dataImporter = useRef(null)
 
   const importTasks = useCallback(e => {
@@ -83,8 +86,15 @@ const TasksControlBar = ({ sendMessage, onNewTask, tasksNum, selected }) => {
       <Action onClick={downloadTasks} disabled={!tasksNum}>
         Export Data
       </Action>
-      <Action onClick={() => { console.log(selected) }} disabled={_.isEmpty(selected)}>
-        Enter
+      <Action onClick={() => {
+        history.push(`/tasks/comparison?${qs.stringify({
+          taskIds: Object.keys(selected),
+        })}`)
+      }} disabled={_.isEmpty(selected)}>
+        Compare
+      </Action>
+      <Action onClick={unselectAll} disabled={_.isEmpty(selected)}>
+        Unselect All
       </Action>
     </ControlBar>
   )
