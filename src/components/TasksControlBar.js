@@ -32,7 +32,10 @@ const HiddenInput = styled.input`
   display: none;
 `
 
-const TasksControlBar = ({ sendMessage, onNewTask, tasksNum, selected, unselectAll }) => {
+const TasksControlBar = ({
+  sendMessage, onNewTask, onNewBenchmarkTask,
+  tasksNum, selected, unselectAll,
+}) => {
   const history = useHistory()
   const dataImporter = useRef(null)
 
@@ -69,7 +72,7 @@ const TasksControlBar = ({ sendMessage, onNewTask, tasksNum, selected, unselectA
       <Action onClick={onNewTask}>
         New Task
       </Action>
-      <Action onClick={() => console.log('New Benchmark')}>
+      <Action onClick={onNewBenchmarkTask}>
         New Benchmark
       </Action>
       <Action onClick={() => {
