@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Plot from 'react-plotly.js'
 // import { grey } from 'material-colors'
 
-import { red, grey, blue } from '../plugins/slacPalette'
+import { red, grey, blue, purple } from '../plugins/slacPalette'
 
 export const CenterDiv = styled.div`
   text-align: center;
@@ -23,12 +23,16 @@ const FillDiv = styled.div`
 const HandlerDiv = styled.div`
   height: 24px;
   border-radius: 4px 4px 0px 0px;
-  background-color:  ${({ active }) => active ? red.normal : grey.normal};
+  background-color:  ${({ active, type }) => active ? red.normal
+    : type === 0 ? grey.normal : purple.dark
+  };
   text-align: center;
   color: white;
   border-style: solid;
   border-width: 1px;
-  border-color:  ${({ active }) => active ? red.normal : grey.normal};
+  border-color:  ${({ active, type }) => active ? red.normal
+    : type === 0 ? grey.normal : purple.dark
+  };
   user-select: none;
 `
 
@@ -41,16 +45,18 @@ const ContentDiv = styled.div`
   background-color: white;
   border-style: solid;
   border-width: 1px;
-  border-color: ${({ active }) => active ? red.normal : grey.normal};
+  border-color: ${({ active, type }) => active ? red.normal
+    : type === 0 ? grey.normal : purple.dark
+  };
 `
 
 export const DraggableDiv = props => {
   return (
     <FillDiv dimmed={props.dimmed} selected={props.selected}>
-      <HandlerDiv className='drag-handler' active={props.active}>
+      <HandlerDiv className='drag-handler' active={props.active} type={props.type}>
         {props.title}
       </HandlerDiv>
-      <ContentDiv active={props.active}>
+      <ContentDiv active={props.active} type={props.type}>
         {props.children}
       </ContentDiv>
     </FillDiv>

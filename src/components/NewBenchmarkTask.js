@@ -39,7 +39,7 @@ const NewBenchmarkTask = ({ show, setShow, clients, sendMessage }) => {
   return (
     <Modal
       isOpen={show}
-      contentLabel='New Task'
+      contentLabel='New Benchmark Task'
     >
       <h2>New Benchmark Task</h2>
       <div>
@@ -108,7 +108,7 @@ const NewBenchmarkTask = ({ show, setShow, clients, sendMessage }) => {
           disabled={!selectedOptimizer || !selectedEvaluator || !valid}
           onClick={() => {
             const msg = {
-              type: 'newTask',
+              type: 'newBenchmarkTask',
               optimizerId: selectedOptimizer.value,
               evaluatorId: selectedEvaluator.value,
               configs: JSON.parse(configs),

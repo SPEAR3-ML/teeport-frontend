@@ -70,7 +70,7 @@ const TaskView = memo(({ taskId, task, sendMessage }) => {
         >
           {plots.map(plot => (
             <div key={plot.title}>
-              <DraggableDiv title={plot.title}>
+              <DraggableDiv title={plot.title} type={0}>
                 {getPlotView(plot, task, taskId)}
               </DraggableDiv>
             </div>

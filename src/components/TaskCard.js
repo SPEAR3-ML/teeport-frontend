@@ -11,11 +11,20 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
   const [name, setName] = useState('')
   const [descr, setDescr] = useState(task.descr || '')
   const isDone = task.status === 'completed' || task.status === 'cancelled'
+  const isInit = task.status === 'init'
   const archived = !!task.archivedAt
+  let type = 0 // 0: optimization task, 1: benchmarking task
+  // console.log(task.configs)
+  try {
+    if (task.configs.task.runNumber !== undefined) type = 1
+  } catch (error) {
+    // do nothing
+  }
 
   return (
     <DraggableDiv
       title={task.name}
+      type={type}
       active={task.status === 'running'}
       dimmed={archived}
       selected={selected}
@@ -89,7 +98,7 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
           id: task.id,
         })
         sendMessage(msg)
-      }} disabled={!isDone || archived}>
+      }} disabled={!isInit && (!isDone || archived)}>
         Delete
       </button>
       <button onClick={toggleSelected}>
