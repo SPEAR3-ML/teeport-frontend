@@ -24,14 +24,14 @@ const HandlerDiv = styled.div`
   height: 24px;
   border-radius: 4px 4px 0px 0px;
   background-color:  ${({ active, type }) => active ? red.normal
-    : type === 0 ? grey.normal : purple.dark
+    : !type ? grey.normal : purple.dark
   };
   text-align: center;
   color: white;
   border-style: solid;
   border-width: 1px;
   border-color:  ${({ active, type }) => active ? red.normal
-    : type === 0 ? grey.normal : purple.dark
+    : !type ? grey.normal : purple.dark
   };
   user-select: none;
 `
@@ -46,7 +46,7 @@ const ContentDiv = styled.div`
   border-style: solid;
   border-width: 1px;
   border-color: ${({ active, type }) => active ? red.normal
-    : type === 0 ? grey.normal : purple.dark
+    : !type ? grey.normal : purple.dark
   };
 `
 

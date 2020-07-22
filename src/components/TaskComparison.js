@@ -59,7 +59,7 @@ const TaskComparisonView = memo(({ taskIds, tasks, sendMessage }) => {
         >
           {plots.map(plot => (
             <div key={plot.title}>
-              <DraggableDiv title={plot.title} type={0}>
+              <DraggableDiv title={plot.title}>
                 {getPlotView(plot, tasks, taskIds)}
               </DraggableDiv>
             </div>
