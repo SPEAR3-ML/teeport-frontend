@@ -102,6 +102,18 @@ export const generateDefaultCmpPlots = () => {
   return plots
 }
 
+export const generateDefaultBenchmarkPlots = () => {
+  const plots = [{
+    title: 'Evaluation History',
+    revision: 0,
+  }, {
+    title: 'Evolution Trace',
+    recent: 1,
+    revision: 0,
+  }]
+  return plots
+}
+
 export const getObj1Obj2GenIdx = (history, recent = 1) => {
   const generations = []
   for (let i = 0; i < recent; i++) {
