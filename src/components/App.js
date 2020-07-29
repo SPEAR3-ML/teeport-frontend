@@ -47,7 +47,7 @@ const App = () => {
             <Route path='/tasks/comparison'>
               <TaskComparison />
             </Route>
-            <Route path='/tasks/benchmark/:taskGroupId'>
+            <Route path='/tasks/benchmark/:taskId'>
               <TaskBenchmark />
             </Route>
             <Route path='/tasks/:taskId'>

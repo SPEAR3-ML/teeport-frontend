@@ -69,7 +69,13 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
           Update
         </button>
       </div>
-      <button onClick={() => { history.push(`${pathname}/${task.id}`) }} disabled={archived}>
+      <button onClick={() => {
+        if (type === 1) {
+          history.push(`${pathname}/benchmark/${task.id}`)
+        } else {
+          history.push(`${pathname}/${task.id}`)
+        }
+      }} disabled={archived}>
         Enter
       </button>
       <input type='text' value={name} onChange={e => setName(e.target.value)} disabled={archived}/>
