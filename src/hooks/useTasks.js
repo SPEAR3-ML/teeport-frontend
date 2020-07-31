@@ -30,7 +30,7 @@ const useTasks = () => {
             const file = new Blob([JSON.stringify(allTasks, null, 2)], { type: 'application/json' })
             element.href = URL.createObjectURL(file)
             const dtString = df(new Date(), 'yymmdd_HHMMss')
-            element.download = `all_tasks_${dtString}.json`
+            element.download = `tasks_${dtString}.json`
             // document.body.appendChild(element)
             element.click()
             break

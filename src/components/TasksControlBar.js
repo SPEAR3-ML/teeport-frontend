@@ -63,9 +63,10 @@ const TasksControlBar = ({
   const downloadTasks = useCallback(() => {
     const msg = {
       type: 'getTasks',
+      ids: Object.keys(selected),
     }
     sendMessage(JSON.stringify(msg))
-  }, [sendMessage])
+  }, [sendMessage, selected])
 
   return (
     <ControlBar>
@@ -87,7 +88,7 @@ const TasksControlBar = ({
         ref={dataImporter}
       />
       <Action onClick={downloadTasks} disabled={!tasksNum}>
-        Export Data
+        {_.isEmpty(selected) ? 'Export Data' : 'Export Selected'}
       </Action>
       <Action onClick={() => {
         history.push(`/tasks/comparison?${qs.stringify({
