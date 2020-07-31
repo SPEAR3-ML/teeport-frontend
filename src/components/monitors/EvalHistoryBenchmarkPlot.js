@@ -5,7 +5,7 @@ import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
-import { getXObjsBests } from '../../utils/helpers'
+import { getXObjsBests, calcMeanUpperLower, syncLegendStatus } from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
@@ -52,79 +52,116 @@ const EvalHistoryBenchmarkPlot = ({ taskId, task, revision }) => {
 
   useEffect(() => {
     const data = []
-    let objCount = 0
+    const xList = []
+    const bestsList = []
     if (task.history === undefined) return
     task.history.forEach((history, idx) => {
       const [x, objs, bests] = getXObjsBests(history)
       if (x.length) {
-        for (let i = 0; i < objs.length; i++) {
-          const color = Color(palette[objCount % 10])
-          data.push({
-            x,
-            y: objs[i],
-            type: 'scatter',
-            mode: 'lines+markers',
-            name: `run ${idx} obj${i + 1}`,
-            line: {
-              color: color.fade(0.9).string(),
-              // width: 1,
-            },
-            marker: {
-              color: color.fade(0.1).string(),
-              size: 5,
-            },
-            // legendgroup: `g${i + 1}`,
-          })
-          // data.push({
-          //   x,
-          //   y: objs[i],
-          //   type: 'scatter',
-          //   mode: 'lines',
-          //   // name: `obj${i + 1}`,
-          //   line: {
-          //     color: 'rgba(255, 0, 0, 0.2)',
-          //     width: 0.5,
-          //   },
-          //   legendgroup: `g${i + 1}`,
-          //   showlegend: false,
-          // })
-          data.push({
-            x,
-            y: bests[i],
-            type: 'scatter',
-            mode: 'lines',
-            name: `run ${idx} obj${i + 1} min`,
-            line: {
-              color: color.string(),
-              dash: 'dashdot',
-              // width: 3,
-            },
-            // legendgroup: `g${i + 1}-min`,
-          })
-          objCount += 1
+        if (['cancelled', 'completed'].indexOf(task.status) === -1 && // task not finished
+            idx === task.history.length - 1) { // the current run
+          for (let i = 0; i < objs.length; i++) {
+            const color = Color(palette[i % 10])
+            data.push({
+              x,
+              y: objs[i],
+              type: 'scatter',
+              mode: 'lines+markers',
+              name: `obj${i + 1} current run (${idx})`,
+              showlegend: true,
+              line: {
+                color: color.fade(0.9).string(),
+                // width: 1,
+              },
+              marker: {
+                color: color.fade(0.1).string(),
+                size: 5,
+              },
+              legendgroup: 'current',
+            })
+            data.push({
+              x,
+              y: bests[i],
+              type: 'scatter',
+              mode: 'lines',
+              name: `obj${i + 1} current run (${idx})`,
+              showlegend: false,
+              line: {
+                color: color.string(),
+                dash: 'dashdot',
+                // width: 3,
+              },
+              legendgroup: 'current',
+            })
+          }
+        } else {
+          for (let i = 0; i < objs.length; i++) {
+            const color = Color(palette[i % 10])
+            data.push({
+              x,
+              y: bests[i],
+              type: 'scatter',
+              mode: 'lines',
+              name: `obj${i + 1} history runs`,
+              showlegend: !idx,
+              // opacity: 0.2,
+              line: {
+                color: color.fade(0.8).string(),
+                // dash: 'dashdot',
+                width: 1,
+              },
+              legendgroup: 'history',
+            })
+          }
+          // store the data for stats later
+          xList.push(x)
+          bestsList.push(bests)
         }
       }
     })
+    // Add the mean and sigma curve for the history runs
+    if (!_.isEmpty(bestsList)) {
+      const [mean, upper, lower] = calcMeanUpperLower(bestsList)
+      const x = xList[0]
+      for (let i = 0; i < mean.length; i++) {
+        const color = Color(palette[i % 10])
+        // mean
+        data.push({
+          x,
+          y: mean[i],
+          type: 'scatter',
+          mode: 'lines',
+          name: `obj${i + 1} mean`,
+          line: {
+            color: color.string(),
+            // dash: 'dashdot',
+            // width: 1,
+          },
+          legendgroup: 'stats',
+        })
+        // std
+        data.push({
+          x: x.concat(x.slice().reverse()),
+          y: upper[i].concat(lower[i].reverse()),
+          type: 'scatter',
+          fill: 'tozeroy',
+          name: `obj${i + 1} std`,
+          fillcolor: color.fade(0.8).string(),
+          line: {
+            color: 'transparent',
+          },
+          legendgroup: 'stats',
+        })
+      }
+    }
     setFigure(f => {
+      // keep the legend show/hide status
+      syncLegendStatus(f.data, data)
+
       f.data = data
       return _.clone(f)
-      // if (f.data.length !== data.length) {
-      //   f.data = data
-      // } else {
-      //   f.data.forEach((trace, i) => {
-      //     trace.x = data[i].x
-      //     trace.y = data[i].y
-      //   })
-      //   f.layout.datarevision += 1
-      //   // f.layout = _.clone(f.layout)
-      // }
-      // return _.clone(f)
     })
   }, [task])
-
-  // useEffect(() => {
-  //   console.log(revision)
-  // }, [revision])
 
   return (
     <AutoResizePlot
