@@ -13,6 +13,7 @@
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.19",
     "material-colors": "^1.2.6",
+    "mathjs": "^7.1.0",
     "plotly.js": "^1.54.6",
     "qs": "^6.9.4",
     "react": "^16.13.1",
