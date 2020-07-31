@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { mean, std, add, multiply } from 'mathjs'
 
 export const generateLayout = (ids, columnNum = 4, height = 1) => {
   const layout = []
@@ -198,4 +199,28 @@ export const getXVars = history => {
   }
 
   return [x, vars]
+}
+
+export const calcMeanSigma = data => {
+  const mu = mean(data, 0)
+  const sigma = std(data, 0)
+  return [mu, sigma]
+}
+
+export const calcMeanUpperLower = data => {
+  const mu = mean(data, 0)
+  const sigma = std(data, 0)
+  const upper = add(mu, sigma)
+  const lower = add(mu, multiply(-1, sigma))
+  return [mu, upper, lower]
+}
+
+export const syncLegendStatus = (srcData, tgtData) => {
+  const legendStatus = {}
+  srcData.forEach(d => {
+    legendStatus[d.legendgroup] = d.visible
+  })
+  tgtData.forEach(d => {
+    d.visible = legendStatus[d.legendgroup]
+  })
 }
