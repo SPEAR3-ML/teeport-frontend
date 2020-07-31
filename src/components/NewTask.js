@@ -49,6 +49,7 @@ const NewTask = ({ show, setShow, clients, sendMessage }) => {
       <div>
         <label>Choose an optimizer:</label>
         <Select
+          styles={{ menu: styles => ({ ...styles, zIndex: 999 }) }}
           value={selectedOptimizer}
           onChange={selected => {
             setSelectedOptimizer(selected)
@@ -70,6 +71,7 @@ const NewTask = ({ show, setShow, clients, sendMessage }) => {
       <div>
         <label>Choose an evaluator:</label>
         <Select
+          styles={{ menu: styles => ({ ...styles, zIndex: 999 }) }}
           value={selectedEvaluator}
           onChange={selected => {
             setSelectedEvaluator(selected)
