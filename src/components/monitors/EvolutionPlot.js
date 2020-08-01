@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
-import { getObj1Obj2GenIdx } from '../../utils/helpers'
+import {
+  getCurrentFrontParetoFrontGenIdx, xyToSteps,
+  syncLegendStatusByName,
+} from '../../utils/helpers'
+
+import palette from '../../plugins/plotlyPalette'
 
 const EvolutionPlot = ({ taskId, task, recent, revision }) => {
   const [figure, setFigure] = useState({
@@ -42,22 +48,49 @@ const EvolutionPlot = ({ taskId, task, recent, revision }) => {
   })
 
   useEffect(() => {
-    const generations = getObj1Obj2GenIdx(task.history, recent)
+    const [current, pareto, genIdx] = getCurrentFrontParetoFrontGenIdx(task.history)
+    if (genIdx === -1) return
+
     const data = []
-    generations.forEach(([obj1, obj2, genIdx], i) => {
-      data.push({
-        x: obj1,
-        y: obj2,
-        type: 'scatter',
-        mode: 'markers',
-        name: `gen ${genIdx}`,
-        marker: {
-          opacity: Math.pow(0.4, i),
-          color: 'red',
-        },
-      })
+    const color = Color(palette[0])
+    data.push({
+      x: current[0],
+      y: current[1],
+      type: 'scatter',
+      mode: 'markers',
+      name: `current (${genIdx})`,
+      marker: {
+        color: color.fade(0.2).string(),
+      },
+    })
+    const steps = xyToSteps(pareto)
+    data.push({
+      x: steps[0],
+      y: steps[1],
+      type: 'scatter',
+      mode: 'lines',
+      name: 'HV shape',
+      line: {
+        color: color.string(),
+        dash: 'dashdot',
+        // width: 1,
+      },
+    })
+    data.push({
+      x: pareto[0],
+      y: pareto[1],
+      type: 'scatter',
+      mode: 'markers',
+      name: 'Pareto frontier',
+      marker: {
+        color: color.darken(0.5).string(),
+        symbol: 'cross',
+        size: 8,
+      },
     })
     setFigure(f => {
+      syncLegendStatusByName(f.data, data)
+
       f.data = data
       return _.clone(f)
     })
