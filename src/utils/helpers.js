@@ -1,5 +1,9 @@
 import _ from 'lodash'
-import { mean, std, add, multiply } from 'mathjs'
+import {
+  mean, std, add, multiply, transpose,
+  zeros, flatten, min,
+} from 'mathjs'
+import pf from 'pareto-frontier'
 
 export const generateLayout = (ids, columnNum = 4, height = 1) => {
   const layout = []
@@ -139,6 +143,42 @@ export const getObj1Obj2GenIdx = (history, recent = 1) => {
     generations.push([obj1, obj2, genIdx])
   }
   return generations
+}
+
+export const getCurrentFrontParetoFrontGenIdx = history => {
+  if (!history || !history.length) {
+    return [null, null, -1]
+  }
+
+  const genIdx = history.length
+
+  const Y = history[genIdx - 1][1]
+  const dim = Y[0].length
+  if (dim === 1) {
+    const currentFront = transpose(Y)
+    currentFront.push(zeros(currentFront[0].length).toArray())
+    const paretoFront = [[min(currentFront[0])], [0]]
+    return [currentFront, paretoFront, genIdx]
+  } else if (dim === 2) {
+    const currentFront = transpose(Y)
+
+    let front = []
+    history.forEach(data => {
+      front = pf.getParetoFrontier(front.concat(data[1]), { optimize: 'bottomLeft' })
+    })
+    const paretoFront = transpose(front)
+
+    return [currentFront, paretoFront, genIdx]
+  }
+}
+
+export const xyToSteps = xy => {
+  const x = xy[0]
+  const y = xy[1]
+  const xSteps = flatten(transpose([x, x])).slice(1)
+  const ySteps = flatten(transpose([y, y])).slice(0, -1)
+
+  return [xSteps, ySteps]
 }
 
 export const getXObjsBests = history => {
