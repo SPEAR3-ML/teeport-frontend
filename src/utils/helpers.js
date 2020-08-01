@@ -215,12 +215,22 @@ export const calcMeanUpperLower = data => {
   return [mu, upper, lower]
 }
 
-export const syncLegendStatus = (srcData, tgtData) => {
+export const syncLegendStatusByGroup = (srcData, tgtData) => {
   const legendStatus = {}
   srcData.forEach(d => {
     legendStatus[d.legendgroup] = d.visible
   })
   tgtData.forEach(d => {
     d.visible = legendStatus[d.legendgroup]
+  })
+}
+
+export const syncLegendStatusByName = (srcData, tgtData) => {
+  const legendStatus = {}
+  srcData.forEach(d => {
+    legendStatus[d.name] = d.visible
+  })
+  tgtData.forEach(d => {
+    d.visible = legendStatus[d.name]
   })
 }

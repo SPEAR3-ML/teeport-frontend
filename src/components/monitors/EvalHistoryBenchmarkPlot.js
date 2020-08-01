@@ -5,7 +5,7 @@ import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
-import { getXObjsBests, calcMeanUpperLower, syncLegendStatus } from '../../utils/helpers'
+import { getXObjsBests, calcMeanUpperLower, syncLegendStatusByGroup } from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
@@ -156,7 +156,7 @@ const EvalHistoryBenchmarkPlot = ({ taskId, task, revision }) => {
     }
     setFigure(f => {
       // keep the legend show/hide status
-      syncLegendStatus(f.data, data)
+      syncLegendStatusByGroup(f.data, data)
 
       f.data = data
       return _.clone(f)
