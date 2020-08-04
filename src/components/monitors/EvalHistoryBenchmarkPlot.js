@@ -58,7 +58,7 @@ const EvalHistoryBenchmarkPlot = ({ taskId, task, revision }) => {
     task.history.forEach((history, idx) => {
       const [x, objs, bests] = getXObjsBests(history)
       if (x.length) {
-        if (['cancelled', 'completed'].indexOf(task.status) === -1 && // task not finished
+        if (task.status !== 'completed' && // task not completed
             idx === task.history.length - 1) { // the current run
           for (let i = 0; i < objs.length; i++) {
             const color = Color(palette[i % 10])
