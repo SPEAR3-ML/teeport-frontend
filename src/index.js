@@ -4,6 +4,9 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createGlobalStyle } from 'styled-components'
 
+import './custom.scss'
+// import 'bootstrap/dist/css/bootstrap.css'
+
 import App from './components/App'
 import store from './redux/store'
 
@@ -38,6 +41,11 @@ const GlobalStyle = createGlobalStyle`
   }
   .plain .react-grid-item.cssTransforms {
     transition-property: none;
+  }
+
+  .ace_editor {
+    border: 1px solid lightgray;
+    border-radius: 4px;
   }
 `
 
