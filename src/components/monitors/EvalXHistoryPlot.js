@@ -3,7 +3,7 @@ import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
-import { getXVars } from '../../utils/helpers'
+import { getXVars, syncLegendStatusByName } from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
@@ -68,15 +68,9 @@ const EvalXHistoryPlot = ({ taskId, task, revision }) => {
         })
       }
       setFigure(f => {
-        if (!f.data.length) {
-          f.data = data
-        } else {
-          f.data.forEach((trace, i) => {
-            trace.x = data[i].x
-            trace.y = data[i].y
-          })
-          f.data = _.clone(f.data)
-        }
+        syncLegendStatusByName(f.data, data)
+
+        f.data = data
         return _.clone(f)
       })
     }
