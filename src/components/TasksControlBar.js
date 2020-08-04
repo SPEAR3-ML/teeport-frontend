@@ -64,6 +64,7 @@ const TasksControlBar = ({
     const msg = {
       type: 'getTasks',
       ids: Object.keys(selected),
+      mode: 'all',
     }
     sendMessage(JSON.stringify(msg))
   }, [sendMessage, selected])
