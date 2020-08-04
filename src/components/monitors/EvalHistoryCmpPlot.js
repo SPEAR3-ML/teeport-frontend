@@ -51,12 +51,11 @@ const EvalHistoryCmpPlot = ({ taskIds, tasks, revision }) => {
 
   useEffect(() => {
     const data = []
-    let objCount = 0
-    tasks.forEach(task => {
+    tasks.forEach((task, idx) => {
       const [x, objs, bests] = getXObjsBests(task.history)
       if (x.length) {
+        const color = Color(palette[idx % 10])
         for (let i = 0; i < objs.length; i++) {
-          const color = Color(palette[objCount % 10])
           data.push({
             x,
             y: objs[i],
@@ -64,11 +63,11 @@ const EvalHistoryCmpPlot = ({ taskIds, tasks, revision }) => {
             mode: 'lines+markers',
             name: `${task.name} obj${i + 1}`,
             line: {
-              color: color.fade(0.9).string(),
+              color: color.darken(0.5 * i).fade(0.9).string(),
               // width: 1,
             },
             marker: {
-              color: color.fade(0.1).string(),
+              color: color.darken(0.5 * i).fade(0.1).string(),
               size: 5,
             },
             // legendgroup: `g${i + 1}`,
@@ -93,13 +92,12 @@ const EvalHistoryCmpPlot = ({ taskIds, tasks, revision }) => {
             mode: 'lines',
             name: `${task.name} obj${i + 1} min`,
             line: {
-              color: color.string(),
+              color: color.darken(0.5 * i).string(),
               dash: 'dashdot',
               // width: 3,
             },
             // legendgroup: `g${i + 1}-min`,
           })
-          objCount += 1
         }
       }
     })

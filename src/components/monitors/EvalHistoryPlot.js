@@ -5,7 +5,7 @@ import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
-import { getXObjsBests, getObjsVars } from '../../utils/helpers'
+import { getXObjsBests, getObjsVars, syncLegendStatusByName } from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
@@ -53,8 +53,8 @@ const EvalHistoryPlot = ({ taskId, task, revision }) => {
     const [x, objs, bests] = getXObjsBests(task.history)
     if (x.length) {
       const data = []
+      const color = Color(palette[0])
       for (let i = 0; i < objs.length; i++) {
-        const color = Color(palette[i % 10])
         data.push({
           x,
           y: objs[i],
@@ -62,11 +62,11 @@ const EvalHistoryPlot = ({ taskId, task, revision }) => {
           mode: 'lines+markers',
           name: `obj${i + 1}`,
           line: {
-            color: color.fade(0.9).string(),
+            color: color.darken(0.5 * i).fade(0.9).string(),
             // width: 1,
           },
           marker: {
-            color: color.fade(0.1).string(),
+            color: color.darken(0.5 * i).fade(0.1).string(),
             size: 5,
           },
           // legendgroup: `g${i + 1}`,
@@ -91,7 +91,7 @@ const EvalHistoryPlot = ({ taskId, task, revision }) => {
           mode: 'lines',
           name: `obj${i + 1} min`,
           line: {
-            color: color.string(),
+            color: color.darken(0.5 * i).string(),
             dash: 'dashdot',
             // width: 3,
           },
@@ -99,15 +99,9 @@ const EvalHistoryPlot = ({ taskId, task, revision }) => {
         })
       }
       setFigure(f => {
-        if (!f.data.length) {
-          f.data = data
-        } else {
-          f.data.forEach((trace, i) => {
-            trace.x = data[i].x
-            trace.y = data[i].y
-          })
-          f.data = _.clone(f.data)
-        }
+        syncLegendStatusByName(f.data, data)
+
+        f.data = data
         return _.clone(f)
       })
     }
