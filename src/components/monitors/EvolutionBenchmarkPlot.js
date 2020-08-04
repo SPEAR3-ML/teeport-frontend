@@ -3,7 +3,10 @@ import Color from 'color'
 import _ from 'lodash'
 
 import { AutoResizePlot } from '../Utils'
-import { getObj1Obj2GenIdx } from '../../utils/helpers'
+import {
+  getCurrentFrontParetoFrontGenIdx, xyToSteps,
+  syncLegendStatusByGroup,
+} from '../../utils/helpers'
 
 import palette from '../../plugins/plotlyPalette'
 
@@ -45,27 +48,93 @@ const EvolutionBenchmarkPlot = ({ taskId, task, recent, revision }) => {
   })
 
   useEffect(() => {
-    const data = []
     if (task.history === undefined) return
+    const data = []
     task.history.forEach((history, idx) => {
-      const color = Color(palette[idx % 10])
-      const generations = getObj1Obj2GenIdx(history, recent)
-      generations.forEach(([obj1, obj2, genIdx], i) => {
-        data.push({
-          x: obj1,
-          y: obj2,
-          type: 'scatter',
-          mode: 'markers',
-          name: `run ${idx} gen ${genIdx}`,
-          marker: {
-            opacity: Math.pow(0.4, i),
-            color: color.string(),
-          },
-        })
-      })
+      const [current, pareto, genIdx] = getCurrentFrontParetoFrontGenIdx(history)
+      if (genIdx !== -1) {
+        const color = Color(palette[0])
+        if (task.status !== 'completed' && // task not completed
+            idx === task.history.length - 1) { // the current run
+          data.push({
+            x: current[0],
+            y: current[1],
+            type: 'scatter',
+            mode: 'markers',
+            name: `current run (${idx})`,
+            marker: {
+              color: color.fade(0.2).string(),
+            },
+            legendgroup: 'current',
+          })
+          const steps = xyToSteps(pareto)
+          data.push({
+            x: steps[0],
+            y: steps[1],
+            type: 'scatter',
+            mode: 'lines',
+            name: 'current HV shape',
+            // showlegend: false,
+            line: {
+              color: color.string(),
+              dash: 'dashdot',
+              // width: 1,
+            },
+            legendgroup: 'current',
+          })
+          data.push({
+            x: pareto[0],
+            y: pareto[1],
+            type: 'scatter',
+            mode: 'markers',
+            name: 'current Pareto frontier',
+            // showlegend: false,
+            marker: {
+              color: color.darken(0.5).string(),
+              symbol: 'cross',
+              size: 8,
+            },
+            legendgroup: 'current',
+          })
+        } else {
+          const steps = xyToSteps(pareto)
+          data.push({
+            x: steps[0],
+            y: steps[1],
+            type: 'scatter',
+            mode: 'lines',
+            name: 'history runs',
+            showlegend: !idx,
+            line: {
+              color: color.fade(0.8).string(),
+              // dash: 'dashdot',
+              width: 1,
+            },
+            legendgroup: 'history',
+          })
+          data.push({
+            x: pareto[0],
+            y: pareto[1],
+            type: 'scatter',
+            mode: 'markers',
+            name: 'history Pareto frontiers',
+            showlegend: !idx,
+            marker: {
+              color: color.darken(0.5).fade(0.8).string(),
+              symbol: 'cross',
+              // size: 8,
+            },
+            legendgroup: 'history',
+          })
+          // store the data for stats later
+          // xList.push(x)
+          // bestsList.push(bests)
+        }
+      }
     })
-
     setFigure(f => {
+      syncLegendStatusByGroup(f.data, data)
+
       f.data = data
       return _.clone(f)
     })
