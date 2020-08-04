@@ -18,7 +18,7 @@ const reducer = (state, action) => {
       newState.tasksTS = action.timestamp
       return newState
     }
-    case 'evaluate': {
+    case 'evaluate': { // not gonna happen since we only receive Y
       const idx = state.tasks.map(task => task.id).indexOf(action.taskId)
       if (idx !== -1) {
         const newState = _.cloneDeep(state)
@@ -34,8 +34,9 @@ const reducer = (state, action) => {
       if (idx !== -1) {
         const newState = _.cloneDeep(state)
         if (newState.tasksTS && (action.timestamp > newState.tasksTS)) {
-          newState.tasks[idx].history.push([newState.tasks[idx].pending[0][0], action.data])
-          newState.tasks[idx].pending.shift()
+          newState.tasks[idx].history.push([[], action.data])
+          // newState.tasks[idx].history.push([newState.tasks[idx].pending[0][0], action.data])
+          // newState.tasks[idx].pending.shift()
         }
         return newState
       }

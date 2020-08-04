@@ -18,7 +18,7 @@ const reducer = (state, action) => {
       newState.taskTS = action.timestamp
       return newState
     }
-    case 'evaluate': {
+    case 'evaluate': { // not gonna happen since we only receive Y
       const newState = _.cloneDeep(state)
       if (newState.taskTS && (action.timestamp > newState.taskTS)) {
         newState.task.pending.push([action.data, null])
@@ -31,8 +31,9 @@ const reducer = (state, action) => {
         if (newState.task.history[newState.task.currentRun] === undefined) {
           newState.task.history.push([])
         }
-        newState.task.history[newState.task.currentRun].push([newState.task.pending[0][0], action.data])
-        newState.task.pending.shift()
+        newState.task.history[newState.task.currentRun].push([[], action.data])
+        // newState.task.history[newState.task.currentRun].push([newState.task.pending[0][0], action.data])
+        // newState.task.pending.shift()
       }
       return newState
     }
