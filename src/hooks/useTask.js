@@ -18,7 +18,7 @@ const reducer = (state, action) => {
       newState.taskTS = action.timestamp
       return newState
     }
-    case 'evaluate': {
+    case 'evaluate': { // not gonna happen since we only receive Y
       const newState = _.cloneDeep(state)
       if (newState.taskTS && (action.timestamp > newState.taskTS)) {
         newState.task.pending.push([action.data, null])
@@ -28,8 +28,9 @@ const reducer = (state, action) => {
     case 'evaluated': {
       const newState = _.cloneDeep(state)
       if (newState.taskTS && (action.timestamp > newState.taskTS)) {
-        newState.task.history.push([newState.task.pending[0][0], action.data])
-        newState.task.pending.shift()
+        newState.task.history.push([[], action.data])
+        // newState.task.history.push([newState.task.pending[0][0], action.data])
+        // newState.task.pending.shift()
       }
       return newState
     }
@@ -44,6 +45,7 @@ const useTask = taskId => {
   const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?${qs.stringify({
     type: 'monitor',
     taskId: JSON.stringify([taskId]),
+    configs: JSON.stringify({ mode: 'y' }),
   })}`)
 
   useEffect(() => {
