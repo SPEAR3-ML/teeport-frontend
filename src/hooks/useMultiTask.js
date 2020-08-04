@@ -53,6 +53,7 @@ const useMultiTask = taskIds => {
   const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?${qs.stringify({
     type: 'monitor',
     taskId: JSON.stringify(taskIds),
+    configs: JSON.stringify({ mode: 'y' }),
   })}`)
 
   useEffect(() => {

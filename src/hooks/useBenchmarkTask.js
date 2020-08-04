@@ -48,6 +48,7 @@ const useBenchmarkTask = taskId => {
   const [sendMessage, lastMessage, readyState] = useWebSocket(`${URI_TASK_SERVER}?${qs.stringify({
     type: 'monitor',
     taskId: JSON.stringify([taskId]),
+    configs: JSON.stringify({ mode: 'y' }),
   })}`)
 
   useEffect(() => {
