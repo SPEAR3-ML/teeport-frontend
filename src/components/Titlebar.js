@@ -59,7 +59,7 @@ const Titlebar = () => {
   const { pathname } = useLocation()
 
   return (
-    <Navbar bg='dark' variant='dark' expand='md'>
+    <Navbar bg='dark' variant='dark' expand='md' style={{ zIndex: 10 }}>
       <LinkContainer to='/'>
         <Navbar.Brand>
           <Logo
@@ -67,7 +67,7 @@ const Titlebar = () => {
             className='d-inline-block align-top'
             alt='Teeport logo'
           />
-          Teeport
+          TeePort
         </Navbar.Brand>
       </LinkContainer>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -90,7 +90,7 @@ const Titlebar = () => {
           </Nav.Link>
         </Nav>
         <Form inline>
-          <FormControl type='text' placeholder='Search' className='mr-sm-2' />
+          <FormControl type='text' placeholder='Search' />
         </Form>
       </Navbar.Collapse>
     </Navbar>
