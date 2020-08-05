@@ -27,7 +27,7 @@ const Frame = styled.div`
 const Content = styled.div`
   position: fixed;
   width: 100%;
-  top: 48px;
+  top: 56px;
   bottom: 0px;
 `
 
