@@ -12,7 +12,7 @@ const Processors = ({ clients, sendMessage }) => {
     <FlexFrame>
       <MemoScrollbar tag='processors'>
         <ResponsiveGrid
-          rowHeight={640}
+          rowHeight={420}
           breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
           {processors.map(processor => (
