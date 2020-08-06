@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
@@ -8,20 +8,12 @@ import FormControl from 'react-bootstrap/FormControl'
 import df from 'dateformat'
 
 // import { DraggableDiv } from './Utils'
+import useLock from '../hooks/useLock'
 
 const Processor = ({ processor, sendMessage }) => {
   const [name, setName] = useState(processor.name)
   const [editName, setEditName] = useState(false)
-  const [lock, setLock] = useState(true) // dangerous action lock
-
-  useEffect(() => {
-    if (lock) return
-
-    const timer = setTimeout(() => {
-      setLock(true)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [lock])
+  const [locked, unlock] = useLock(1000)
 
   return (
     <Card style={{ height: '100%' }}>
@@ -96,8 +88,8 @@ const Processor = ({ processor, sendMessage }) => {
       </Card.Body>
       <Card.Footer>
         <Button size='lg' block onClick={() => {
-          if (lock) {
-            return setLock(false)
+          if (locked) {
+            return unlock()
           }
 
           const msg = JSON.stringify({
@@ -106,7 +98,7 @@ const Processor = ({ processor, sendMessage }) => {
           })
           sendMessage(msg)
         }}>
-          {lock ? 'Close' : 'Confirm'}
+          {locked ? 'Close' : 'Confirm'}
         </Button>
       </Card.Footer>
     </Card>
