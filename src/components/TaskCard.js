@@ -13,6 +13,7 @@ import EditableTitle from './EditableTitle'
 import EditableTextarea from './EditableTextarea'
 import CopyableBlock from './CopyableBlock'
 import useLock from '../hooks/useLock'
+import { github } from '../plugins/jsonThemes'
 
 const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
   const { pathname } = useLocation()
@@ -90,15 +91,9 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
           />
         </Card.Body>
         : <Card.Body className='overflow-auto d-flex flex-column'>
-          <JSONPretty data={task.configs}
-            theme={{
-              main: 'line-height:1.3;color:#000000;background:#ffffff;overflow:auto;',
-              error: 'line-height:1.3;color:#66d9ef;background:#272822;overflow:auto;',
-              key: 'color:#000000;',
-              string: 'color:#d14;',
-              value: 'color:#099;',
-              boolean: 'color:#000000;font-weight:bold;',
-            }}
+          <JSONPretty
+            data={task.configs}
+            theme={github}
           />
         </Card.Body>}
       <Card.Footer className='d-flex flex-row'>
