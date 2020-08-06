@@ -3,21 +3,17 @@ import Card from 'react-bootstrap/Card'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
 import JSONPretty from 'react-json-pretty'
 import df from 'dateformat'
 
 import EditableTitle from './EditableTitle'
+import EditableTextarea from './EditableTextarea'
 import CopyableBlock from './CopyableBlock'
 import useLock from '../hooks/useLock'
 
 const Evaluator = ({ evaluator, sendMessage }) => {
   const [locked, unlock] = useLock(1000)
-  const [descr, setDescr] = useState(evaluator.descr || '')
-  const [editing, setEditing] = useState(false)
   const [tab, setTab] = useState('info')
   // const active = evaluator.taskId !== null && evaluator.taskId.length
 
@@ -67,55 +63,18 @@ const Evaluator = ({ evaluator, sendMessage }) => {
               <Form.Label>Description</Form.Label>
             </Form.Group>
           </Form>
-          {!editing
-            ? <div
-              className='h-100 w-100 text-secondary bg-light rounded px-3 py-2 overflow-auto'
-              onClick={() => setEditing(true)}
-              style={{ whiteSpace: 'pre-wrap' }}
-            >
-              <cite>{descr}</cite>
-            </div>
-            : <div className='d-flex flex-column flex-grow-1'>
-              <InputGroup className='flex-grow-1'>
-                <FormControl as='textarea' aria-label='Description'
-                  style={{
-                    resize: 'none',
-                    borderRadius: '4px 4px 0 0',
-                    marginBottom: -1,
-                  }}
-                  value={descr}
-                  onChange={e => setDescr(e.target.value)}
-                />
-              </InputGroup>
-              <ButtonGroup aria-label='Desc control'>
-                <Button
-                  onClick={() => {
-                    setDescr(evaluator.descr || '')
-                    setEditing(false)
-                  }}
-                  variant='outline-secondary'
-                  style={{ borderRadius: '0 0 0 4px' }}
-                >
-                  Cancel
-                </Button>
-                <Button disabled={descr === (evaluator.descr || '')}
-                  onClick={() => {
-                    const msg = JSON.stringify({
-                      type: 'updateClientDescr',
-                      clientId: evaluator.id,
-                      descr,
-                    })
-                    sendMessage(msg)
-                    setEditing(false)
-                  }}
-                  variant='outline-secondary'
-                  style={{ borderRadius: '0 0 4px 0' }}
-                >
-                  Confirm
-                </Button>
-              </ButtonGroup>
-            </div>
-          }
+          <EditableTextarea
+            current={evaluator.descr}
+            placeholder='Add some description about this evaluator'
+            onConfirm={descr => {
+              const msg = JSON.stringify({
+                type: 'updateClientDescr',
+                clientId: evaluator.id,
+                descr,
+              })
+              sendMessage(msg)
+            }}
+          />
         </Card.Body>
         : <Card.Body className='overflow-auto d-flex flex-column'>
           <JSONPretty data={evaluator.configs}
