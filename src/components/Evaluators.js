@@ -12,7 +12,7 @@ const Evaluators = ({ clients, sendMessage }) => {
     <FlexFrame>
       <MemoScrollbar tag='evaluators'>
         <ResponsiveGrid
-          rowHeight={640}
+          rowHeight={480}
           breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
           {evaluators.map(evaluator => (

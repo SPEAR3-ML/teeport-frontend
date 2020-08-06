@@ -13,7 +13,7 @@ const Optimizers = ({ clients, sendMessage }) => {
     <FlexFrame>
       <MemoScrollbar tag='optimizers'>
         <ResponsiveGrid
-          rowHeight={640}
+          rowHeight={480}
           breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
           {optimizers.map(optimizer => (
