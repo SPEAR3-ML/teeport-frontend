@@ -1,13 +1,12 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import df from 'dateformat'
 
 import EditableTitle from './EditableTitle'
+import CopyableTitle from './CopyableTitle'
 import useLock from '../hooks/useLock'
 
 const Processor = ({ processor, sendMessage }) => {
@@ -33,23 +32,7 @@ const Processor = ({ processor, sendMessage }) => {
         </Card.Subtitle>
       </Card.Header>
       <Card.Body style={{ display: 'flex', flexDirection: 'column' }}>
-        <Card.Title>
-          <OverlayTrigger
-            placement='bottom'
-            delay={{ show: 1000, hide: 100 }}
-            overlay={<Tooltip id='button-tooltip-2'>Click to copy id</Tooltip>}
-          >
-            <Button size='lg' variant='light' block onClick={() => {
-              if (navigator.clipboard) {
-                navigator.clipboard.writeText(processor.id)
-              } else {
-                alert('Copy failed, please copy the id manually')
-              }
-            }}>
-              {processor.private ? '' : processor.id}
-            </Button>
-          </OverlayTrigger>
-        </Card.Title>
+        <CopyableTitle title={processor.private ? '' : processor.id}/>
         <InputGroup style={{ flex: '1 1 auto' }}>
           <InputGroup.Prepend>
             <InputGroup.Text>Info</InputGroup.Text>
