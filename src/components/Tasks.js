@@ -27,7 +27,7 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
       />
       <MemoScrollbar tag='tasks'>
         <ResponsiveGrid
-          rowHeight={720}
+          rowHeight={480}
           breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
           {tasks.map(task => (
