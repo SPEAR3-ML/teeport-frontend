@@ -4,6 +4,12 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 
+const moveCaretAtEnd = e => {
+  const _value = e.target.value
+  e.target.value = ''
+  e.target.value = _value
+}
+
 const EditableTextarea = ({ current, placeholder, onConfirm }) => {
   const [text, setText] = useState(current || '')
   const [editing, setEditing] = useState(false)
@@ -24,6 +30,7 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
               marginBottom: -1,
             }}
             onChange={e => setText(e.target.value)}
+            onFocus={moveCaretAtEnd}
           />
         </InputGroup>
         <ButtonGroup aria-label='Desc control'>
