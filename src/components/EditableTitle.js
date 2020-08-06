@@ -7,6 +7,7 @@ import FormControl from 'react-bootstrap/FormControl'
 const EditableTitle = ({ current, placeholder, onConfirm }) => {
   const [title, setTitle] = useState(current)
   const [editing, setEditing] = useState(false)
+  const [focus, setFocus] = useState(false)
 
   return (
     <Card.Title onClick={editing ? null : () => setEditing(true)}
@@ -14,7 +15,10 @@ const EditableTitle = ({ current, placeholder, onConfirm }) => {
     >
       {!editing
         ? title
-        : <InputGroup>
+        : <InputGroup
+          onMouseEnter={() => setFocus(true)}
+          onMouseLeave={() => setFocus(false)}
+        >
           <FormControl
             autoFocus
             placeholder={placeholder}
@@ -22,10 +26,18 @@ const EditableTitle = ({ current, placeholder, onConfirm }) => {
             aria-describedby='basic-addon2'
             value={title}
             onChange={e => setTitle(e.target.value)}
+            onBlur={() => {
+              if (!focus) {
+                setTitle(current)
+                setFocus(false)
+                setEditing(false)
+              }
+            }}
           />
           <InputGroup.Append>
             <Button variant='outline-secondary' onClick={() => {
               onConfirm(title)
+              setFocus(false)
               setEditing(false)
             }} disabled={current === title}>
               Confirm
@@ -33,6 +45,7 @@ const EditableTitle = ({ current, placeholder, onConfirm }) => {
             <Button variant='outline-secondary'
               onClick={() => {
                 setTitle(current)
+                setFocus(false)
                 setEditing(false)
               }}
             >

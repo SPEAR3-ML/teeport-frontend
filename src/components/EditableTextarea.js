@@ -11,12 +11,17 @@ const moveCaretAtEnd = e => {
 }
 
 const EditableTextarea = ({ current, placeholder, onConfirm }) => {
-  const [text, setText] = useState(current || '')
+  const validCurrent = current || ''
+  const [text, setText] = useState(validCurrent)
   const [editing, setEditing] = useState(false)
+  const [focus, setFocus] = useState(false)
 
   if (editing) {
     return (
-      <div className='d-flex flex-column flex-grow-1'>
+      <div className='d-flex flex-column flex-grow-1'
+        onMouseEnter={() => setFocus(true)}
+        onMouseLeave={() => setFocus(false)}
+      >
         <InputGroup className='flex-grow-1'>
           <FormControl as='textarea'
             autoFocus
@@ -30,13 +35,24 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
               marginBottom: -1,
             }}
             onChange={e => setText(e.target.value)}
-            onFocus={moveCaretAtEnd}
+            onFocus={e => {
+              moveCaretAtEnd(e)
+              setFocus(true)
+            }}
+            onBlur={() => {
+              if (!focus) {
+                setText(validCurrent)
+                setFocus(false)
+                setEditing(false)
+              }
+            }}
           />
         </InputGroup>
         <ButtonGroup aria-label='Desc control'>
           <Button
             onClick={() => {
-              setText(current || '')
+              setText(validCurrent)
+              setFocus(false)
               setEditing(false)
             }}
             variant='outline-secondary'
@@ -44,9 +60,10 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
           >
             Cancel
           </Button>
-          <Button disabled={text === (current || '')}
+          <Button disabled={text === validCurrent}
             onClick={() => {
               onConfirm(text)
+              setFocus(false)
               setEditing(false)
             }}
             variant='outline-secondary'

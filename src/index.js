@@ -47,6 +47,10 @@ const GlobalStyle = createGlobalStyle`
     border: 1px solid lightgray;
     border-radius: 4px;
   }
+
+  button[disabled] {
+    pointer-events: none;
+  }
 `
 
 render(
