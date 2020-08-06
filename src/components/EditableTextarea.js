@@ -12,14 +12,17 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
     return (
       <div className='d-flex flex-column flex-grow-1'>
         <InputGroup className='flex-grow-1'>
-          <FormControl as='textarea' aria-label='Description'
+          <FormControl as='textarea'
+            autoFocus
+            placeholder={placeholder}
+            aria-label={placeholder}
+            aria-describedby='basic-addon2'
+            value={text}
             style={{
               resize: 'none',
               borderRadius: '4px 4px 0 0',
               marginBottom: -1,
             }}
-            value={text}
-            placeholder={placeholder}
             onChange={e => setText(e.target.value)}
           />
         </InputGroup>

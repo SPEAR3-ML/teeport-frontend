@@ -16,6 +16,7 @@ const EditableTitle = ({ current, placeholder, onConfirm }) => {
         ? title
         : <InputGroup>
           <FormControl
+            autoFocus
             placeholder={placeholder}
             aria-label={placeholder}
             aria-describedby='basic-addon2'
