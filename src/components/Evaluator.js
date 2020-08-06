@@ -65,7 +65,7 @@ const Evaluator = ({ evaluator, sendMessage }) => {
           </Form>
           <EditableTextarea
             current={evaluator.descr}
-            placeholder='Add some description about this evaluator'
+            placeholder='Describe the evaluator briefly'
             onConfirm={descr => {
               const msg = JSON.stringify({
                 type: 'updateClientDescr',
