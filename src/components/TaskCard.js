@@ -8,6 +8,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
 import JSONPretty from 'react-json-pretty'
 import df from 'dateformat'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import EditableTitle from './EditableTitle'
 import EditableTextarea from './EditableTextarea'
@@ -90,11 +92,18 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
             }}
           />
         </Card.Body>
-        : <Card.Body className='overflow-auto d-flex flex-column'>
-          <JSONPretty
-            data={task.configs}
-            theme={github}
-          />
+        : <Card.Body className='px-0 py-0'>
+          <PerfectScrollbar
+            options={{
+              wheelPropagation: true, // set to false to stop propagation
+            }}
+          >
+            <JSONPretty
+              className='mt-3 mx-4'
+              data={task.configs}
+              theme={github}
+            />
+          </PerfectScrollbar>
         </Card.Body>}
       <Card.Footer className='d-flex flex-row'>
         <ButtonGroup className='flex-grow-1' aria-label='Task control'>
