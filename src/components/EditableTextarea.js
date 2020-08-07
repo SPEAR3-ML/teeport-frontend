@@ -45,6 +45,9 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
         >
           <PerfectScrollbar
             containerRef={setScrollContainer}
+            options={{
+              wheelPropagation: false,
+            }}
           >
             <TextareaAutosize
               className='w-100 d-block border-0'
@@ -65,6 +68,7 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
                 }
               }}
               style={{
+                // lineHeight: 1.3,
                 outline: 0,
                 paddingTop: 6,
                 paddingBottom: 6,
@@ -110,6 +114,7 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
         <PerfectScrollbar>
           <div style={{
             fontStyle: 'italic',
+            // lineHeight: 1.3,
             marginTop: 7,
             marginBottom: 7,
             marginLeft: 13,
