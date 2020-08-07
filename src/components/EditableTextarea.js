@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
+import TextareaAutosize from 'react-autosize-textarea'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 const moveCaretAtEnd = e => {
   const _value = e.target.value
@@ -15,6 +16,14 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
   const [text, setText] = useState(validCurrent)
   const [editing, setEditing] = useState(false)
   const [focus, setFocus] = useState(false)
+  const [textareFocus, setTextareaFocus] = useState(false) // sync focus status
+  const [scrollContainer, setScrollContainer] = useState(null)
+
+  useEffect(() => {
+    if (scrollContainer) {
+      scrollContainer.scrollTop = Number.MAX_SAFE_INTEGER
+    }
+  }, [scrollContainer])
 
   if (editing) {
     return (
@@ -22,32 +31,49 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
         onMouseEnter={() => setFocus(true)}
         onMouseLeave={() => setFocus(false)}
       >
-        <InputGroup className='flex-grow-1'>
-          <FormControl as='textarea'
-            autoFocus
-            placeholder={placeholder}
-            aria-label={placeholder}
-            aria-describedby='basic-addon2'
-            value={text}
-            style={{
-              resize: 'none',
-              borderRadius: '4px 4px 0 0',
-              marginBottom: -1,
-            }}
-            onChange={e => setText(e.target.value)}
-            onFocus={e => {
-              moveCaretAtEnd(e)
-              setFocus(true)
-            }}
-            onBlur={() => {
-              if (!focus) {
-                setText(validCurrent)
-                setFocus(false)
-                setEditing(false)
-              }
-            }}
-          />
-        </InputGroup>
+        <div
+          className='flex-grow-1 overflow-auto form-control'
+          style={{
+            padding: 0,
+            borderRadius: '4px 4px 0 0',
+            marginBottom: -1,
+            borderColor: textareFocus ? '#e23e3e' : '#ced4da',
+            boxShadow: textareFocus ? '0 0 0 0.2rem rgba(140, 21, 21, 0.25)' : null,
+            outline: textareFocus ? 0 : 1,
+            zIndex: textareFocus ? 2 : 0,
+          }}
+        >
+          <PerfectScrollbar
+            containerRef={setScrollContainer}
+          >
+            <TextareaAutosize
+              className='w-100 d-block border-0'
+              autoFocus
+              value={text}
+              onChange={e => setText(e.target.value)}
+              onFocus={e => {
+                setTextareaFocus(true)
+                moveCaretAtEnd(e)
+                setFocus(true)
+              }}
+              onBlur={() => {
+                setTextareaFocus(false)
+                if (!focus) {
+                  setText(validCurrent)
+                  setFocus(false)
+                  setEditing(false)
+                }
+              }}
+              style={{
+                outline: 0,
+                paddingTop: 6,
+                paddingBottom: 6,
+                paddingLeft: 12,
+                paddingRight: 12,
+              }}
+            />
+          </PerfectScrollbar>
+        </div>
         <ButtonGroup aria-label='Desc control'>
           <Button
             onClick={() => {
@@ -77,11 +103,21 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
   } else {
     return (
       <div
-        className='h-100 w-100 text-secondary bg-light rounded px-3 py-2 overflow-auto'
+        className='flex-grow-1 text-secondary bg-light rounded overflow-auto'
         onClick={() => setEditing(true)}
         style={{ whiteSpace: 'pre-wrap' }}
       >
-        <cite>{text}</cite>
+        <PerfectScrollbar>
+          <div style={{
+            fontStyle: 'italic',
+            marginTop: 7,
+            marginBottom: 7,
+            marginLeft: 13,
+            marginRight: 13,
+          }}>
+            {text}
+          </div>
+        </PerfectScrollbar>
       </div>
     )
   }
