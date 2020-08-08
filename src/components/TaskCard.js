@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Button from 'react-bootstrap/Button'
+import Collapse from 'react-bootstrap/Collapse'
 import JSONPretty from 'react-json-pretty'
 import df from 'dateformat'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -22,6 +23,8 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
   const history = useHistory()
   const [locked, unlock] = useLock(1000)
   const [tab, setTab] = useState('info')
+  const [focus, setFocus] = useState(false)
+  const [status, setStatus] = useState(false) // update view scrollbar when status changes
   const isDone = task.status === 'completed' || task.status === 'cancelled'
   // const isInit = task.status === 'init'
   const archived = !!task.archivedAt
@@ -48,9 +51,6 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
             sendMessage(msg)
           }}
         />
-        <Card.Subtitle className='mb-2 text-muted'>
-          {df(new Date(task.createdAt), 'yyyy-mm-dd HH:MM:ss')}
-        </Card.Subtitle>
         <Nav variant='tabs' activeKey={tab}
           onSelect={t => setTab(t)}
         >
@@ -81,6 +81,7 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
           </Form>
           <EditableTextarea
             current={task.descr}
+            status={status}
             placeholder='Describe the task briefly'
             onConfirm={descr => {
               const msg = JSON.stringify({
@@ -105,43 +106,83 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
             />
           </PerfectScrollbar>
         </Card.Body>}
-      <Card.Footer className='d-flex flex-row'>
-        <ButtonGroup className='flex-grow-1' aria-label='Task control'>
-          <Button size='lg' onClick={() => {
-            if (type === 1) {
-              history.push(`${pathname}/benchmark/${task.id}`)
-            } else {
-              history.push(`${pathname}/${task.id}`)
-            }
-          }} disabled={archived}>
-            Enter
-          </Button>
-          <Button size='lg' onClick={() => {
-            const msg = JSON.stringify({
-              type: archived ? 'unarchiveTask' : 'archiveTask',
-              id: task.id,
-            })
-            sendMessage(msg)
-          }} disabled={!isDone}>
-            {archived ? 'Unarchive' : 'Archive'}
-          </Button>
-          <Button size='lg' onClick={toggleSelected}>
-            {selected ? 'Unselect' : 'Select'}
-          </Button>
-          <Button size='lg' onClick={() => {
-            if (locked) {
-              return unlock()
-            }
+      <Card.Footer
+        className='d-flex flex-column'
+        onMouseEnter={() => setFocus(true)}
+        onMouseLeave={() => setFocus(false)}
+      >
+        <Collapse
+          in={focus}
+          onEntered={() => setStatus(true)}
+          onExited={() => setStatus(false)}
+        >
+          <div
+            style={{
+              marginLeft: -20,
+              marginRight: -20,
+              marginTop: -12,
+              marginBottom: 12,
+            }}
+          >
+            <ButtonGroup className='d-flex'>
+              <Button variant='light'
+                className='rounded-0 border-0'
+                onClick={() => {
+                  if (type === 1) {
+                    history.push(`${pathname}/benchmark/${task.id}`)
+                  } else {
+                    history.push(`${pathname}/${task.id}`)
+                  }
+                }}
+                disabled={archived}
+                style={{ flexBasis: '20%' }}
+              >
+                Enter
+              </Button>
+              <Button variant='light'
+                className='rounded-0 border-0'
+                onClick={toggleSelected}
+                style={{ flexBasis: '20%' }}
+              >
+                {selected ? 'Unselect' : 'Select'}
+              </Button>
+              <Button variant='light'
+                className='rounded-0 border-0'
+                onClick={() => {
+                  const msg = JSON.stringify({
+                    type: archived ? 'unarchiveTask' : 'archiveTask',
+                    id: task.id,
+                  })
+                  sendMessage(msg)
+                }}
+                disabled={!isDone}
+                style={{ flexBasis: '20%' }}
+              >
+                {archived ? 'Unarchive' : 'Archive'}
+              </Button>
+              <Button variant='outline-primary'
+                className='rounded-0 border-0'
+                onClick={() => {
+                  if (locked) {
+                    return unlock()
+                  }
 
-            const msg = JSON.stringify({
-              type: 'deleteTask',
-              id: task.id,
-            })
-            sendMessage(msg)
-          }}>
-            {locked ? 'Delete' : 'Confirm'}
-          </Button>
-        </ButtonGroup>
+                  const msg = JSON.stringify({
+                    type: 'deleteTask',
+                    id: task.id,
+                  })
+                  sendMessage(msg)
+                }}
+                style={{ flexBasis: '20%' }}
+              >
+                {locked ? 'Delete' : 'Confirm'}
+              </Button>
+            </ButtonGroup>
+          </div>
+        </Collapse>
+        <small className='w-100 text-muted text-center'>
+          {'Created at ' + df(new Date(task.createdAt), 'yyyy-mm-dd HH:MM:ss')}
+        </small>
       </Card.Footer>
     </Card>
   )
