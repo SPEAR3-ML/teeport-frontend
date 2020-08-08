@@ -8,13 +8,13 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
-import ToggleButton from 'react-bootstrap/ToggleButton'
 // import { grey } from 'material-colors'
 import _ from 'lodash'
 import {
   Plus, GraphUp, BarChart,
   InputCursor, Grid,
   ThreeDotsVertical, Upload, CloudDownload,
+  SortAlphaDown, SortAlphaUp, SortNumericUp, SortNumericDown,
 } from 'react-bootstrap-icons'
 
 import IconSpan from './IconSpan'
@@ -64,12 +64,9 @@ const TasksControlBar = ({
   sendMessage, onNewTask, onNewBenchmarkTask,
   tasksNum, selected, unselectAll,
 }) => {
-  const [radioValue, setRadioValue] = useState('1')
-
-  const radios = [
-    { name: 'By Created', value: '1' },
-    { name: 'By Name', value: '2' },
-  ]
+  const [sortedBy, setSortedBy] = useState('created')
+  const [createdDescend, setCreatedDescend] = useState(true)
+  const [nameDescend, setNameDescend] = useState(false)
 
   const history = useHistory()
   const dataImporter = useRef(null)
@@ -163,21 +160,41 @@ const TasksControlBar = ({
           </Dropdown>
         </Col>
         <Col xs='auto'>
-          <ButtonGroup toggle>
-            {radios.map((radio, idx) => (
-              <ToggleButton
-                key={idx}
-                type='radio'
-                variant='warning'
-                size='sm'
-                name='radio'
-                value={radio.value}
-                checked={radioValue === radio.value}
-                onChange={e => setRadioValue(e.currentTarget.value)}
-              >
-                {radio.name}
-              </ToggleButton>
-            ))}
+          <ButtonGroup>
+            <Button
+              variant='warning'
+              size='sm'
+              active={sortedBy === 'created'}
+              onClick={() => {
+                if (sortedBy === 'created') {
+                  setCreatedDescend(value => !value)
+                } else {
+                  setSortedBy('created')
+                }
+              }}
+            >
+              <IconSpan
+                icon={createdDescend ? SortNumericUp : SortNumericDown}
+                label='By Created'
+              />
+            </Button>
+            <Button
+              variant='warning'
+              size='sm'
+              active={sortedBy === 'name'}
+              onClick={() => {
+                if (sortedBy === 'name') {
+                  setNameDescend(value => !value)
+                } else {
+                  setSortedBy('name')
+                }
+              }}
+            >
+              <IconSpan
+                icon={nameDescend ? SortAlphaUp : SortAlphaDown}
+                label='By Name'
+              />
+            </Button>
           </ButtonGroup>
         </Col>
       </ControlBar>
