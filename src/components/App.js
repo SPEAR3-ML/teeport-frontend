@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Fuse from 'fuse.js'
 import styled from 'styled-components'
 // import { grey } from 'material-colors'
 
@@ -30,14 +31,41 @@ const Content = styled.div`
   bottom: 0px;
 `
 
+const options = {
+  includeScore: false,
+  minMatchCharLength: 1,
+  keys: [
+    'algorithmId',
+    'problemId',
+    'name',
+    'descr',
+  ],
+}
+
 const App = () => {
+  const [search, setSearch] = useState('')
+  const [filteredTasks, setFilteredTasks] = useState([])
   const [tasks, sendMessageAsTaskManager] = useTasks()
   const [clients, sendMessageAsClientManager] = useClients()
+
+  useEffect(() => {
+    if (search) {
+      const fuse = new Fuse(tasks, options)
+      const result = fuse.search(search)
+      const filteredTasks = result.map(obj => obj.item)
+      setFilteredTasks(filteredTasks)
+    } else {
+      setFilteredTasks(tasks)
+    }
+  }, [search, tasks])
 
   return (
     <BrowserRouter basename='/teeport'>
       <Frame className='bg-info'>
-        <Titlebar />
+        <Titlebar
+          search={search}
+          setSearch={setSearch}
+        />
         <Content>
           <Switch>
             <Route path='/about'>
@@ -54,7 +82,7 @@ const App = () => {
             </Route>
             <Route path='/tasks'>
               <Tasks
-                tasks={tasks} sendMessageAsTaskManager={sendMessageAsTaskManager}
+                tasks={filteredTasks} sendMessageAsTaskManager={sendMessageAsTaskManager}
                 clients={clients} sendMessageAsClientManager={sendMessageAsClientManager}
               />
             </Route>

@@ -58,7 +58,7 @@ const Logo = styled.img`
   margin-right: 16px;
 `
 
-const Titlebar = () => {
+const Titlebar = ({ search, setSearch }) => {
   const { pathname } = useLocation()
 
   return (
@@ -99,7 +99,12 @@ const Titlebar = () => {
                 <Search />
               </InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl type='text' placeholder='Search'/>
+            <FormControl
+              type='text'
+              placeholder='Search'
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
           </InputGroup>
         </Form>
       </Navbar.Collapse>
