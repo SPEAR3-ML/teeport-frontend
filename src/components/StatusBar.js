@@ -17,7 +17,7 @@ const StatusBar = ({
     >
       <small className='flex-grow-1 text-light text-center'>
         {selectedTasksNum
-          ? `select ${selectedTasksNum} task${selectedTasksNum > 1 ? 's' : ''}`
+          ? `selected ${selectedTasksNum} task${selectedTasksNum > 1 ? 's' : ''}`
           : `total ${tasksNum} task${tasksNum > 1 ? 's' : ''}`
         }
       </small>
