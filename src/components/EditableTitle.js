@@ -28,7 +28,7 @@ const EditableTitle = ({ current, placeholder, onConfirm }) => {
             onChange={e => setTitle(e.target.value)}
             onBlur={() => {
               if (!focus) {
-                setTitle(current)
+                onConfirm(title)
                 setFocus(false)
                 setEditing(false)
               }

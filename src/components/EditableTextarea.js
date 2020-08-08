@@ -70,7 +70,7 @@ const EditableTextarea = ({ current, placeholder, onConfirm, status }) => {
               onBlur={() => {
                 setTextareaFocus(false)
                 if (!focus) {
-                  setText(validCurrent)
+                  onConfirm(text)
                   setFocus(false)
                   setEditing(false)
                 }
