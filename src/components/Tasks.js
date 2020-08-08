@@ -8,6 +8,7 @@ import ResponsiveGrid from './ResponsiveGrid'
 import TaskCard from './TaskCard'
 import NewTask from './NewTask'
 import NewBenchmarkTask from './NewBenchmarkTask'
+import StatusBar from './StatusBar'
 
 const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientManager }) => {
   // console.log('tasks render!')
@@ -56,6 +57,10 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
       <NewBenchmarkTask
         show={showNewBenchmarkTask} setShow={setShowNewBenchmarkTask}
         clients={clients} sendMessage={sendMessageAsClientManager}
+      />
+      <StatusBar
+        tasksNum={tasks ? tasks.length : 0}
+        selected={selected}
       />
     </FlexFrame>
   )
