@@ -37,7 +37,14 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
   }
 
   return (
-    <Card className='h-100'>
+    <Card
+      className='h-100 border-0'
+      style={{
+        boxShadow: selected
+          ? '0 0 0.25rem 0.1rem rgba(140, 21, 21, 0.75)'
+          : '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)',
+      }}
+    >
       <Card.Header>
         <EditableTitle
           current={task.name}
