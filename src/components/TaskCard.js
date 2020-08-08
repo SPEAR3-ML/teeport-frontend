@@ -11,6 +11,10 @@ import JSONPretty from 'react-json-pretty'
 import df from 'dateformat'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
+import {
+  Archive, ArrowUpSquare, Trash,
+  Check2Square, Square, BoxArrowInUpRight,
+} from 'react-bootstrap-icons'
 
 import EditableTitle from './EditableTitle'
 import EditableTextarea from './EditableTextarea'
@@ -144,14 +148,20 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
                 disabled={archived}
                 style={{ flexBasis: '20%' }}
               >
-                Enter
+                <BoxArrowInUpRight />
+                <div className='small'>
+                  Enter
+                </div>
               </Button>
               <Button variant='light'
                 className='rounded-0 border-0'
                 onClick={toggleSelected}
                 style={{ flexBasis: '20%' }}
               >
-                {selected ? 'Unselect' : 'Select'}
+                {selected ? <Square className='small'/> : <Check2Square />}
+                <div className='small'>
+                  {selected ? 'Unselect' : 'Select'}
+                </div>
               </Button>
               <Button variant='light'
                 className='rounded-0 border-0'
@@ -165,7 +175,10 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
                 disabled={!isDone}
                 style={{ flexBasis: '20%' }}
               >
-                {archived ? 'Unarchive' : 'Archive'}
+                {archived ? <ArrowUpSquare /> : <Archive />}
+                <div className='small'>
+                  {archived ? 'Unarchive' : 'Archive'}
+                </div>
               </Button>
               <Button variant='outline-primary'
                 className='rounded-0 border-0'
@@ -182,7 +195,10 @@ const TaskCard = ({ task, selected, sendMessage, toggleSelected }) => {
                 }}
                 style={{ flexBasis: '20%' }}
               >
-                {locked ? 'Delete' : 'Confirm'}
+                <Trash />
+                <div className='small'>
+                  {locked ? 'Delete' : 'Confirm'}
+                </div>
               </Button>
             </ButtonGroup>
           </div>
