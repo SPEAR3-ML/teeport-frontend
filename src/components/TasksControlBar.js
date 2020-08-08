@@ -14,7 +14,7 @@ import {
   Plus, GraphUp, BarChart,
   InputCursor, Grid,
   ThreeDotsVertical, Upload, CloudDownload,
-  SortAlphaDown, SortAlphaUp, SortNumericUp, SortNumericDown,
+  SortAlphaDown, SortAlphaUp, SortNumericUpAlt, SortNumericDownAlt,
 } from 'react-bootstrap-icons'
 
 import IconSpan from './IconSpan'
@@ -174,7 +174,7 @@ const TasksControlBar = ({
               }}
             >
               <IconSpan
-                icon={createdDescend ? SortNumericUp : SortNumericDown}
+                icon={createdDescend ? SortNumericDownAlt : SortNumericUpAlt}
                 label='By Created'
               />
             </Button>
