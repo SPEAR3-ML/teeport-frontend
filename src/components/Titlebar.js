@@ -4,10 +4,13 @@ import { LinkContainer } from 'react-router-bootstrap'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import styled from 'styled-components'
+import { Search } from 'react-bootstrap-icons'
 // import { grey } from 'material-colors'
 
+// import IconSpan from './IconSpan'
 // import { red } from '../plugins/slacPalette'
 
 const isSubRoute = (origin, sub) => {
@@ -90,7 +93,14 @@ const Titlebar = () => {
           </Nav.Link>
         </Nav>
         <Form inline>
-          <FormControl type='text' placeholder='Search' />
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>
+                <Search />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl type='text' placeholder='Search'/>
+          </InputGroup>
         </Form>
       </Navbar.Collapse>
     </Navbar>
