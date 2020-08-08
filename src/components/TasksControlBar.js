@@ -7,12 +7,18 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 // import { grey } from 'material-colors'
 import _ from 'lodash'
+import {
+  Plus, GraphUp, BarChart,
+  InputCursor, Grid,
+  ThreeDotsVertical, Upload, CloudDownload,
+} from 'react-bootstrap-icons'
 
+import IconSpan from './IconSpan'
+import { ToggleNoCaret } from './Utils'
 import { yellow } from '../plugins/slacPalette'
 
 // const ControlBar = styled.div`
@@ -102,58 +108,72 @@ const TasksControlBar = ({
     <Container fluid style={{ zIndex: 1 }}>
       <ControlBar className='shadow-sm'>
         <Col>
-          <Dropdown as={ButtonGroup} style={{ marginRight: 6 }}>
-            <Button variant="primary" size='sm' onClick={onNewTask}>New</Button>
-            <Dropdown.Toggle split variant="primary" size='sm'/>
+          <Dropdown as={ButtonGroup} className='mr-2'>
+            <Button variant='primary' size='sm' onClick={onNewTask}>
+              <IconSpan icon={Plus} label='New'/>
+            </Button>
+            <Dropdown.Toggle split variant='primary' size='sm'/>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={onNewTask}>Regular Task</Dropdown.Item>
-              <Dropdown.Item onClick={onNewBenchmarkTask}>Benchmark Task</Dropdown.Item>
+              <Dropdown.Item onClick={onNewTask}>
+                <IconSpan icon={GraphUp} label='Regular Task'/>
+              </Dropdown.Item>
+              <Dropdown.Item onClick={onNewBenchmarkTask}>
+                <IconSpan icon={BarChart} label='Benchmark Task'/>
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown as={ButtonGroup} style={{ marginRight: 6 }}>
-            <Button variant="info" size='sm' onClick={() => {
+          <Dropdown as={ButtonGroup} className='mr-2'>
+            <Button variant='info' size='sm' onClick={() => {
               history.push(`/tasks/comparison?${qs.stringify({
                 taskIds: Object.keys(selected),
               })}`)
             }} disabled={_.isEmpty(selected)}>
-              Compare
+              <IconSpan icon={InputCursor} label='Compare'/>
             </Button>
-            <Dropdown.Toggle split variant="info" size='sm' disabled={_.isEmpty(selected)}/>
+            <Dropdown.Toggle split variant='info' size='sm' disabled={_.isEmpty(selected)}/>
             <Dropdown.Menu>
               <Dropdown.Item onClick={unselectAll}>
-                Unselect All
+                <IconSpan icon={Grid} label='Unselect All'/>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <DropdownButton as={ButtonGroup} size='sm' variant="info" title="More" style={{ marginRight: 6 }}>
-            <Dropdown.Item eventKey="1" onClick={() => {
-              dataImporter.current.click()
-            }}>
-              Import Data
-            </Dropdown.Item>
-            <HiddenInput
-              type='file'
-              accept='.json'
-              onChange={importTasks}
-              ref={dataImporter}
-            />
-            <Dropdown.Item eventKey="2" onClick={downloadTasks} disabled={!tasksNum}>
-              {_.isEmpty(selected) ? 'Export Data' : 'Export Selected'}
-            </Dropdown.Item>
-          </DropdownButton>
+          <Dropdown as={ButtonGroup} className='mr-2'>
+            <Dropdown.Toggle as={ToggleNoCaret} variant='info' size='sm'>
+              <IconSpan icon={ThreeDotsVertical} label='More'/>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item eventKey='1' onClick={() => {
+                dataImporter.current.click()
+              }}>
+                <IconSpan icon={Upload} label='Import Data'/>
+              </Dropdown.Item>
+              <HiddenInput
+                type='file'
+                accept='.json'
+                onChange={importTasks}
+                ref={dataImporter}
+              />
+              <Dropdown.Item eventKey='2' onClick={downloadTasks} disabled={!tasksNum}>
+                <IconSpan
+                  icon={CloudDownload}
+                  label={_.isEmpty(selected) ? 'Export Data' : 'Export Selected'}
+                />
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
         <Col xs='auto'>
           <ButtonGroup toggle>
             {radios.map((radio, idx) => (
               <ToggleButton
                 key={idx}
-                type="radio"
-                variant="warning"
+                type='radio'
+                variant='warning'
                 size='sm'
-                name="radio"
+                name='radio'
                 value={radio.value}
                 checked={radioValue === radio.value}
-                onChange={(e) => setRadioValue(e.currentTarget.value)}
+                onChange={e => setRadioValue(e.currentTarget.value)}
               >
                 {radio.name}
               </ToggleButton>
