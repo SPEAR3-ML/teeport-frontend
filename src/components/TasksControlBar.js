@@ -63,10 +63,12 @@ const HiddenInput = styled.input`
 const TasksControlBar = ({
   sendMessage, onNewTask, onNewBenchmarkTask,
   tasksNum, selected, unselectAll,
+  sortedBy, setSortedBy, descend, setDescend,
 }) => {
-  const [sortedBy, setSortedBy] = useState('created')
-  const [createdDescend, setCreatedDescend] = useState(true)
-  const [nameDescend, setNameDescend] = useState(false)
+  const initCreatedDescend = !(sortedBy === 'created' && !descend)
+  const initNameDescend = sortedBy === 'name' && descend
+  const [createdDescend, setCreatedDescend] = useState(initCreatedDescend)
+  const [nameDescend, setNameDescend] = useState(initNameDescend)
 
   const history = useHistory()
   const dataImporter = useRef(null)
@@ -168,8 +170,10 @@ const TasksControlBar = ({
               onClick={() => {
                 if (sortedBy === 'created') {
                   setCreatedDescend(value => !value)
+                  setDescend(value => !value)
                 } else {
                   setSortedBy('created')
+                  setDescend(createdDescend)
                 }
               }}
             >
@@ -185,8 +189,10 @@ const TasksControlBar = ({
               onClick={() => {
                 if (sortedBy === 'name') {
                   setNameDescend(value => !value)
+                  setDescend(value => !value)
                 } else {
                   setSortedBy('name')
+                  setDescend(nameDescend)
                 }
               }}
             >

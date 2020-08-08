@@ -1,4 +1,5 @@
-import React, { useState, memo } from 'react'
+import React, { useState, useEffect, memo } from 'react'
+import sort from 'fast-sort'
 import _ from 'lodash'
 
 import { FlexFrame } from './Utils'
@@ -15,6 +16,23 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
   const [showNewTask, setShowNewTask] = useState(false)
   const [showNewBenchmarkTask, setShowNewBenchmarkTask] = useState(false)
   const [selected, setSelected] = useState({})
+  const [sortedBy, setSortedBy] = useState('created')
+  const [descend, setDescend] = useState(true)
+  const [sortedTasks, setSortedTasks] = useState([])
+
+  useEffect(() => {
+    let sortedTasks
+    if (sortedBy === 'created' && descend) {
+      sortedTasks = sort(_.clone(tasks)).desc('createdAt')
+    } else if (sortedBy === 'created') {
+      sortedTasks = sort(_.clone(tasks)).asc('createdAt')
+    } else if (sortedBy === 'name' && descend) {
+      sortedTasks = sort(_.clone(tasks)).desc(t => t.name.toLowerCase())
+    } else {
+      sortedTasks = sort(_.clone(tasks)).asc(t => t.name.toLowerCase())
+    }
+    setSortedTasks(sortedTasks)
+  }, [sortedBy, descend, tasks])
 
   return (
     <FlexFrame>
@@ -25,13 +43,17 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
         tasksNum={tasks ? tasks.length : 0}
         selected={selected}
         unselectAll={() => setSelected({})}
+        sortedBy={sortedBy}
+        setSortedBy={setSortedBy}
+        descend={descend}
+        setDescend={setDescend}
       />
       <MemoScrollbar tag='tasks'>
         <ResponsiveGrid
           rowHeight={480}
           breakpoints={{ lg: 1440, md: 960, sm: 560, xs: 320, xxs: 0 }}
         >
-          {tasks.map(task => (
+          {sortedTasks.map(task => (
             <div key={task.id} id={task.id}>
               <TaskCard
                 task={task}
