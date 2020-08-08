@@ -15,13 +15,12 @@ import Processors from './Processors'
 import About from './About'
 import useTasks from '../hooks/useTasks'
 import useClients from '../hooks/useClients'
-import { yellow } from '../plugins/slacPalette'
+// import { yellow } from '../plugins/slacPalette'
 
 const Frame = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: ${yellow.normal};
 `
 
 const Content = styled.div`
@@ -37,7 +36,7 @@ const App = () => {
 
   return (
     <BrowserRouter basename='/teeport'>
-      <Frame>
+      <Frame className='bg-info'>
         <Titlebar />
         <Content>
           <Switch>

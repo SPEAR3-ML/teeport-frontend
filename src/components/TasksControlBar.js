@@ -39,7 +39,7 @@ import { yellow } from '../plugins/slacPalette'
 const ControlBar = styled(Row)`
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: ${yellow.dark};
+  background-color: ${yellow.normal};
 `
 
 // const SplitAction = styled(Dropdown)`
@@ -99,8 +99,8 @@ const TasksControlBar = ({
   }, [sendMessage, selected])
 
   return (
-    <Container fluid>
-      <ControlBar>
+    <Container fluid style={{ zIndex: 1 }}>
+      <ControlBar className='shadow-sm'>
         <Col>
           <Dropdown as={ButtonGroup} style={{ marginRight: 6 }}>
             <Button variant="primary" size='sm' onClick={onNewTask}>New</Button>
@@ -148,7 +148,7 @@ const TasksControlBar = ({
               <ToggleButton
                 key={idx}
                 type="radio"
-                variant="secondary"
+                variant="warning"
                 size='sm'
                 name="radio"
                 value={radio.value}
