@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styled from 'styled-components'
 import Plot from 'react-plotly.js'
+import Button from 'react-bootstrap/Button'
 // import { grey } from 'material-colors'
 
 import { red, grey, blue, purple } from '../plugins/slacPalette'
@@ -78,3 +79,20 @@ export const FlexScrollContent = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
 `
+
+export const ToggleNoCaret = forwardRef(({
+  children, onClick, variant, size,
+}, ref) => (
+  <Button
+    className='rounded'
+    ref={ref}
+    variant={variant}
+    size={size}
+    onClick={e => {
+      e.preventDefault()
+      onClick(e)
+    }}
+  >
+    {children}
+  </Button>
+))
