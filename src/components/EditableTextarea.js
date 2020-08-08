@@ -11,19 +11,27 @@ const moveCaretAtEnd = e => {
   e.target.value = _value
 }
 
-const EditableTextarea = ({ current, placeholder, onConfirm }) => {
+const EditableTextarea = ({ current, placeholder, onConfirm, status }) => {
   const validCurrent = current || ''
   const [text, setText] = useState(validCurrent)
   const [editing, setEditing] = useState(false)
   const [focus, setFocus] = useState(false)
   const [textareFocus, setTextareaFocus] = useState(false) // sync focus status
   const [scrollContainer, setScrollContainer] = useState(null)
+  const [viewScrollBar, setViewScrollBar] = useState(null)
 
   useEffect(() => {
     if (scrollContainer) {
       scrollContainer.scrollTop = Number.MAX_SAFE_INTEGER
     }
   }, [scrollContainer])
+
+  // update view scroll when status changed
+  useEffect(() => {
+    if (viewScrollBar) {
+      viewScrollBar.updateScroll()
+    }
+  }, [viewScrollBar, status])
 
   if (editing) {
     return (
@@ -111,7 +119,7 @@ const EditableTextarea = ({ current, placeholder, onConfirm }) => {
         onClick={() => setEditing(true)}
         style={{ whiteSpace: 'pre-wrap' }}
       >
-        <PerfectScrollbar>
+        <PerfectScrollbar ref={setViewScrollBar}>
           <div style={{
             fontStyle: 'italic',
             // lineHeight: 1.3,
