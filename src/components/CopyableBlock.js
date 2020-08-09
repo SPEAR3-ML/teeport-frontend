@@ -3,6 +3,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
 
+import { setClipboard } from '../utils/helpers'
+
 const CopyableBlock = ({ value }) => {
   const unknown = value === undefined || value === null
   return (
@@ -20,8 +22,9 @@ const CopyableBlock = ({ value }) => {
         onClick={unknown ? null : () => {
           if (navigator.clipboard) {
             navigator.clipboard.writeText(value)
-          } else {
-            alert('Copy failed, please copy the content manually')
+          } else { // polyfill for http protocol
+            setClipboard(value)
+            // alert('Copy failed, please copy the content manually')
           }
         }}
       >
