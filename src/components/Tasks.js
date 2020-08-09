@@ -81,7 +81,8 @@ const Tasks = ({ tasks, sendMessageAsTaskManager, clients, sendMessageAsClientMa
         clients={clients} sendMessage={sendMessageAsClientManager}
       />
       <StatusBar
-        tasksNum={tasks ? tasks.length : 0}
+        count={tasks ? tasks.length : 0}
+        type='task'
         selected={selected}
       />
     </FlexFrame>
