@@ -60,6 +60,7 @@ const EditableTextarea = ({ current, placeholder, onConfirm, status }) => {
             <TextareaAutosize
               className='w-100 d-block border-0'
               autoFocus
+              placeholder={placeholder}
               value={text}
               onChange={e => setText(e.target.value)}
               onFocus={e => {
