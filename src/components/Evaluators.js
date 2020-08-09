@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import ResponsiveGrid from './ResponsiveGrid'
-import Evaluator from './Evaluator'
+import ClientCard from './ClientCard'
 
 const Evaluators = ({ clients, sendMessage }) => {
   const evaluators = clients.filter(client => client.type === 'evaluator')
@@ -17,7 +17,7 @@ const Evaluators = ({ clients, sendMessage }) => {
         >
           {evaluators.map(evaluator => (
             <div key={evaluator.id} id={evaluator.id}>
-              <Evaluator evaluator={evaluator} sendMessage={sendMessage}/>
+              <ClientCard client={evaluator} sendMessage={sendMessage}/>
             </div>
           ))}
         </ResponsiveGrid>

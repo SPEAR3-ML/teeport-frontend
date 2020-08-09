@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import ResponsiveGrid from './ResponsiveGrid'
-import Processor from './Processor'
+import ClientCard from './ClientCard'
 
 const Processors = ({ clients, sendMessage }) => {
   const processors = clients.filter(client => client.type === 'processor')
@@ -17,7 +17,7 @@ const Processors = ({ clients, sendMessage }) => {
         >
           {processors.map(processor => (
             <div key={processor.id} id={processor.id}>
-              <Processor processor={processor} sendMessage={sendMessage}/>
+              <ClientCard client={processor} sendMessage={sendMessage}/>
             </div>
           ))}
         </ResponsiveGrid>

@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import ResponsiveGrid from './ResponsiveGrid'
-import Optimizer from './Optimizer'
+import ClientCard from './ClientCard'
 
 const Optimizers = ({ clients, sendMessage }) => {
   // console.log('optimizers render!')
@@ -18,7 +18,7 @@ const Optimizers = ({ clients, sendMessage }) => {
         >
           {optimizers.map(optimizer => (
             <div key={optimizer.id} id={optimizer.id}>
-              <Optimizer optimizer={optimizer} sendMessage={sendMessage}/>
+              <ClientCard client={optimizer} sendMessage={sendMessage}/>
             </div>
           ))}
         </ResponsiveGrid>
