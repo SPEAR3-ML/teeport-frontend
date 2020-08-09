@@ -278,3 +278,13 @@ export const syncLegendStatusByName = (srcData, tgtData) => {
 export const capitalize = text => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
+
+export const setClipboard = value => {
+  var tempInput = document.createElement('input')
+  tempInput.style = 'position:absolute;left:-1000px;top:-1000px'
+  tempInput.value = value
+  document.body.appendChild(tempInput)
+  tempInput.select()
+  document.execCommand('copy')
+  document.body.removeChild(tempInput)
+}
