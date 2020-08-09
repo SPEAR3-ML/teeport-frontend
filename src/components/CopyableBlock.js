@@ -4,7 +4,7 @@ import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
 
 const CopyableBlock = ({ value }) => {
-  const unknown = value === undefined
+  const unknown = value === undefined || value === null
   return (
     <OverlayTrigger
       placement='bottom'
@@ -21,7 +21,7 @@ const CopyableBlock = ({ value }) => {
           if (navigator.clipboard) {
             navigator.clipboard.writeText(value)
           } else {
-            alert('Copy failed, please copy the id manually')
+            alert('Copy failed, please copy the content manually')
           }
         }}
       >
