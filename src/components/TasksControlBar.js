@@ -162,46 +162,61 @@ const TasksControlBar = ({
           </Dropdown>
         </Col>
         <Col xs='auto'>
-          <ButtonGroup>
-            <Button
-              variant='warning'
-              size='sm'
-              active={sortedBy === 'created'}
-              onClick={() => {
-                if (sortedBy === 'created') {
-                  setCreatedDescend(value => !value)
-                  setDescend(value => !value)
-                } else {
-                  setSortedBy('created')
-                  setDescend(createdDescend)
-                }
-              }}
-            >
+          <Dropdown as={ButtonGroup}>
+            <Button variant='info' size='sm' onClick={() => {
+              if (sortedBy === 'created') {
+                setCreatedDescend(value => !value)
+              } else {
+                setNameDescend(value => !value)
+              }
+              setDescend(value => !value)
+            }}>
               <IconSpan
-                icon={createdDescend ? SortNumericDownAlt : SortNumericUpAlt}
-                label='By Created'
+                icon={descend
+                  ? (sortedBy === 'created' ? SortNumericDownAlt : SortAlphaUp)
+                  : (sortedBy === 'created' ? SortNumericUpAlt : SortAlphaDown)
+                }
+                label={sortedBy === 'created' ? 'By Created' : 'By Name'}
               />
             </Button>
-            <Button
-              variant='warning'
-              size='sm'
-              active={sortedBy === 'name'}
-              onClick={() => {
-                if (sortedBy === 'name') {
-                  setNameDescend(value => !value)
-                  setDescend(value => !value)
-                } else {
-                  setSortedBy('name')
-                  setDescend(nameDescend)
-                }
-              }}
-            >
-              <IconSpan
-                icon={nameDescend ? SortAlphaUp : SortAlphaDown}
-                label='By Name'
-              />
-            </Button>
-          </ButtonGroup>
+            <Dropdown.Toggle split variant='info' size='sm'/>
+            <Dropdown.Menu>
+              <Dropdown.Item
+                active={sortedBy === 'created'}
+                onClick={() => {
+                  if (sortedBy === 'created') {
+                    setCreatedDescend(value => !value)
+                    setDescend(value => !value)
+                  } else {
+                    setSortedBy('created')
+                    setDescend(createdDescend)
+                  }
+                }}
+              >
+                <IconSpan
+                  icon={createdDescend ? SortNumericDownAlt : SortNumericUpAlt}
+                  label='By Created'
+                />
+              </Dropdown.Item>
+              <Dropdown.Item
+                active={sortedBy === 'name'}
+                onClick={() => {
+                  if (sortedBy === 'name') {
+                    setNameDescend(value => !value)
+                    setDescend(value => !value)
+                  } else {
+                    setSortedBy('name')
+                    setDescend(nameDescend)
+                  }
+                }}
+              >
+                <IconSpan
+                  icon={nameDescend ? SortAlphaUp : SortAlphaDown}
+                  label='By Name'
+                />
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
       </ControlBar>
     </Container>
