@@ -1,36 +1,70 @@
-import React from 'react'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import React, { useState, useRef, useEffect } from 'react'
+import Overlay from 'react-bootstrap/Overlay'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
 
 import { setClipboard } from '../utils/helpers'
 
 const CopyableBlock = ({ value }) => {
+  const [hover, setHover] = useState(false)
+  const [show, setShow] = useState(false)
+  const [tip, setTip] = useState('Click to copy')
+  const target = useRef(null)
+
   const unknown = value === undefined || value === null
+
+  useEffect(() => {
+    // if not hovered
+    if (!hover) {
+      return setShow(false)
+    }
+
+    // if tooltip is not showing, show it after 0.8s
+    if (!show) {
+      const timer = setTimeout(() => {
+        if (unknown) {
+          setTip('This field is missing')
+        } else {
+          setTip('Click to copy')
+        }
+        setShow(true)
+      }, 800)
+
+      return () => clearTimeout(timer)
+    }
+  }, [hover, show, unknown])
+
   return (
-    <OverlayTrigger
-      placement='bottom'
-      delay={{ show: 1000, hide: 100 }}
-      overlay={
-        <Tooltip id='button-tooltip-2'>
-          Click to copy
-        </Tooltip>
-      }
-    >
+    <>
       <Button size='lg' variant='light' block
+        ref={target}
         className={unknown ? 'text-primary' : ''}
-        onClick={unknown ? null : () => {
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(value)
-          } else { // polyfill for http protocol
-            setClipboard(value)
-            // alert('Copy failed, please copy the content manually')
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={() => {
+          if (unknown) {
+            setTip('I refuse to copy this!')
+          } else {
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(value)
+            } else { // polyfill for http protocol
+              setClipboard(value)
+              // alert('Copy failed, please copy the content manually')
+            }
+            setTip('Copied to clipboard!')
           }
+          setShow(true)
         }}
       >
         {unknown ? 'Unknown' : value}
       </Button>
-    </OverlayTrigger>
+      <Overlay target={target.current}
+        show={show} placement='bottom'
+        shouldUpdatePosition={true}
+      >
+        {props => (<Tooltip {...props}>{tip}</Tooltip>)}
+      </Overlay>
+    </>
   )
 }
 
