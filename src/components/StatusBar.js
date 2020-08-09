@@ -1,12 +1,10 @@
 import React from 'react'
-// import { useHistory } from 'react-router-dom'
 import _ from 'lodash'
 
 const StatusBar = ({
-  tasksNum, selected,
+  count, type, selected,
 }) => {
-  // const history = useHistory()
-  const selectedTasksNum = _.size(selected)
+  const selectedCount = _.size(selected)
 
   return (
     <div className='d-flex flex-row flex-grow-0 bg-dark py-1'
@@ -16,9 +14,9 @@ const StatusBar = ({
       }}
     >
       <small className='flex-grow-1 text-light text-center'>
-        {selectedTasksNum
-          ? `selected ${selectedTasksNum} task${selectedTasksNum > 1 ? 's' : ''}`
-          : `total ${tasksNum} task${tasksNum > 1 ? 's' : ''}`
+        {selectedCount
+          ? `selected ${selectedCount} ${type}${selectedCount > 1 ? 's' : ''}`
+          : `total ${count} ${type}${count > 1 ? 's' : ''}`
         }
       </small>
     </div>
