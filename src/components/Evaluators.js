@@ -4,6 +4,7 @@ import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import ResponsiveGrid from './ResponsiveGrid'
 import ClientCard from './ClientCard'
+import StatusBar from './StatusBar'
 
 const Evaluators = ({ clients, sendMessage }) => {
   const evaluators = clients.filter(client => client.type === 'evaluator')
@@ -22,6 +23,11 @@ const Evaluators = ({ clients, sendMessage }) => {
           ))}
         </ResponsiveGrid>
       </MemoScrollbar>
+      <StatusBar
+        count={evaluators ? evaluators.length : 0}
+        type='evaluator'
+        selected={{}}
+      />
     </FlexFrame>
   )
 }

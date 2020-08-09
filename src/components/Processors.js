@@ -4,6 +4,7 @@ import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import ResponsiveGrid from './ResponsiveGrid'
 import ClientCard from './ClientCard'
+import StatusBar from './StatusBar'
 
 const Processors = ({ clients, sendMessage }) => {
   const processors = clients.filter(client => client.type === 'processor')
@@ -22,6 +23,11 @@ const Processors = ({ clients, sendMessage }) => {
           ))}
         </ResponsiveGrid>
       </MemoScrollbar>
+      <StatusBar
+        count={processors ? processors.length : 0}
+        type='processor'
+        selected={{}}
+      />
     </FlexFrame>
   )
 }

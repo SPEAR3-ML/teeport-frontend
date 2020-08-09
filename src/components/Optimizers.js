@@ -4,6 +4,7 @@ import { FlexFrame } from './Utils'
 import MemoScrollbar from './MemoScrollbar'
 import ResponsiveGrid from './ResponsiveGrid'
 import ClientCard from './ClientCard'
+import StatusBar from './StatusBar'
 
 const Optimizers = ({ clients, sendMessage }) => {
   // console.log('optimizers render!')
@@ -23,6 +24,11 @@ const Optimizers = ({ clients, sendMessage }) => {
           ))}
         </ResponsiveGrid>
       </MemoScrollbar>
+      <StatusBar
+        count={optimizers ? optimizers.length : 0}
+        type='optimizer'
+        selected={{}}
+      />
     </FlexFrame>
   )
 }
