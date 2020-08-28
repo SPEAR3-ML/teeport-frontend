@@ -70,7 +70,7 @@ const Titlebar = ({ search, setSearch }) => {
             className='d-inline-block align-top'
             alt='Teeport logo'
           />
-          TeePort
+          Teeport
         </Navbar.Brand>
       </LinkContainer>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
