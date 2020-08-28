@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve:local": "env-cmd -f .env.local nodemon ."
+    "serve:local": "env-cmd -f .env.local node index.js",
+    "serve": "node index.js"
   },
   "keywords": [
     "teeport"
