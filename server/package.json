@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve:local": "env-cmd -f .env.local node index.js",
+    "serve:prod": "env-cmd -f .env.prod node index.js",
+    "serve:lambda": "env-cmd -f .env.lambda node index.js",
     "serve": "node index.js"
   },
   "keywords": [
