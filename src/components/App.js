@@ -17,6 +17,7 @@ import About from './About'
 import useTasks from '../hooks/useTasks'
 import useClients from '../hooks/useClients'
 // import { yellow } from '../plugins/slacPalette'
+import { BASENAME } from '../constants'
 
 const Frame = styled.div`
   position: fixed;
@@ -60,7 +61,7 @@ const App = () => {
   }, [search, tasks])
 
   return (
-    <BrowserRouter basename='/teeport'>
+    <BrowserRouter basename={BASENAME}>
       <Frame className='bg-info'>
         <Titlebar
           search={search}
