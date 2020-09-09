@@ -1,6 +1,9 @@
 import React from 'react'
-import Plot from 'react-plotly.js'
+import Plotly from 'plotly.js-basic-dist-min'
+import createPlotlyComponent from 'react-plotly.js/factory'
 import styled from 'styled-components'
+
+const Plot = createPlotlyComponent(Plotly)
 
 const AutoResizePlot = styled(Plot)`
   width: 100%;

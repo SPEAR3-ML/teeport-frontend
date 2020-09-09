@@ -1,10 +1,13 @@
 import React, { forwardRef } from 'react'
 import styled from 'styled-components'
-import Plot from 'react-plotly.js'
+import Plotly from 'plotly.js-basic-dist-min'
+import createPlotlyComponent from 'react-plotly.js/factory'
 import Button from 'react-bootstrap/Button'
 // import { grey } from 'material-colors'
 
 import { red, grey, blue, purple } from '../plugins/slacPalette'
+
+const Plot = createPlotlyComponent(Plotly)
 
 export const CenterDiv = styled.div`
   text-align: center;
