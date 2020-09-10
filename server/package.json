@@ -8,7 +8,7 @@
     "serve:local": "env-cmd -f .env.local node index.js",
     "serve:prod": "env-cmd -f .env.prod node index.js",
     "serve:lambda": "env-cmd -f .env.lambda node index.js",
-    "serve": "node index.js"
+    "serve": "env-cmd -f .env.prod node index.js"
   },
   "keywords": [
     "teeport"
