@@ -27,3 +27,4 @@ app.get(stripTrailingSlash(basename) + '/*', (req, res) => {
 })
 
 app.listen(port)
+console.log(`Serving on port ${port}...`)
