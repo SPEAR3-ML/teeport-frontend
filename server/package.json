@@ -16,6 +16,7 @@
   "author": "Zhe Zhang",
   "license": "ISC",
   "dependencies": {
+    "compression": "^1.7.4",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1"
   },
