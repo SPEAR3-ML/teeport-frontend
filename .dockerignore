@@ -10,3 +10,6 @@
 
 Dockerfile
 .dockerignore
+
+.env.* # ignore all specific .env files
+.DS_Store
