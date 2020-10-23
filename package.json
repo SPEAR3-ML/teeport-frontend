@@ -51,7 +51,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:lan": "env-cmd -f .env.lan npm run build",
+    "build:lan": "env-cmd npm run build",
     "build:lambda": "env-cmd -f .env.lambda npm run build",
     "build:zeta": "env-cmd -f .env.zeta npm run build",
     "build:neuron-03": "env-cmd -f .env.neuron-03 npm run build",
