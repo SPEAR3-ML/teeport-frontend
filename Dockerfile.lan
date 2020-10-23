@@ -1,0 +1,41 @@
+FROM node:alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Stage I: build the web app inside Docker
+# In case you don't want to mess with a node env on your computer
+# First setup create-react-app to prepare for building
+RUN npm install -g create-react-app
+# Build the web app
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+RUN npm install
+# If you are building your code for production
+RUN npm ci --only=production
+
+COPY . .
+RUN npm run build:lan
+
+# Now do some clean up
+# Only preserve the build directory
+RUN mkdir ../tmp
+RUN mv ./* ../tmp
+RUN mv ../tmp/build .
+RUN rm -rf ../tmp
+
+# Stage II: install the server to serve the web app
+# Install server dependencies
+COPY server/package*.json ./
+
+RUN npm install
+# If you are building your code for production
+RUN npm ci --only=production
+
+# Bundle app source
+COPY server .
+
+EXPOSE 3000
+CMD [ "npm", "run", "serve"]

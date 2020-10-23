@@ -1,0 +1,19 @@
+**/build
+**/node_modules
+**/npm-debug.log
+
+.eslintrc
+.git
+.gitignore
+
+*.sublime-project
+*.sublime-workspace
+
+Dockerfile
+.dockerignore
+
+# ignore all specific .env files
+**/.env.*
+# ignore all batch deploy files
+deploy*.bat
+.DS_Store
