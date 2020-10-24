@@ -59,7 +59,7 @@ const ClientCard = ({ client, sendMessage }) => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>ID</Form.Label>
-                <CopyableBlock value={client.private ? '' : client.id}/>
+                <CopyableBlock value={client.private ? '******' : client.id}/>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>{`${capitalize(client.type)} ID`}</Form.Label>

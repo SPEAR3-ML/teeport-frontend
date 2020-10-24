@@ -12,6 +12,7 @@ const CopyableBlock = ({ value }) => {
   const target = useRef(null)
 
   const unknown = value === undefined || value === null
+  const hidden = value === '******'
 
   useEffect(() => {
     // if not hovered
@@ -24,6 +25,8 @@ const CopyableBlock = ({ value }) => {
       const timer = setTimeout(() => {
         if (unknown) {
           setTip('This field is missing')
+        } else if (hidden) {
+          setTip('This field is hidden')
         } else {
           setTip('Click to copy')
         }
@@ -32,17 +35,17 @@ const CopyableBlock = ({ value }) => {
 
       return () => clearTimeout(timer)
     }
-  }, [hover, show, unknown])
+  }, [hover, show, unknown, hidden])
 
   return (
     <>
       <Button size='lg' variant='light' block
         ref={target}
-        className={unknown ? 'text-primary' : ''}
+        className={unknown || hidden ? 'text-primary' : ''}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         onClick={() => {
-          if (unknown) {
+          if (unknown || hidden) {
             setTip('I refuse to copy this!')
           } else {
             if (navigator.clipboard) {
