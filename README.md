@@ -1,68 +1,74 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Teeport frontend service
 
-## Available Scripts
+Teeport is an optimization platform that aims to solve the communication problems between the optimizers and the evaluators in real life. Read more about Teeport [here](https://teeport.ml/intro/) and [here](https://teeport-client-python.readthedocs.io/en/latest/).
 
-In the project directory, you can run:
+This is the frontend part of the Teeport service, it's optional but provides nice addition features such as optimization monitoring, benchmarking and comparision. It requires the [Teeport backend service](https://github.com/SPEAR3-ML/teeport-backend) to be running somewhere that is visible to the host of the Teeport frontend service to work. 
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Node.js](https://nodejs.org/en/) 12+
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Run the service
 
-### `npm test`
+First clone this repository to your computer:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/SPEAR3-ML/teeport-frontend.git
+```
 
-### `npm run build`
+### Build the web app
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+In the terminal, go to the root of the project and install the dependences:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```bash
+cd teeport-frontend
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Now create a configuration file named `.env` with the content below:
 
-### `npm run eject`
+```bash
+REACT_APP_URI_TASK_SERVER=ws://localhost:8080
+REACT_APP_BASENAME=/
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Where `REACT_APP_URI_TASK_SERVER` is the uri of the Teeport backend service, here we assume that you have the Teeport backend service running locally at port `8080`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Then build the web app:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+npm run build:lan
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This will create a `build` folder that contains the web app files under the project root.
 
-## Learn More
+### Serve the web app
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Now `cd` to the `server` folder under the project root and install the dependences:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd server
+npm install
+```
 
-### Code Splitting
+Create a configuration file named `.env` with the content below:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```bash
+MODE=local
+BASENAME=/
+PORT=3000
+```
 
-### Analyzing the Bundle Size
+We assume that you just want to test the service. Even though it's OK to run the service this way in a production environment, we recommend you read the `Deployment` section if you want to run and use the Teeport frontend service seriously.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Let's run the service:
 
-### Making a Progressive Web App
+```bash
+npm run serve
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+To verify if the frontend service has been built and run successfully, open your favorite browser and go to [http://localhost:3000](http://localhost:3000). You should be able to land on a page titled Teeport. You can then play with it as demonstrated in [teeport-test](https://github.com/SPEAR3-ML/teeport-test#run-the-gui-test-notebooks-in-jupyter-lab).
 
-### Advanced Configuration
+## Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+**WIP**
