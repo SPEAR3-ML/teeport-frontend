@@ -32,11 +32,11 @@ npm install
 Now create a configuration file named `.env` with the content below:
 
 ```
-REACT_APP_URI_TASK_SERVER=ws://localhost:8080
+REACT_APP_URI_TASK_SERVER=ws://{IP}:8080
 REACT_APP_BASENAME=/
 ```
 
-Where `REACT_APP_URI_TASK_SERVER` is the uri of the Teeport backend service, here we assume that you have the Teeport backend service running locally at port `8080`.
+Where `REACT_APP_URI_TASK_SERVER` is the uri of the Teeport backend service, and `{IP}` should be replaced by the LAN IP of the Teeport backend service you run, typically something like `10.0.0.172`. You can check it with `ifconfig` on Mac/Linux or `ipconfig` on Windows.
 
 Then build the web app:
 
@@ -111,7 +111,7 @@ REACT_APP_URI_TASK_SERVER=ws://{IP}:8080
 REACT_APP_BASENAME=/
 ```
 
-Where `{IP}` should be replaced by the LAN IP of the Teeport backend service you just setup, typically something like `10.0.0.172`. You can check it with `ifconfig` on Mac/Linux or `ipconfig` on Windows.
+Where `{IP}` should be replaced by the LAN IP of the Teeport backend service you run, typically something like `10.0.0.172`. You can check it with `ifconfig` on Mac/Linux or `ipconfig` on Windows.
 
 Then in the subdir `server`, create a file named `.env` with the content below:
 
