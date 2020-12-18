@@ -71,7 +71,6 @@ After that the project file structure should look like:
         |--.env
         |--...
     |--build
-    |--.env
     |--...
 ```
 
