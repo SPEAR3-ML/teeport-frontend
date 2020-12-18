@@ -70,11 +70,12 @@ After that the project file structure should look like:
     |--server
         |--.env
         |--...
+    |--build
     |--.env
     |--...
 ```
 
-We assume that you just want to test the service. Even though it's OK to run the service this way in a production environment, we recommend you read the `Deployment` section if you want to run and use the Teeport frontend service seriously.
+We assume that you just want to test the service. Even though it's OK to run the service this way in a production environment, we recommend you to read the [Deployment](#deployment) section if you want to run and use the Teeport frontend service seriously.
 
 Let's run the service:
 
