@@ -17,7 +17,7 @@
     "lodash": "^4.17.19",
     "material-colors": "^1.2.6",
     "mathjs": "^7.1.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "pareto-frontier": "^1.1.1",
     "plotly.js-basic-dist-min": "^1.55.2",
     "qs": "^6.9.4",
